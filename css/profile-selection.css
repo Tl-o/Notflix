@@ -107,22 +107,40 @@ ul {
   flex-wrap: wrap;
   gap: 24px;
   margin-block-start: var(--margin-value);
-  margin-block-end: calc(var(--margin-value) * 2);
+  margin-block-end: calc(var(--margin-value));
 }
 
 .profile {
   width: 15%;
+  aspect-ratio: 1 / 1.25;
+}
+
+.profile-picture {
+  width: 100%;
   aspect-ratio: 1 / 1;
-  border: 1px solid var(--white);
+  border-radius: 8px;
+  background-size: cover;
+}
+
+.profile-link {
+  text-decoration: none;
+  color: var(--main-text-color);
+}
+
+.profile-name {
+  display: inline-block;
+  padding-block: 0.25rem;
+  font-size: calc(1.5vw);
 }
 
 .manage-profiles-button {
-  margin-block-start: calc(var(--margin-value) * 2.5);
+  margin-block-start: calc(var(--margin-value) * 2);
   margin-block-end: calc(var(--margin-value) * 1);
   font-size: calc(1.5vw);
+  letter-spacing: 0.15rem;
   background-color: transparent;
   color: var(--main-text-color);
   border: 1px solid var(--main-text-color);
   padding-block: 0.25rem;
-  padding-inline: 3rem;
+  padding-inline: 2rem;
 }
