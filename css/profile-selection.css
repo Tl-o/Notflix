@@ -101,6 +101,9 @@ ul {
   right: 0;
   top: 0;
   z-index: 100;
+  animation-name: scale-fade-in;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
 }
 
 .profile-selection-container {
@@ -183,5 +186,18 @@ ul {
 
   .manage-profiles-button {
     font-size: 12px;
+  }
+}
+
+/* Animations */
+@keyframes scale-fade-in {
+  from {
+    transform: scale(1.1, 1.1);
+    opacity: 0%;
+  }
+
+  to {
+    transform: scale(1, 1);
+    opacity: 100%;
   }
 }
