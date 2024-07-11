@@ -53,6 +53,8 @@ h6 {
 body {
   background-color: var(--main-bg-color);
   color: var(--white);
+  font-family: "Netflix Sans", "Helvetica Neue", "Segoe UI", "Roboto", "Ubuntu",
+    sans-serif;
 }
 
 ul {
@@ -115,11 +117,21 @@ ul {
   aspect-ratio: 1 / 1.25;
 }
 
+.profile:hover span {
+  color: var(--white);
+  transition: border 0.5s;
+}
+
+.profile:hover .profile-picture {
+  border: 3px solid var(--white);
+}
+
 .profile-picture {
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 8px;
   background-size: cover;
+  transition: border 0.25s;
 }
 
 .profile-link {
@@ -143,4 +155,9 @@ ul {
   border: 1px solid var(--main-text-color);
   padding-block: 0.25rem;
   padding-inline: 2rem;
+}
+
+.manage-profiles-button:hover {
+  border-color: var(--white);
+  color: var(--white);
 }
