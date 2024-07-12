@@ -1,54 +1,3 @@
-:root {
-  --main-bg-color: #141414;
-  --main-profile-background-color: #333333;
-  --main-text-color: #808080;
-  --white: #ffffff;
-
-  --margin-value: 1.5rem;
-}
-
-/* Css Reset */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-* {
-  margin: 0;
-}
-
-body {
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-}
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
-}
-
 /* Css Styling */
 body {
   background-color: var(--main-bg-color);
@@ -91,16 +40,13 @@ ul {
 }
 
 .centered-div {
-  align-items: center;
-  bottom: 0;
   display: flex;
+  inset: 0;
   flex-direction: column;
   justify-content: center;
-  left: 0;
+  align-items: center;
   position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 100;
+  z-index: 10;
   animation-name: scale-fade-in;
   animation-duration: 0.5s;
   animation-timing-function: ease-in-out;
@@ -112,6 +58,7 @@ ul {
 
 .profile-selection-header {
   font-size: calc(4vw);
+  font-weight: normal;
   margin-block: var(--margin-value);
 }
 
@@ -135,7 +82,11 @@ ul {
 }
 
 .profile:hover .profile-picture {
-  border: 3px solid var(--white);
+  /* border: 3px solid var(--white); */
+}
+
+.profile:hover .profile-picture::after {
+  border-color: var(--white);
 }
 
 .profile-picture {
@@ -143,6 +94,16 @@ ul {
   aspect-ratio: 1 / 1;
   border-radius: 8px;
   background-size: cover;
+  transition: border 0.25s;
+}
+
+.profile-picture::after {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  border: 3px solid transparent;
   transition: border 0.25s;
 }
 
@@ -158,7 +119,7 @@ ul {
 }
 
 .manage-profiles-button {
-  margin-block-start: calc(var(--margin-value) * 2.25);
+  margin-block-start: calc(var(--margin-value) * 2);
   margin-block-end: calc(var(--margin-value) * 1);
   font-size: calc(1.5vw);
   letter-spacing: 0.15rem;
@@ -166,7 +127,7 @@ ul {
   color: var(--main-text-color);
   border: 1px solid var(--main-text-color);
   padding-block: 0.25rem;
-  padding-inline: 2rem;
+  padding-inline: 1.5rem;
 }
 
 .manage-profiles-button:hover {
@@ -186,6 +147,7 @@ ul {
 
   .manage-profiles-button {
     font-size: 12px;
+    margin-block-start: calc(var(--margin-value) * 1.5);
   }
 }
 
