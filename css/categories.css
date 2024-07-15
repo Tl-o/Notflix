@@ -1,0 +1,52 @@
+:root {
+  --show-item-size: 17.5vw;
+  --items-per-page: 5;
+}
+
+.category-container {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 5vw;
+  min-width: 90vw;
+  margin-block: var(--margin-value);
+  overflow-y: hidden;
+}
+
+.category-metadata {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin-block-end: calc(var(--margin-value) * 0.5);
+}
+
+.category-pagination {
+  display: flex;
+  align-items: center;
+}
+
+.category-pages {
+  list-style: none;
+  display: flex;
+  gap: 5px;
+}
+
+.category-shows {
+  display: flex;
+  /* Formula to calculate how much to translate to show the next set of items 
+  Takes one show item size, multiplies it by how many shows per page. The -1 is just to translate in the opposite direction.*/
+
+  /* transform: translateX(
+    calc(var(--show-item-size) * var(--items-per-page) * -1)
+  ); */
+}
+
+.category-item {
+  flex: 0 0 var(--show-item-size);
+  border: 1px dashed white;
+}
+
+.show-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.72 / 1;
+}
