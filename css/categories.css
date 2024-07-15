@@ -1,21 +1,20 @@
 :root {
-  --show-item-size: 17.5vw;
+  --show-item-size: 18vw;
   --items-per-page: 5;
 }
 
 .category-container {
   display: flex;
   flex-direction: column;
-  padding-inline: 5vw;
   min-width: 90vw;
   margin-block: var(--margin-value);
-  overflow-y: hidden;
 }
 
 .category-metadata {
   display: flex;
   justify-content: space-between;
   align-content: center;
+  padding-inline: 5vw;
   margin-block-end: calc(var(--margin-value) * 0.5);
 }
 
@@ -30,14 +29,20 @@
   gap: 5px;
 }
 
+.category-main-content {
+  position: relative;
+  overflow-y: hidden;
+}
+
 .category-shows {
   display: flex;
+  padding-inline: 5vw;
   /* Formula to calculate how much to translate to show the next set of items 
   Takes one show item size, multiplies it by how many shows per page. The -1 is just to translate in the opposite direction.*/
-
-  /* transform: translateX(
-    calc(var(--show-item-size) * var(--items-per-page) * -1)
-  ); */
+  transition: all 0.5s ease-out;
+  transform: translateX(
+    /* calc(var(--show-item-size) * var(--items-per-page) * -1) */
+  );
 }
 
 .category-item {
@@ -49,4 +54,53 @@
   width: 100%;
   height: auto;
   aspect-ratio: 1.72 / 1;
+}
+
+.slide {
+  height: 100%;
+  width: 5vw;
+  position: absolute;
+  /* border: 1px solid red; */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+.slide:hover {
+  background-color: rgb(0, 0, 0, 0.25);
+}
+
+.slide-right::before {
+  mask: url("../imgs/misc/chevron-compact-right.svg") no-repeat 50% 50%;
+}
+
+.slide-right {
+  right: 0;
+  top: 0;
+}
+
+.slide-left::before {
+  mask: url("../imgs/misc/chevron-compact-left.svg") no-repeat 50% 50%;
+}
+
+.slide-left {
+  left: 0;
+  top: 0;
+}
+
+.slide::before {
+  width: 2.5vw;
+  height: 2.5vw;
+  content: "";
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: var(--white);
+  transition: all 0.2s ease-out;
+}
+
+.slide:hover::before {
+  width: 3.5vw;
+  height: 3.5vw;
 }
