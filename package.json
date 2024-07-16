@@ -2,9 +2,9 @@
   "name": "fake-netflix",
   "version": "1.0.0",
   "description": "Front-end recreation of Netflix for educational &amp; portfolio purposes.",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Tl-o/Fake-Netflix/issues"
   },
-  "homepage": "https://github.com/Tl-o/Fake-Netflix#readme"
+  "homepage": "https://github.com/Tl-o/Fake-Netflix#readme",
+  "devDependencies": {
+    "parcel": "^2.12.0"
+  }
 }

@@ -1,6 +1,6 @@
 :root {
-  --show-item-size: 18vw;
-  --items-per-page: 5;
+  --show-item-size: 15vw;
+  --items-per-page: 6;
 }
 
 .category-container {
@@ -39,7 +39,7 @@
   padding-inline: 5vw;
   /* Formula to calculate how much to translate to show the next set of items 
   Takes one show item size, multiplies it by how many shows per page. The -1 is just to translate in the opposite direction.*/
-  transition: all 0.5s ease-out;
+  transition: transform 0.5s ease-out;
   transform: translateX(
     /* calc(var(--show-item-size) * var(--items-per-page) * -1) */
   );
