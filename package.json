@@ -1,6 +1,7 @@
 {
   "name": "fake-netflix",
   "version": "1.0.0",
+  "type": "module",
   "description": "Front-end recreation of Netflix for educational &amp; portfolio purposes.",
   "scripts": {
     "start": "parcel index.html",
