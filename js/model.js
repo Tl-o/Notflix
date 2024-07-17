@@ -9,10 +9,28 @@ export const state = {
     allUsers: [],
   },
   billboard: {},
-  shows: {
+  media: {
+    // An array of objects where each object is a category.
+    categories: [
+      {
+        name: "Action",
+        shows: [, , , , , , , , , , , , , , ,],
+      },
+      {
+        name: "Anime",
+        shows: [, , , , , , , , , , , , , , ,],
+      },
+      {
+        name: "Continue Watching",
+        shows: [, , , , , , ,],
+      },
+    ],
+    // Num of results per page for EACH category, to ensure responsiveness.
+    numOfResults: results_per_page,
+  },
+  search: {
     query: "",
-    categories: [],
-    results: results_per_page,
+    result: "",
   },
 };
 

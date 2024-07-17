@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/browse.css" />
     <link rel="stylesheet" href="./css/categories.css" />
-    <script src="./js/browse.js" defer></script>
+    <script type="module" src="./js/controller.js" defer></script>
+    <!-- <script type="module" src="./js/browse.js" defer></script> -->
   </head>
   <body>
     <header>
@@ -65,83 +66,61 @@
     <div class="billboard-container">
       <div class="billboard-image"></div>
     </div>
-    <div class="category-container">
-      <div class="category-metadata">
-        <div class="category-title">
-          <h2 class="title">Title</h2>
-        </div>
-        <div class="category-pagination">
-          <ul class="category-pages">
-            <li>Page 1</li>
-            <li>Page 2</li>
-          </ul>
-        </div>
-      </div>
-      <div class="category-main-content">
-        <span class="slide slide-left" data-direction="1"></span>
-        <div class="category-shows">
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
+    <div class="categories">
+      <div class="category-container">
+        <div class="category-metadata">
+          <div class="category-title">
+            <h2 class="title">Title</h2>
           </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
-          </div>
-          <div class="category-item">
-            <div class="show-img"></div>
-            <div class="progress-bar"></div>
+          <div class="category-pagination">
+            <ul class="category-pages">
+              <li>Page 1</li>
+              <li>Page 2</li>
+            </ul>
           </div>
         </div>
-        <span class="slide slide-right" data-direction="-1"></span>
+        <div class="category-main-content">
+          <span class="slide slide-left" data-direction="1"></span>
+          <div class="category-shows">
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+            <div class="category-item">
+              <div class="show-img"></div>
+              <div class="progress-bar"></div>
+            </div>
+          </div>
+          <span class="slide slide-right" data-direction="-1"></span>
+        </div>
       </div>
     </div>
   </body>
