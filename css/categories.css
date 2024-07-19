@@ -62,7 +62,7 @@
 .category-item {
   flex: 0 0 var(--show-item-size);
   padding: 3px;
-  border: 1px dashed white;
+  /* border: 1px dashed white; */
 }
 
 .show-img {
@@ -88,10 +88,11 @@
   justify-content: center;
   align-items: center;
   z-index: 5;
+  background-color: rgb(0, 0, 0, 0.2);
 }
 
 .slide:hover {
-  background-color: rgb(0, 0, 0, 0.25);
+  background-color: rgb(0, 0, 0, 0.4);
 }
 
 .slide-right::before {
@@ -101,6 +102,7 @@
 .slide-right {
   right: 0;
   top: 0;
+  bottom: 0;
 }
 
 .slide-left::before {

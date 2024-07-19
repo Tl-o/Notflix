@@ -16,12 +16,14 @@ export class Category extends View {
   _firstVisibleElementIndex = 0; // The index of the first visible element out of resultsPerPage
   _currPage = 0;
   _itemSize = 15; // One item's size in vw unit, based on css class
+  _endlessScrollEnabled = false;
 
   init(data) {
     this.render(data);
     this._categoryEl = this._parentEl.querySelector(`#${this._ID}`);
     this._showContainerEl = this._categoryEl.querySelector(".category-shows");
     this._resetPos();
+    this._updatePagination();
     this._generateSliders();
     this._categoryEl
       .querySelector(".category-shows")
@@ -64,7 +66,7 @@ export class Category extends View {
 
     if (numPages === 1) return "";
 
-    for (let i = 0; i < numPages; i++) markup += `<li>Page ${i + 1}</li>`;
+    for (let i = 0; i < numPages; i++) markup += `<li class="pagination"></li>`;
     return markup;
   }
 
@@ -140,7 +142,9 @@ export class Category extends View {
 
     for (let i = 0; i < this._resultsPerPage + 1; i++) {
       markup += `
-        <div class="category-item">
+        <div class="category-item ${
+          this._endlessScrollEnabled === false ? "opaque" : ""
+        }">
           <div class="show-img">
             <img src="${this._data.shows[index]?.thumbnail}">
           </div>
@@ -161,7 +165,7 @@ export class Category extends View {
 
     mainContent.insertAdjacentHTML(
       "afterbegin",
-      `<span class="slide slide-left" data-direction="1"></span>`
+      `<span class="slide slide-left hidden" data-direction="1"></span>`
     );
     mainContent.insertAdjacentHTML(
       "beforeend",
@@ -183,10 +187,24 @@ export class Category extends View {
 
   _updateShows() {
     this._showContainerEl.classList.remove("animatable");
+    this._enableEndlessScrolling();
     const reRender = this._generateShows();
     this._showContainerEl.innerHTML = reRender;
-
     this._resetPos();
+  }
+
+  _updatePagination() {
+    this._categoryEl.querySelectorAll(".pagination").forEach((page, i) => {
+      if (i !== this._currPage) page.classList.remove("active");
+      else page.classList.add("active");
+    });
+  }
+
+  _enableEndlessScrolling() {
+    if (this._endlessScrollEnabled) return;
+
+    this._endlessScrollEnabled = true;
+    this._categoryEl.querySelector(".slide-left").classList.remove("hidden");
   }
 
   _slideRight() {
@@ -221,6 +239,7 @@ export class Category extends View {
       this._firstVisibleElementIndex = 0;
     }
 
+    this._updatePagination();
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     const slideBy = this._itemSize * nextShows;
     this._slide(-slideBy + defaultPos);
@@ -261,6 +280,7 @@ export class Category extends View {
       this._currPage--;
     }
 
+    this._updatePagination();
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     const slideBy = this._itemSize * numOfPrevShows;
     this._slide(slideBy + defaultPos);

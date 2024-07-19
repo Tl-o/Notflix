@@ -69,7 +69,7 @@ export const state = {
       },
       {
         name: "Small",
-        shows: [, , , , , , ,],
+        shows: [, , , , ,],
       },
     ],
     // Num of results per page for EACH category, to ensure responsiveness.
