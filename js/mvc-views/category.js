@@ -1,3 +1,4 @@
+"use strict";
 import "core-js/stable";
 import { View } from "./view";
 import { mark } from "regenerator-runtime";
@@ -84,13 +85,18 @@ export class Category extends View {
         ? this._resultsPerPage
         : this._data.shows.length;
 
-    for (let i = 0; i < this._resultsPerPage; i++) {
+    let currEl = this._firstVisibleElementIndex;
+
+    for (let i = 0; i < until; i++) {
       markup += `
         <div class="category-item">
-          <div class="show-img">Init</div>
+          <div class="show-img">
+            <img src="${this._data.shows[currEl]?.thumbnail}">
+          </div>
           <div class="progress-bar"></div>
         </div>
       `;
+      currEl++;
     }
     return markup;
   }
@@ -101,29 +107,20 @@ export class Category extends View {
 
     let markup = "";
 
-    // Starting index, if it's bigger than the length then we're on the last page, so reset to 0
-    let index = this._currIndex + this._resultsPerPage;
-    if (index > this._data.shows.length) index = 0;
+    let index = this._firstVisibleElementIndex + this._resultsPerPage;
+    // Reset because next page is first page to allow for endless scrolling.
+    if (index >= this._data.shows.length) index = 0;
 
-    // How many shows to print, if it's bigger then length then it means we're on the last page
-    let until = index + this._resultsPerPage;
-    if (until > this._data.shows.length) until = this._data.shows.length;
-
-    // for (index; index < until; index++) {
-    //   markup += `
-    //     <div class="category-item">
-    //       <div class="show-img">Next</div>
-    //       <div class="progress-bar"></div>
-    //     </div>
-    //   `;
-    // }
     for (let i = 0; i < this._resultsPerPage + 1; i++) {
       markup += `
         <div class="category-item">
-          <div class="show-img">Next</div>
+          <div class="show-img">
+            <img src="${this._data.shows[index]?.thumbnail}">
+          </div>
           <div class="progress-bar"></div>
         </div>
       `;
+      index = index + 1 >= this._data.shows.length ? 0 : index + 1;
     }
     return markup;
   }
@@ -133,16 +130,24 @@ export class Category extends View {
     let markup = "";
     if (this._data.shows.length <= this._resultsPerPage) return markup;
 
-    let index = this._firstVisibleElementIndex;
+    /* Generate the elements starting from the first in the previous page
+     This is because the last element, once all the others are added, will 
+     be visible as the left edge of the scrolling category. Refer to
+     the above documentation.*/
+
+    let index = this._firstVisibleElementIndex - this._resultsPerPage - 1;
+    if (index < 0) index = this._data.shows.length + index;
+
     for (let i = 0; i < this._resultsPerPage + 1; i++) {
-      index = index - 1 < 0 ? this._data.shows.length : index - 1;
-      console.log(index);
       markup += `
         <div class="category-item">
-          <div class="show-img">Prev</div>
+          <div class="show-img">
+            <img src="${this._data.shows[index]?.thumbnail}">
+          </div>
           <div class="progress-bar"></div>
         </div>
       `;
+      index = index + 1 >= this._data.shows.length ? 0 : index + 1;
     }
     return markup;
   }
@@ -180,23 +185,13 @@ export class Category extends View {
     this._showContainerEl.classList.remove("animatable");
     const reRender = this._generateShows();
     this._showContainerEl.innerHTML = reRender;
-    // categoryDiv.insertAdjacentHTML("beforeend", this._generateNextShows());
-    // categoryDiv.insertAdjacentHTML("afterbegin", this._generatePreviousShows());
-
-    // Default is slide by however many results per page
-    let slideMultiplier = this._resultsPerPage;
-    // If next page is the last page with less elements than the resultsPerPage, then only slide by that amount
-    if (this._data.shows.length - this._currIndex < this._resultsPerPage)
-      slideMultiplier = this._data.shows.length - this._currIndex;
-    // Index of first visible element
-    this._firstVisibleElementIndex = slideMultiplier;
-    console.log(this._firstVisibleElementIndex);
 
     this._resetPos();
   }
 
   _slideRight() {
     if (this._showContainerEl.classList.contains("animatable")) return;
+
     this._currIndex += this._resultsPerPage;
     this._currPage++;
     const numPages =
@@ -220,47 +215,61 @@ export class Category extends View {
       this._currIndex + this._resultsPerPage
     ).length;
 
+    this._firstVisibleElementIndex += nextShows;
+
+    if (this._currPage === 0) {
+      this._firstVisibleElementIndex = 0;
+    }
+
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     const slideBy = this._itemSize * nextShows;
     this._slide(-slideBy + defaultPos);
   }
 
   _slideLeft() {
-    this._currIndex -= this._resultsPerPage;
-    this._currPage--;
-    const numPages =
-      Math.floor(this._data.shows.length / this._resultsPerPage) + 1;
-    let prevPageElements = this._resultsPerPage; // Default
+    if (this._showContainerEl.classList.contains("animatable")) return;
 
-    if (this._currPage < 0) {
-      this._currIndex = this._resultsPerPage;
-      this._firstVisibleElementIndex =
-        this._data.shows.length - this._resultsPerPage;
+    this._showContainerEl.classList.add("animatable");
+    let numOfPrevShows;
+    let numPages =
+      Math.floor(this._data.shows.length / this._resultsPerPage) + 1;
+
+    // If on first page, go to last page
+    if (this._currPage === 0) {
+      let newIndex = this._data.shows.length - this._resultsPerPage;
+      this._currIndex = this._firstVisibleElementIndex = newIndex;
       this._currPage = numPages - 1;
-    } else if (this._currPage === 0) {
-      prevPageElements = this._firstVisibleElementIndex;
-      this._currIndex = 0;
-      this._firstVisibleElementIndex = 0;
+
+      numOfPrevShows = this._data.shows.slice(
+        this._firstVisibleElementIndex,
+        this._firstVisibleElementIndex + this._resultsPerPage
+      ).length;
+    }
+    // Else if on second page, going to first
+    else if (this._currPage === 1) {
+      numOfPrevShows = this._firstVisibleElementIndex;
+      this._currIndex = this._firstVisibleElementIndex = 0;
+      this._currPage--;
+    }
+    // On any other page
+    else {
+      this._firstVisibleElementIndex -= this._resultsPerPage;
+      this._data.shows.slice(
+        this._firstVisibleElementIndex,
+        this._firstVisibleElementIndex + this._resultsPerPage
+      ).length;
+      this._currPage--;
     }
 
-    debugger;
-
-    this._categoryEl
-      .querySelector(".category-shows")
-      .classList.add("animatable");
-
-    /* Slide by a single show's width multiplied by how many shows on the next page
-      This is to ensure that it slides just enough to show the next amount of shows if they're
-      less than the current page. */
-
-    // Get specific amount of shows left
-
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
-    const slideBy = this._itemSize * prevPageElements;
+    const slideBy = this._itemSize * numOfPrevShows;
     this._slide(slideBy + defaultPos);
+    console.log(this._firstVisibleElementIndex);
   }
 
   _resetPos() {
+    if (this._data.shows.length <= 6) return;
+
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     this._slide(defaultPos);
   }
