@@ -22,7 +22,11 @@ export const state = {
       },
       {
         name: "Continue Watching",
-        shows: [, , , , , , ,],
+        shows: [1, 1, 1, 1, 1, 1, 1],
+      },
+      {
+        name: "Small",
+        shows: [1, 1, 1],
       },
     ],
     // Num of results per page for EACH category, to ensure responsiveness.
