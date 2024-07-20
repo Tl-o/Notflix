@@ -15,7 +15,7 @@ export const state = {
     categories: [
       {
         name: 'Continue Watching',
-        shows: placeHolderData.slice(0, 7),
+        shows: placeHolderData.slice(0, 8),
       },
       {
         name: 'Drama',

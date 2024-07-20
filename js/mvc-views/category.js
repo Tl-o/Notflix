@@ -34,6 +34,7 @@ export class Category extends View {
   }
 
   setResultsPerPage(num, newItemSize) {
+    this._updatePages(num);
     this._resultsPerPage = num;
     this._itemSize = newItemSize;
   }
@@ -43,7 +44,38 @@ export class Category extends View {
       this._generateListOfPages();
     this._showContainerEl.innerHTML = this._generateShows();
     this._updatePagination();
+    this._generateSliders();
     this._resetPos();
+  }
+
+  _updatePages(num) {
+    // Means we increased page size from small to bigger
+    if (this._resultsPerPage && num > this._resultsPerPage) {
+      // Change only visible index when on last page
+      if (this._firstVisibleElementIndex !== this._currIndex)
+        this._firstVisibleElementIndex--;
+
+      // Change both if last page has exactly numOfResults amount of shows, i.e. symmetrical list
+      if (
+        this._firstVisibleElementIndex === this._currIndex &&
+        this._firstVisibleElementIndex + this._resultsPerPage ===
+          this._data.shows.length
+      )
+        this._firstVisibleElementIndex = this._currIndex -= 1;
+    }
+    // Means we decreased page size from big to smaller
+    else if (this._resultsPerPage && num < this._resultsPerPage) {
+      // Change only when on last page
+      if (this._firstVisibleElementIndex !== this._currIndex)
+        this._firstVisibleElementIndex++;
+
+      if (
+        this._firstVisibleElementIndex === this._currIndex &&
+        this._firstVisibleElementIndex + this._resultsPerPage ===
+          this._data.shows.length
+      )
+        this._firstVisibleElementIndex = this._currIndex += 1;
+    }
   }
 
   _generateMarkup() {
@@ -174,7 +206,14 @@ export class Category extends View {
     let mainContent = this._categoryEl.querySelector('.category-main-content');
 
     // If no other pages exist
-    if (this._numPages <= 1 && this._currPage === 0) return;
+    if (this._numPages <= 1) {
+      mainContent.querySelector('.slide-left')?.remove();
+      mainContent.querySelector('.slide-right')?.remove();
+      return;
+    }
+
+    // If already generated sliders
+    if (mainContent.querySelector('.slide-left') !== null) return;
 
     mainContent.insertAdjacentHTML(
       'afterbegin',
@@ -340,7 +379,10 @@ export class Category extends View {
   }
 
   _resetPos() {
-    if (this._data.shows.length <= this._resultsPerPage) return;
+    if (this._data.shows.length <= this._resultsPerPage) {
+      this._slide(0);
+      return;
+    }
 
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     this._slide(defaultPos);
