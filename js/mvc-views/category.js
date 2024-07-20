@@ -223,6 +223,13 @@ export class Category extends View {
   _slideRight() {
     if (this._showContainerEl.classList.contains('animatable')) return;
 
+    console.log(`
+      Before: 
+      This current page equals ${this._currPage}
+      This firstVisibleElement equals ${this._firstVisibleElementIndex}
+      This current index equals ${this._currIndex}
+    `);
+
     this._currIndex += this._resultsPerPage;
     this._currPage++;
 
@@ -242,7 +249,7 @@ export class Category extends View {
       less than the current page. */
 
     // Get specific amount of shows left
-    const nextShows = this._data.shows.slice(
+    let nextShows = this._data.shows.slice(
       this._currIndex,
       this._currIndex + this._resultsPerPage
     ).length;
@@ -253,6 +260,14 @@ export class Category extends View {
     //     this._firstVisibleElementIndex + this._resultsPerPage
     //   );
     if (nextShows !== 0) this._firstVisibleElementIndex += nextShows;
+    // If between the two indices lies a bigger number of the results per page, fix the error
+    while (
+      this._currIndex - this._firstVisibleElementIndex >=
+      this._resultsPerPage
+    ) {
+      this._firstVisibleElementIndex++;
+      nextShows++;
+    }
 
     if (this._currPage === 0) {
       this._firstVisibleElementIndex = 0;
@@ -262,11 +277,24 @@ export class Category extends View {
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     const slideBy = this._itemSize * nextShows;
     this._slide(-slideBy + defaultPos);
+
+    console.log(`
+      After: 
+      This current page equals ${this._currPage}
+      This firstVisibleElement equals ${this._firstVisibleElementIndex}
+      This current index equals ${this._currIndex}
+    `);
   }
 
   _slideLeft() {
     if (this._showContainerEl.classList.contains('animatable')) return;
 
+    console.log(`
+      Before: 
+      This current page equals ${this._currPage}
+      This firstVisibleElement equals ${this._firstVisibleElementIndex}
+      This current index equals ${this._currIndex}
+    `);
     this._showContainerEl.classList.add('animatable');
     let numOfPrevShows;
 
@@ -295,13 +323,20 @@ export class Category extends View {
         this._firstVisibleElementIndex + this._resultsPerPage
       ).length;
       this._currPage--;
+      this._currIndex -= this._resultsPerPage;
     }
 
     this._updatePagination();
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     const slideBy = this._itemSize * numOfPrevShows;
     this._slide(slideBy + defaultPos);
-    console.log(this._firstVisibleElementIndex);
+
+    console.log(`
+      After: 
+      This current page equals ${this._currPage}
+      This firstVisibleElement equals ${this._firstVisibleElementIndex}
+      This current index equals ${this._currIndex}
+    `);
   }
 
   _resetPos() {

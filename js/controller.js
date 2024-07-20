@@ -2,11 +2,6 @@
 import * as model from './model.js';
 import categories from './mvc-views/categories.js';
 
-if (module.hot) {
-  module.hot.accept();
-  console.log();
-}
-
 /* Initalize */
 const init = function () {};
 console.log(model.state);
