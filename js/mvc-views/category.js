@@ -1,12 +1,12 @@
-"use strict";
-import "core-js/stable";
-import { View } from "./view";
-import { mark } from "regenerator-runtime";
+'use strict';
+import 'core-js/stable';
+import { View } from './view';
+import { mark } from 'regenerator-runtime';
 
 export class Category extends View {
   // Should start with the categories parent to insert elements there.
-  _parentEl = document.querySelector(".categories");
-  _ID = "ID" + Math.floor(Math.random() * 999999);
+  _parentEl = document.querySelector('.categories');
+  _ID = 'ID' + Math.floor(Math.random() * 999999);
   // Category element is the category's rendered DOM, to control pagination and sliding.
   _categoryEl;
   // The actual shows container, to add / update shows and enable endless scrolling
@@ -15,25 +15,35 @@ export class Category extends View {
   _currIndex = 0; // The index of current element.
   _firstVisibleElementIndex = 0; // The index of the first visible element out of resultsPerPage
   _currPage = 0;
-  _itemSize = 15; // One item's size in vw unit, based on css class
+  _itemSize = 0; // One item's size in vw unit, based on css class
   _endlessScrollEnabled = false;
+  _numPages = 0;
 
   init(data) {
     this.render(data);
     this._categoryEl = this._parentEl.querySelector(`#${this._ID}`);
-    this._showContainerEl = this._categoryEl.querySelector(".category-shows");
+    this._showContainerEl = this._categoryEl.querySelector('.category-shows');
     this._resetPos();
     this._updatePagination();
     this._generateSliders();
     this._categoryEl
-      .querySelector(".category-shows")
-      .addEventListener("transitionend", () => {
-        console.log("Ended");
+      .querySelector('.category-shows')
+      .addEventListener('transitionend', () => {
+        console.log('Ended');
       });
   }
 
-  setResultsPerPage(num) {
+  setResultsPerPage(num, newItemSize) {
     this._resultsPerPage = num;
+    this._itemSize = newItemSize;
+  }
+
+  updateDom() {
+    this._categoryEl.querySelector('.category-pages').innerHTML =
+      this._generateListOfPages();
+    this._showContainerEl.innerHTML = this._generateShows();
+    this._updatePagination();
+    this._resetPos();
   }
 
   _generateMarkup() {
@@ -60,13 +70,17 @@ export class Category extends View {
 
   _generateListOfPages() {
     // Edit later to account for 6 / 6 pages
-    let markup = "";
-    const numPages =
+    let markup = '';
+    this._numPages =
       Math.floor(this._data.shows.length / this._resultsPerPage) + 1;
 
-    if (numPages === 1) return "";
+    if (this._numPages === 1) return '';
+    // Fixes bug that creates an additional page when number of elements in EVERY PAGE is the same as num of results
+    if (this._data.shows.length % this._resultsPerPage === 0) this._numPages--;
+    if (this._data.shows.length === this._resultsPerPage) this._numPages = 0;
 
-    for (let i = 0; i < numPages; i++) markup += `<li class="pagination"></li>`;
+    for (let i = 0; i < this._numPages; i++)
+      markup += `<li class="pagination"></li>`;
     return markup;
   }
 
@@ -79,7 +93,7 @@ export class Category extends View {
   }
 
   _generateCurrShows() {
-    let markup = "";
+    let markup = '';
 
     // Generate initial page, next page, and one more to hide the dynamic generation
     let until =
@@ -105,9 +119,9 @@ export class Category extends View {
 
   _generateNextShows() {
     // If the amount of shows are less than the results per page, means there is no next page to navigate to
-    if (this._data.shows.length <= this._resultsPerPage) return "";
+    if (this._data.shows.length <= this._resultsPerPage) return '';
 
-    let markup = "";
+    let markup = '';
 
     let index = this._firstVisibleElementIndex + this._resultsPerPage;
     // Reset because next page is first page to allow for endless scrolling.
@@ -129,7 +143,7 @@ export class Category extends View {
 
   _generatePreviousShows() {
     // If the amount of shows are less than the results per page, means there is no previous page to navigate to
-    let markup = "";
+    let markup = '';
     if (this._data.shows.length <= this._resultsPerPage) return markup;
 
     /* Generate the elements starting from the first in the previous page
@@ -143,7 +157,7 @@ export class Category extends View {
     for (let i = 0; i < this._resultsPerPage + 1; i++) {
       markup += `
         <div class="category-item ${
-          this._endlessScrollEnabled === false ? "opaque" : ""
+          this._endlessScrollEnabled === false ? 'opaque' : ''
         }">
           <div class="show-img">
             <img src="${this._data.shows[index]?.thumbnail}">
@@ -157,46 +171,45 @@ export class Category extends View {
   }
 
   _generateSliders() {
-    const numPages = this._data.shows.length / this._resultsPerPage;
-    let mainContent = this._categoryEl.querySelector(".category-main-content");
+    let mainContent = this._categoryEl.querySelector('.category-main-content');
 
     // If no other pages exist
-    if (numPages <= 1 && this._currPage === 0) return;
+    if (this._numPages <= 1 && this._currPage === 0) return;
 
     mainContent.insertAdjacentHTML(
-      "afterbegin",
+      'afterbegin',
       `<span class="slide slide-left hidden" data-direction="1"></span>`
     );
     mainContent.insertAdjacentHTML(
-      "beforeend",
+      'beforeend',
       `<span class="slide slide-right" data-direction="-1"></span>`
     );
 
     mainContent
-      .querySelector(".slide-right")
-      .addEventListener("click", this._slideRight.bind(this));
+      .querySelector('.slide-right')
+      .addEventListener('click', this._slideRight.bind(this));
 
     mainContent
-      .querySelector(".slide-left")
-      .addEventListener("click", this._slideLeft.bind(this));
+      .querySelector('.slide-left')
+      .addEventListener('click', this._slideLeft.bind(this));
 
     this._categoryEl
-      .querySelector(".category-shows")
-      .addEventListener("transitionend", this._updateShows.bind(this));
+      .querySelector('.category-shows')
+      .addEventListener('transitionend', this._updateShows.bind(this));
   }
 
   _updateShows() {
-    this._showContainerEl.classList.remove("animatable");
     this._enableEndlessScrolling();
     const reRender = this._generateShows();
     this._showContainerEl.innerHTML = reRender;
     this._resetPos();
+    this._showContainerEl.classList.remove('animatable');
   }
 
   _updatePagination() {
-    this._categoryEl.querySelectorAll(".pagination").forEach((page, i) => {
-      if (i !== this._currPage) page.classList.remove("active");
-      else page.classList.add("active");
+    this._categoryEl.querySelectorAll('.pagination').forEach((page, i) => {
+      if (i !== this._currPage) page.classList.remove('active');
+      else page.classList.add('active');
     });
   }
 
@@ -204,24 +217,25 @@ export class Category extends View {
     if (this._endlessScrollEnabled) return;
 
     this._endlessScrollEnabled = true;
-    this._categoryEl.querySelector(".slide-left").classList.remove("hidden");
+    this._categoryEl.querySelector('.slide-left').classList.remove('hidden');
   }
 
   _slideRight() {
-    if (this._showContainerEl.classList.contains("animatable")) return;
+    if (this._showContainerEl.classList.contains('animatable')) return;
 
     this._currIndex += this._resultsPerPage;
     this._currPage++;
-    const numPages =
-      Math.floor(this._data.shows.length / this._resultsPerPage) + 1;
 
-    if (this._currPage >= numPages) {
+    if (
+      this._currPage >= this._numPages ||
+      this._currIndex === this._data.shows.length
+    ) {
       this._currIndex = 0;
       this._firstVisibleElementIndex = 0;
       this._currPage = 0;
     }
 
-    this._showContainerEl.classList.add("animatable");
+    this._showContainerEl.classList.add('animatable');
 
     /* Slide by a single show's width multiplied by how many shows on the next page
       This is to ensure that it slides just enough to show the next amount of shows if they're
@@ -233,7 +247,12 @@ export class Category extends View {
       this._currIndex + this._resultsPerPage
     ).length;
 
-    this._firstVisibleElementIndex += nextShows;
+    // if (nextShows === 0)
+    //   nextShows = this._data.shows.slice(
+    //     this._firstVisibleElementIndex,
+    //     this._firstVisibleElementIndex + this._resultsPerPage
+    //   );
+    if (nextShows !== 0) this._firstVisibleElementIndex += nextShows;
 
     if (this._currPage === 0) {
       this._firstVisibleElementIndex = 0;
@@ -246,18 +265,16 @@ export class Category extends View {
   }
 
   _slideLeft() {
-    if (this._showContainerEl.classList.contains("animatable")) return;
+    if (this._showContainerEl.classList.contains('animatable')) return;
 
-    this._showContainerEl.classList.add("animatable");
+    this._showContainerEl.classList.add('animatable');
     let numOfPrevShows;
-    let numPages =
-      Math.floor(this._data.shows.length / this._resultsPerPage) + 1;
 
     // If on first page, go to last page
     if (this._currPage === 0) {
       let newIndex = this._data.shows.length - this._resultsPerPage;
       this._currIndex = this._firstVisibleElementIndex = newIndex;
-      this._currPage = numPages - 1;
+      this._currPage = this._numPages - 1;
 
       numOfPrevShows = this._data.shows.slice(
         this._firstVisibleElementIndex,
@@ -273,7 +290,7 @@ export class Category extends View {
     // On any other page
     else {
       this._firstVisibleElementIndex -= this._resultsPerPage;
-      this._data.shows.slice(
+      numOfPrevShows = this._data.shows.slice(
         this._firstVisibleElementIndex,
         this._firstVisibleElementIndex + this._resultsPerPage
       ).length;
@@ -288,7 +305,7 @@ export class Category extends View {
   }
 
   _resetPos() {
-    if (this._data.shows.length <= 6) return;
+    if (this._data.shows.length <= this._resultsPerPage) return;
 
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     this._slide(defaultPos);
@@ -296,7 +313,7 @@ export class Category extends View {
 
   _slide(by) {
     this._categoryEl
-      .querySelector(".category-shows")
-      .setAttribute("style", `transform: translateX(${by}vw)`);
+      .querySelector('.category-shows')
+      .setAttribute('style', `transform: translateX(${by}vw)`);
   }
 }

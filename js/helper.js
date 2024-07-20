@@ -11,3 +11,16 @@ export function CreateShow(name, thumbnail, genres) {
   this.thumbnail = thumbnail;
   this.genres = genres;
 }
+
+export function shuffleArray(arr) {
+  let currIndex = arr.length;
+
+  while (currIndex != 0) {
+    let randomElement = Math.floor(Math.random() * currIndex);
+    currIndex--;
+
+    [arr[currIndex], arr[randomElement]] = [arr[randomElement], arr[currIndex]];
+  }
+
+  return arr;
+}

@@ -1,7 +1,7 @@
 body {
   background-color: var(--main-bg-color);
   color: var(--white);
-  font-family: "Netflix Sans", "Helvetica Neue", "Segoe UI", "Roboto", "Ubuntu",
+  font-family: 'Netflix Sans', 'Helvetica Neue', 'Segoe UI', 'Roboto', 'Ubuntu',
     sans-serif;
 }
 
@@ -17,6 +17,7 @@ a {
 
 header {
   position: sticky;
+  z-index: 100;
   top: 0;
 }
 
@@ -27,7 +28,6 @@ header {
     transparent
   );
   min-height: 70px;
-  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -57,8 +57,8 @@ header {
 
 .main-logo::before {
   display: inline-block;
-  content: "";
-  background-image: url("../imgs/misc/Netflix_2015_logo.png");
+  content: '';
+  background-image: url('../imgs/misc/Netflix_2015_logo.png');
   background-size: contain;
   background-repeat: no-repeat;
   width: 100%;
