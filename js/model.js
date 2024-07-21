@@ -28,6 +28,8 @@ export const state = {
         shows: [
           placeHolderData[Math.floor(Math.random() * placeHolderData.length)],
           placeHolderData[Math.floor(Math.random() * placeHolderData.length)],
+          placeHolderData[Math.floor(Math.random() * placeHolderData.length)],
+          placeHolderData[Math.floor(Math.random() * placeHolderData.length)],
         ],
       },
       {
@@ -59,8 +61,6 @@ export const state = {
         ),
       },
     ],
-    // Num of results per page for EACH category, to ensure responsiveness.
-    numOfResults: results_per_page,
   },
   search: {
     query: '',

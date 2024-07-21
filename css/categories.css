@@ -2,6 +2,7 @@
   --show-item-size: 15vw;
   --items-per-page: 6;
   --pagination-width: 20px;
+  --category-title-size: 1.6vw;
 }
 
 .category-container {
@@ -23,6 +24,10 @@
 .category-pagination {
   display: flex;
   align-items: center;
+}
+
+.title {
+  font-size: var(--category-title-size);
 }
 
 .category-pages {
@@ -141,6 +146,8 @@
   :root {
     --show-item-size: 18vw;
     --items-per-page: 5;
+    --pagination-width: 17px;
+    --category-title-size: 2vw;
   }
 }
 
@@ -148,6 +155,8 @@
   :root {
     --show-item-size: 22.5vw;
     --items-per-page: 4;
+    --pagination-width: 14px;
+    --category-title-size: 2.5vw;
   }
 }
 
@@ -155,5 +164,16 @@
   :root {
     --show-item-size: 30vw;
     --items-per-page: 3;
+    --pagination-width: 10px;
+    --category-title-size: 3vw;
+  }
+}
+
+@media (max-width: 500px) {
+  :root {
+    --show-item-size: 45vw;
+    --items-per-page: 2;
+    --pagination-width: 7px;
+    --category-title-size: 3.5vw;
   }
 }

@@ -34,6 +34,10 @@ export class Category extends View {
   }
 
   setResultsPerPage(num, newItemSize) {
+    if (this._data?.name === 'My List')
+      console.log(
+        `Before update pages: ${this._firstVisibleElementIndex}, ${this._currIndex}`
+      );
     this._updatePages(num);
     this._resultsPerPage = num;
     this._itemSize = newItemSize;
@@ -42,13 +46,19 @@ export class Category extends View {
   updateDom() {
     this._categoryEl.querySelector('.category-pages').innerHTML =
       this._generateListOfPages();
+    this._generateSliders();
     this._showContainerEl.innerHTML = this._generateShows();
     this._updatePagination();
-    this._generateSliders();
     this._resetPos();
   }
 
   _updatePages(num) {
+    // If resized and now it's showing all results
+    if (num >= this._data?.shows.length) {
+      this._currPage = this._currIndex = this._firstVisibleElementIndex = 0;
+      return;
+    }
+
     // Means we increased page size from small to bigger
     if (this._resultsPerPage && num > this._resultsPerPage) {
       // Change only visible index when on last page
@@ -60,8 +70,11 @@ export class Category extends View {
         this._firstVisibleElementIndex === this._currIndex &&
         this._firstVisibleElementIndex + this._resultsPerPage ===
           this._data.shows.length
-      )
+      ) {
         this._firstVisibleElementIndex = this._currIndex -= 1;
+        if (this._data.name === 'Continue Watching')
+          console.log(this._firstVisibleElementIndex, this._currIndex);
+      }
     }
     // Means we decreased page size from big to smaller
     else if (this._resultsPerPage && num < this._resultsPerPage) {
@@ -105,6 +118,9 @@ export class Category extends View {
     let markup = '';
     this._numPages =
       Math.floor(this._data.shows.length / this._resultsPerPage) + 1;
+    this._currPage = Math.floor(
+      this._firstVisibleElementIndex / this._resultsPerPage
+    );
 
     if (this._numPages === 1) return '';
     // Fixes bug that creates an additional page when number of elements in EVERY PAGE is the same as num of results
@@ -215,6 +231,7 @@ export class Category extends View {
     // If already generated sliders
     if (mainContent.querySelector('.slide-left') !== null) return;
 
+    this._currPage = this._currIndex = this._firstVisibleElementIndex = 0; // If you generate sliders for first time, set all to 0.
     mainContent.insertAdjacentHTML(
       'afterbegin',
       `<span class="slide slide-left hidden" data-direction="1"></span>`
@@ -274,7 +291,7 @@ export class Category extends View {
 
     if (
       this._currPage >= this._numPages ||
-      this._currIndex === this._data.shows.length
+      this._currIndex >= this._data.shows.length
     ) {
       this._currIndex = 0;
       this._firstVisibleElementIndex = 0;
@@ -338,7 +355,7 @@ export class Category extends View {
     let numOfPrevShows;
 
     // If on first page, go to last page
-    if (this._currPage === 0) {
+    if (this._currPage === 0 || this._firstVisibleElementIndex < 0) {
       let newIndex = this._data.shows.length - this._resultsPerPage;
       this._currIndex = this._firstVisibleElementIndex = newIndex;
       this._currPage = this._numPages - 1;
