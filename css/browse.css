@@ -100,6 +100,10 @@ header {
   position: relative;
 }
 
+.browse {
+  display: none;
+}
+
 .user-options-dropdown {
   position: absolute;
   top: 50px;
@@ -112,6 +116,15 @@ header {
   opacity: 0;
   visibility: hidden;
   transition: all 0.33s ease-in-out;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 16.5%;
+  top: -15px;
+  width: 10px;
+  border: 7.5px solid;
+  border-color: transparent transparent var(--white);
 }
 
 .dropdown-profile-section,
@@ -183,4 +196,72 @@ header {
 .show {
   visibility: visible;
   opacity: 1;
+}
+
+@media (min-width: 900px) and (max-width: 1200px) {
+  .main-navigation-sm {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-navigation-sm {
+    display: none;
+  }
+
+  .browse {
+    position: relative;
+    display: block;
+  }
+
+  .browse:hover .cadet {
+    transform: rotate(180deg);
+  }
+
+  .browse-dropdown-title {
+    font-size: 12px;
+    margin-inline: 8px;
+  }
+
+  .browse-dropdown {
+    visibility: hidden;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
+    border-top: 3px solid var(--white);
+    width: 220px;
+    background-color: rgba(0, 0, 0, 0.8);
+    font-size: 13px;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.33s ease-in-out;
+  }
+
+  .browse-list-item {
+    width: 100%;
+    padding: 16px;
+    font-size: 12px;
+    text-align: center;
+    transition: background-color 0.33s ease-in-out;
+  }
+
+  .browse-list-item:hover {
+    background-color: rgba(40, 40, 40, 0.8);
+  }
+
+  .dropdown-browse-arrow {
+    position: absolute;
+    left: 10%;
+    top: -18px;
+    width: 10px;
+    border: 7.5px solid;
+    border-color: transparent transparent var(--white);
+  }
+
+  .show {
+    visibility: visible;
+    opacity: 1;
+  }
 }

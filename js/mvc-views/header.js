@@ -4,14 +4,16 @@ import { mark } from 'regenerator-runtime';
 
 class Header extends View {
   _parentEl = document.querySelector('header');
-  _dropDown;
+  _userDropdown;
+  _browseDropdown;
   // Check time for scroll in millieseconds
   _checkScrollTime = 100;
   _clearTimeoutTime = 500;
 
   _generateMarkup() {
     this._generateHeader();
-    this._dropDown = this._parentEl.querySelector('.user-options-dropdown');
+    this._userDropdown = this._parentEl.querySelector('.user-options-dropdown');
+    this._browseDropdown = this._parentEl.querySelector('.browse-dropdown');
     this._bindScroll();
     this._bindHover();
     return ``;
@@ -22,7 +24,7 @@ class Header extends View {
     <div class="main-header">
         <div class="header-block-start">
             <a class="main-logo"> </a>
-            <ul class="main-navigation">
+            <ul class="main-navigation main-navigation-sm">
                 <li class="navigation-item"><a href="#">Home</a></li>
                 <li class="navigation-item"><a href="#">TV Shows</a></li>
                 <li class="navigation-item"><a href="#">Movies</a></li>
@@ -30,6 +32,21 @@ class Header extends View {
                 <li class="navigation-item"><a href="#">My List</a></li>
                 <li class="navigation-item"><a href="#">Browse By Languages</a></li>
             </ul>
+            <div class="browse">
+                <span class="browse-dropdown-title">Browse</span>
+                <span class="cadet"></span>
+                <div class="browse-dropdown">
+                    <span class="dropdown-browse-arrow"></span>
+                    <ul>
+                        <li class="browse-list-item">Home</li>
+                        <li class="browse-list-item">TV Shows</li>
+                        <li class="browse-list-item">Movies</li>
+                        <li class="browse-list-item">New & Popular</li>
+                        <li class="browse-list-item">My List</li>
+                        <li class="browse-list-item">Browse By Languages</li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="header-block-end">
             <ul class="secondary-navigation">
@@ -89,6 +106,7 @@ class Header extends View {
     });
 
     return `<div class="user-options-dropdown">
+        <span class="dropdown-arrow"></span>
         <ul class="dropdown-profile-section">
             ${profilesMarkup}
         </ul>
@@ -177,17 +195,30 @@ class Header extends View {
   }
 
   _bindHover() {
-    let hideDropdown;
+    let hideUserDropdown;
+    let hideBrowseDropdown;
     let userProfile = this._parentEl.querySelector('.user-profile');
+    let browse = this._parentEl.querySelector('.browse');
 
     userProfile?.addEventListener('mouseenter', () => {
-      this._dropDown.classList.add('show');
-      if (hideDropdown) clearTimeout(hideDropdown);
+      this._userDropdown.classList.add('show');
+      if (hideUserDropdown) clearTimeout(hideUserDropdown);
+    });
+
+    browse?.addEventListener('mouseenter', () => {
+      this._browseDropdown.classList.add('show');
+      if (hideBrowseDropdown) clearTimeout(hideBrowseDropdown);
     });
 
     userProfile?.addEventListener('mouseleave', () => {
-      hideDropdown = setTimeout(() => {
-        this._dropDown.classList.remove('show');
+      hideUserDropdown = setTimeout(() => {
+        this._userDropdown.classList.remove('show');
+      }, this._clearTimeoutTime);
+    });
+
+    browse?.addEventListener('mouseleave', () => {
+      hideBrowseDropdown = setTimeout(() => {
+        this._browseDropdown.classList.remove('show');
       }, this._clearTimeoutTime);
     });
   }
