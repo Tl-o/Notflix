@@ -72,10 +72,9 @@ export class Category extends View {
           this._data.shows.length
       ) {
         this._firstVisibleElementIndex = this._currIndex -= 1;
-        if (this._data.name === 'Continue Watching')
-          console.log(this._firstVisibleElementIndex, this._currIndex);
       }
     }
+
     // Means we decreased page size from big to smaller
     else if (this._resultsPerPage && num < this._resultsPerPage) {
       // Change only when on last page
@@ -86,8 +85,9 @@ export class Category extends View {
         this._firstVisibleElementIndex === this._currIndex &&
         this._firstVisibleElementIndex + this._resultsPerPage ===
           this._data.shows.length
-      )
+      ) {
         this._firstVisibleElementIndex = this._currIndex += 1;
+      }
     }
   }
 
@@ -114,13 +114,15 @@ export class Category extends View {
   }
 
   _generateListOfPages() {
-    // Edit later to account for 6 / 6 pages
     let markup = '';
     this._numPages =
       Math.floor(this._data.shows.length / this._resultsPerPage) + 1;
-    this._currPage = Math.floor(
-      this._firstVisibleElementIndex / this._resultsPerPage
-    );
+
+    // Only change when not on first page, to avoid scrolling to the last page when sliding back bug
+    if (this._currPage !== 1)
+      this._currPage = Math.floor(
+        this._firstVisibleElementIndex / this._resultsPerPage
+      );
 
     if (this._numPages === 1) return '';
     // Fixes bug that creates an additional page when number of elements in EVERY PAGE is the same as num of results
