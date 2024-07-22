@@ -4,13 +4,16 @@ import { mark } from 'regenerator-runtime';
 
 class Header extends View {
   _parentEl = document.querySelector('header');
+  _dropDown;
   // Check time for scroll in millieseconds
-  _checkTime = 100;
+  _checkScrollTime = 100;
+  _clearTimeoutTime = 500;
 
   _generateMarkup() {
     this._generateHeader();
+    this._dropDown = this._parentEl.querySelector('.user-options-dropdown');
     this._bindScroll();
-    // this._bindHover();
+    this._bindHover();
     return ``;
   }
 
@@ -164,14 +167,29 @@ class Header extends View {
 
   _bindScroll() {
     setInterval(() => {
-      console.log('Scroll...');
       if (window.scrollY >= 1)
         this._parentEl.querySelector('.main-header')?.classList.add('scroll');
       else
         this._parentEl
           .querySelector('.main-header')
           ?.classList.remove('scroll');
-    }, this._checkTime);
+    }, this._checkScrollTime);
+  }
+
+  _bindHover() {
+    let hideDropdown;
+    let userProfile = this._parentEl.querySelector('.user-profile');
+
+    userProfile?.addEventListener('mouseenter', () => {
+      this._dropDown.classList.add('show');
+      if (hideDropdown) clearTimeout(hideDropdown);
+    });
+
+    userProfile?.addEventListener('mouseleave', () => {
+      hideDropdown = setTimeout(() => {
+        this._dropDown.classList.remove('show');
+      }, this._clearTimeoutTime);
+    });
   }
 }
 
