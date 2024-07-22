@@ -236,7 +236,9 @@ export class Category extends View {
     this._currPage = this._currIndex = this._firstVisibleElementIndex = 0; // If you generate sliders for first time, set all to 0.
     mainContent.insertAdjacentHTML(
       'afterbegin',
-      `<span class="slide slide-left hidden" data-direction="1"></span>`
+      `<span class="slide slide-left ${
+        this._endlessScrollEnabled ? '' : 'hidden'
+      }" data-direction="1"></span>`
     );
     mainContent.insertAdjacentHTML(
       'beforeend',
