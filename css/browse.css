@@ -33,6 +33,11 @@ header {
   align-items: center;
   padding-inline: 3.5vw;
   font-size: 14px;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.main-header.scroll {
+  background-color: rgba(0, 0, 0, 1);
 }
 
 .header-block-start {
