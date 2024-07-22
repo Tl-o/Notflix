@@ -71,19 +71,42 @@ export const state = {
 // Initalize all users, later should recreate from actual data
 const init = function initalizeModel() {
   const rosa = new CreateUser(
-    'Rosa Ushiromiya',
-    '../../imgs/profile_pics/rosapfp.png',
+    'Rosa Umineko',
+    'https://gcdnb.pbrd.co/images/Cyeeqtk7SoDO.png?o=1',
     '',
     ''
   );
 
-  state.allUsers = [rosa];
-};
+  const bojack = new CreateUser(
+    'نوم العوافي',
+    'https://i.imgur.com/u1DJo5h.png',
+    '',
+    ''
+  );
 
-const showAnatomy = {
-  name: 'Show_Name',
-  thumbnail: '',
-  genres: [],
+  const louis = new CreateUser(
+    'Louis Cypher',
+    'https://i.imgur.com/JpGzLyC.png',
+    '',
+    ''
+  );
+
+  const tara = new CreateUser(
+    'Tara 🤍',
+    'https://i.imgur.com/Igqdb4Q.png',
+    '',
+    ''
+  );
+
+  const cheap = new CreateUser(
+    'باراسايت',
+    'https://i.imgur.com/DTQqnbN.png',
+    '',
+    ''
+  );
+
+  state.users.allUsers = [tara, louis, bojack, rosa, cheap];
+  state.users.currUser = bojack;
 };
 
 init();
