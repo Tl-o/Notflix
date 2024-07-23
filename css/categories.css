@@ -13,6 +13,10 @@
   overflow-x: hidden;
 }
 
+.category-container * {
+  z-index: 5;
+}
+
 .category-metadata {
   display: flex;
   justify-content: space-between;

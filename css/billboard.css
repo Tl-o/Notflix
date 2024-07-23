@@ -1,0 +1,158 @@
+.billboard {
+  width: 80vw;
+  height: 40vw;
+}
+
+.billboard-container {
+  aspect-ratio: 1 / 0.5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline-start: 5vw;
+  z-index: 5;
+}
+
+.billboard-logo {
+  width: 35vw;
+  margin-block-end: 2vh;
+}
+
+.billboard-promotion {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-block-end: 2vh;
+  width: 30vw;
+}
+
+.billboard-icon {
+  width: 2.5vw;
+  height: 2.5vw;
+  aspect-ratio: 1 / 1;
+}
+
+.billboard-promotion-text {
+  font-size: 1.5vw;
+  font-weight: bold;
+}
+
+.billboard-description {
+  font-size: 1.4vw;
+  min-width: 35vw;
+  max-width: 35vw;
+  margin-block-end: 2vh;
+}
+
+.billboard-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.billboard-play,
+.billboard-info {
+  min-width: 10vw;
+  padding-inline: 2vw;
+  min-height: 6vh;
+  border-radius: 5px;
+  font-size: 22px;
+  font-weight: bold;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.billboard-play {
+  gap: 8px;
+}
+
+.billboard-info .billboard-icon {
+  width: 2vw;
+  height: 2vw;
+  aspect-ratio: 1 / 1;
+}
+
+.billboard-play {
+  color: rgb(20, 20, 20);
+  fill: rgb(20, 20, 20);
+  background-color: var(--white);
+}
+
+.billboard-play:hover {
+  background-color: rgb(200, 200, 200, 0.8);
+}
+
+.billboard-info {
+  background-color: rgb(120, 120, 120, 0.5);
+  color: var(--white);
+  fill: var(--white);
+}
+
+.billboard-info:hover {
+  background-color: rgb(120, 120, 120, 0.2);
+}
+
+.billboard-controls {
+  margin-inline-start: auto;
+  margin-block-end: 8vw;
+  align-self: end;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.billboard-sound {
+  border-radius: 50%;
+  min-height: 5vh;
+  aspect-ratio: 1 / 1;
+  min-width: max-content;
+  background-color: transparent;
+  border: 1px solid var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.billboard-sound .billboard-icon {
+  width: 75%;
+  height: 75%;
+  fill: var(--white);
+}
+
+.billboard-sound:hover {
+  background-color: rgb(255, 255, 255, 0.1);
+}
+
+.billboard-age-rating {
+  width: 128px;
+  padding-block: 8px;
+  padding-inline-start: 16px;
+  border-inline-start: 2px solid var(--white);
+  background-color: rgb(51, 51, 51, 0.6);
+}
+
+.billboard-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -100;
+  z-index: -1;
+}
+
+.billboard-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 50%,
+    transparent 100%
+  );
+}
