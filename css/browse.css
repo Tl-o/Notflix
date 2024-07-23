@@ -29,6 +29,7 @@ header {
   );
   min-height: 70px;
   display: flex;
+  position: sticky;
   justify-content: space-between;
   align-items: center;
   padding-inline: 3.5vw;
@@ -37,7 +38,7 @@ header {
 }
 
 .main-header.scroll {
-  background-color: rgba(0, 0, 0, 1);
+  background-color: rgba(20, 20, 20);
 }
 
 .header-block-start {
