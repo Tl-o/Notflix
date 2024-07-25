@@ -23,7 +23,7 @@
   opacity: 1;
   transform: scale(1) translateX(0) translateY(0);
   transition: opacity transform;
-  transition-duration: 1s;
+  transition-duration: 1.25s;
   transition-timing-function: ease-in-out;
   transition-delay: 1.5s;
 }
@@ -36,7 +36,6 @@
 .billboard-logo {
   width: 35vw;
   margin-block-end: 2vh;
-  transition: transform 1s ease-in-out;
 }
 
 .billboard-promotion {
@@ -45,7 +44,6 @@
   align-items: center;
   margin-block-end: 2vh;
   width: 30vw;
-  transition: opacity 1s ease-in-out;
 }
 
 .billboard-icon {
