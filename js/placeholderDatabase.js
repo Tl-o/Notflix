@@ -1,4 +1,4 @@
-export default showsDatabase = [
+export const showsDatabase = [
   {
     name: 'Breaking Bad',
     thumbnail:
@@ -478,5 +478,35 @@ export default showsDatabase = [
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABZ-rQ-ns5rnl6zRxn5oQ6_UzM_G67rI_UdfsrJpoVKpirt62TCgEcj0WDPK-PsM0LaFByNMYddv_8s5ZW7Whl_2qLk1edVhcvTs.webp?r=4bd',
     genres: ['Movies', 'Animation', 'Fantasy', 'Adventure'],
+  },
+];
+
+export const billboardShows = [
+  {
+    name: 'Cobra Kai',
+    type: 'Movie',
+    description: `
+      A legendary rivalry is rekindled after washed-up fighter Johnny
+      Lawrence reopens his old dojo and reconnects with Daniel LaRusso. Let
+      the sparring begin.
+    `,
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABc3bo9AhUg4mIBGs4OgBCdVNkfVLKjBs56QaEFfIqn8VPvfBAil_rrXnZfD_HLGDGlnX0Kbq5snbgnbJLK8n4_7-wn_YPNQgskMTr5_5GDy5_mMv_FcE7wsliYx9zR4P2Un67LorvIB-68U42L1VezF_EDH9JkhqxCjcO9AAToSGAiifIGQTBw.webp?r=b2a',
+    logoAlt: 'Cobra Kai logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABbaYPLvxfN7PJx9y5zqu2lV4n-hnzpdTOiJPa96wM1YoaFiDglgrYzjAIiZDMK5nTAn3Kaz7phhiCT9uXjR_8XMkagWRXjp412WB.webp?r=039',
+    posterAlt: 'Cobra Kai poster',
+    rank: '5',
+    trailer: ``,
+  },
+  {
+    name: 'Show_Name',
+    type: 'Movie',
+    description: '',
+    logo: '',
+    logoAlt: '',
+    poster: '',
+    posterAlt: '',
+    rank: '5',
+    trailer: '',
   },
 ];
