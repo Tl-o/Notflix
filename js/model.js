@@ -9,7 +9,8 @@ export const state = {
     currUser: {},
     allUsers: [],
   },
-  billboard: billboardShows[0],
+  billboard:
+    billboardShows[Math.floor(Math.random() * (billboardShows.length - 1))],
   media: {
     // An array of objects where each object is a category.
     categories: [

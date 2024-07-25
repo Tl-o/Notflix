@@ -24,7 +24,8 @@ class Billboard extends View {
 
   _generateMarkup() {
     // Generate it later, when you find a solution to embedding videos
-    // this._generateBillboard();
+    this._generateBillboard();
+    this._generateTrailer();
     this._poster = this._parentEl.querySelector('.billboard-img');
     this._trailer = this._parentEl.querySelector('.billboard-video');
     this._trailerControls = this._parentEl.querySelector('.billboard-sound');
@@ -33,7 +34,7 @@ class Billboard extends View {
       this._controlSound.bind(this)
     );
 
-    setTimeout(this._playTrailer.bind(this), 1500);
+    // setTimeout(this._playTrailer.bind(this), 5000);
     return '';
   }
 
@@ -122,14 +123,22 @@ class Billboard extends View {
     </div>
     <div class="billboard-backdrop">
         <img class="billboard-img" src="${this._data.poster}" alt="${this._data.posterAlt}">
-        <video class="billboard-video">
-        <source src="${this._data.trailer}" type="video/mp4">
-        </video>
         <div class="billboard-fadeout"></div>
     </div>
     </div>
     `;
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  _generateTrailer() {
+    const allVids = [...this._parentEl.querySelectorAll('video')];
+    allVids.forEach((video) => {
+      if (video.getAttribute('id') !== this._data.trailer) video.remove();
+      else
+        this._parentEl
+          .querySelector('.billboard-backdrop')
+          .insertAdjacentElement('beforeend', video);
+    });
   }
 
   _playTrailer() {

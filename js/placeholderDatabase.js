@@ -484,7 +484,7 @@ export const showsDatabase = [
 export const billboardShows = [
   {
     name: 'Cobra Kai',
-    type: 'Movie',
+    type: 'TV Show',
     description: `
       A legendary rivalry is rekindled after washed-up fighter Johnny
       Lawrence reopens his old dojo and reconnects with Daniel LaRusso. Let
@@ -496,7 +496,102 @@ export const billboardShows = [
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABbaYPLvxfN7PJx9y5zqu2lV4n-hnzpdTOiJPa96wM1YoaFiDglgrYzjAIiZDMK5nTAn3Kaz7phhiCT9uXjR_8XMkagWRXjp412WB.webp?r=039',
     posterAlt: 'Cobra Kai poster',
     rank: '5',
-    trailer: ``,
+    trailer: `cobra`,
+  },
+  {
+    name: 'What Jennifer Did',
+    type: 'Movie',
+    description: `
+    Jennifer Pan's mother has been murdered. Her father's in a coma. 
+    When he finally wakes up, his evidence changes the course of the entire investigation.
+    `,
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABT9LhlcYEZy7DA2srwf-YFcEyU5NIcO9aGE790p2EOHW85C3zM1J4EqI33nfq1jkxxCPqqVV8E4RhcrjsqvbCHdRcvC24CV8Z8U6GlMXDpwpeD5u6Vqr2cT17uBP0hHtFW2UAsl4KsJOdBj8svHKJw-pudZGYgQ1dKjc23oouU0KBnpG-7Gkbg.webp?r=6aa',
+    logoAlt: 'What Jennifer Did logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABci27yBNYqqlgvh5GV3loZF0ZnN0lOzMKIYNlgyJ4V0_51oy7u5EuEuZjGdKuIzt8QPNxuyn3R8rTSTArKlgGocJxef3GRKEx6-j.webp?r=816',
+    posterAlt: 'Real-life Jennifer poster, looking at camera',
+    rank: '2',
+    trailer: `jennifer`,
+  },
+  {
+    name: 'Vikings Valhalla',
+    type: 'TV Show',
+    description:
+      'In this violent action series, a new generation of Vikings set off on conquests for power and glory.',
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABVZ0-vHVyf8aehPzhKY4NkJ0d9MCepgr4pqzIa7TjfKsd7a-ATdvjz-T6-VrJLDWnoyGwaovm77StYrd_hIIocupdV0iD0iEjLaoUnbyPWQMllkRO6mlDhimtVLGbm1yLtiNpZCo6fJam5bybGojlLJRs0rHBAOogq3b96yo_L-wn21ZAD_tYw.webp?r=d85',
+    logoAlt: 'Vikings Valhalla logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABRLPR5jdSyzVMfuhUlDXzWR_a0ecwCcyshvUIq8faOJxRovixsLa8hZ5RWwcGpaAy-b8gr-tNPdo0eu8gYojf-OFDzF9fdzNQ3Ac.webp?r=ed8',
+    posterAlt:
+      'Vikings Valhalla poster, showcasing vikings marching in a field',
+    rank: '1',
+    trailer: 'viking',
+  },
+  {
+    name: 'DoroheDoro',
+    type: 'TV Show',
+    description: `
+    Amnesiac Caiman seeks to undo his lizard head curse by killing the sorcerer responsible, with his friend Nikaido's help. In the Hole, that's a threat.`,
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABdup7VLyLIFCCgqr50sF6UYjE--FTGQuDz4SPS98qB8qQMddPs8a4HXRvS6onNhR-ixFMVETkCI9BkXvYJAqEzHlsGzd2xa1el-MLuqEnnHClJdSdMwMAOTqNlzHCxaiC6NcRL0V3zKO8RP1xNfAklb5fiERefEjz-PyO8EWbw5zxnxkRbGsbQ.webp?r=48a',
+    logoAlt: 'DoroheDoro logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABVBGTVgxS9goNbnDaHUEgI8V1B_IVPiMc0UwtMDnq_WH1fXt27qEjBZkQHJG2LTRN_WY1kgvu1ixBjKBH5g-Rlf2yBNA46E6YMbd.webp?r=6d5',
+    posterAlt: 'DoroheDoro poster',
+    rank: '9',
+    trailer: 'dorohedoro',
+  },
+  {
+    name: 'The Blacklist',
+    type: 'TV Show',
+    description: `
+    After turning himself in, a brilliant fugitive offers to help the FBI bag other baddies, but only if rookie profiler Elizabeth Keen is his partner.`,
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABcHzwSYLzP16hy0Ju6olHRs5HMuhhyRIGEhyXqlqp8R7zWibhDcxf72TEU_rw_vuQIohVrg-iw-J7PE0K25loglNNOOX7A88aKtRcqM3PKE0.webp?r=780',
+    logoAlt: 'The Blacklist logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABdOYRc04cvzf4Redu32L85fOpMBYmcUGsabcacQfKdjfYy9KTY6fSDo3j4uW1w38S_LPth9gf2zoZc-L8kc-TKTm6y8dwNR7s5aT.webp?r=d3c',
+    posterAlt: 'The Blacklist poster',
+    rank: '3',
+    trailer: 'blacklist',
+  },
+  {
+    name: 'Princess Mononoke',
+    type: 'Movie',
+    description: `
+    A prince infected with a lethal curse sets off to find a cure and lands in the middle of a battle between a mining town and the animals of the forest.`,
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABfpXtWWbpCFs-BWWlwt_686WyJ7ShqDnUz-ooWmn1eFT5SJiShKK7agUI-E4wtlbs5rie_o6fPtudTfkGK3ChiM6tRj3YLlnmd735L2gjl3X.webp?r=173',
+    logoAlt: 'Princess Mononoke logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABQ4U2bhD2u9MK0vpta4oRicoRNo3qRHbJ2kAeaB8xrB11Qq853k8lJPEygztsne1he1XNZ_oEUqprr7mQhcTZVUgOj8UMXhYvLde.webp?r=9da',
+    posterAlt: 'Princess Mononoke poster',
+    rank: '7',
+    trailer: 'mononoke',
+  },
+  {
+    name: 'Scent of a Woman',
+    type: 'Movie',
+    description: `
+    Hoping to earn some cash over a holiday weekend, a prep-school student agrees to take care of a cantankerous retired Army
+    colonel who's lost his sight.`,
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABVSjEOpNztjqpwpGaQyb2RdaWTX6lrGR-segZ6iI9LAqHSUTh3IzmknLc8eV4ZxzZ-M-xYOsr8AdDl8bJJsABD1e7-vHzkZRZAta_yxVzxwn.webp?r=f25',
+    logoAlt: 'Scent of a Woman logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABQlGgBR_QLRPbExYK3aFYzURu54F0FefjEMdIZ1A8XuywND6M0UeBwTwxdgn30SYgsSwVZmXMZlgS10mNM97DpmbnwLCDLnMru-4.webp?r=ff7',
+    posterAlt: 'Scent of a Woman poster',
+    rank: '10',
+    trailer: 'scent',
+  },
+  {
+    name: 'Barbarian',
+    type: 'Movie',
+    description: `
+    A young woman arrives at her Detroit rental house to find it already occupied by an interloper — and by something far worse below the floorboards.`,
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABeuQ0mCpnNIe3Amw5QSj_THeEkz4tPZq5ztwEkAPKsd7cK5902bIf9A79BFsHKKfohmFLhh5_W85B8XTmoEXmGcIOGR0T0BP81emKUdFhK7N.webp?r=019',
+    logoAlt: 'Barbarian logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABelmsQKb1Khe_0luMt3Yo32QJQdLzMlaodjul2-jwyxTvZOXxWWvIwQND_D7KfVEeMyFVLH0FOuIxv2bidBjX4hzc7qubAzYCM5O.webp?r=a3a',
+    posterAlt: 'Barbarian logo',
+    rank: '4',
+    trailer: 'barbarian',
   },
   {
     name: 'Show_Name',
