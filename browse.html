@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Netflix</title>
     <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/profile-selection.css" />
     <link rel="stylesheet" href="./css/browse.css" />
     <link rel="stylesheet" href="./css/billboard.css" />
     <link rel="stylesheet" href="./css/categories.css" />
@@ -13,6 +14,7 @@
   </head>
   <body>
     <header>
+      <div class="main-header"></div>
       <!-- <div class="main-header">
         <div class="header-block-start">
           <a class="main-logo"> </a>
@@ -174,7 +176,12 @@
         </div>
       </div> -->
     </header>
-    <div class="billboard">
+    <div class="main-container noselect"></div>
+    <div class="billboard hidden">
+      <!-- NOTE: These videos are here temporarily to allow for dynamic generation.
+      In a real working environment, the videos would be served and linked through an API,
+      but as I don't have access to an API that serves trailers, 
+      they are pre-built, controlled and deleted by the Billboard view. -->
       <video id="cobra" preload="none" class="billboard-video opaque">
         <!-- <source src="" type="video/webm"> -->
         <source src="./vids/trailers/cobraKai.mp4" type="video/mp4" />

@@ -1,4 +1,5 @@
-import "core-js/stable";
+'use strict';
+import 'core-js/stable';
 
 export class View {
   _parentEl;
@@ -6,10 +7,14 @@ export class View {
 
   render(data) {
     this._data = data;
-    this._parentEl.insertAdjacentHTML("beforeend", this._generateMarkup());
+    this._parentEl.insertAdjacentHTML('beforeend', this._generateMarkup());
   }
 
   renderSpinner() {}
 
   renderError() {}
+
+  clear() {
+    this._parentEl.innerHTML = '';
+  }
 }

@@ -11,6 +11,7 @@ class Header extends View {
   _clearTimeoutTime = 500;
 
   _generateMarkup() {
+    this.clear();
     this._generateHeader();
     this._userDropdown = this._parentEl.querySelector('.user-options-dropdown');
     this._browseDropdown = this._parentEl.querySelector('.browse-dropdown');

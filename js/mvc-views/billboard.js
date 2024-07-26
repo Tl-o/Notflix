@@ -8,7 +8,7 @@ class Billboard extends View {
   _trailer;
   _trailerControls;
   _isPlaying = false;
-  _playFor = 15 * 1000;
+  _playFor = 30 * 1000;
   _soundOnIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-volume-up billboard-icon" viewBox="0 0 16 16">
   <path d="M11.536 14.01A8.47 8.47 0 0 0 14.026 8a8.47 8.47 0 0 0-2.49-6.01l-.708.707A7.48 7.48 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303z"/>
   <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z"/>
@@ -24,6 +24,7 @@ class Billboard extends View {
 
   _generateMarkup() {
     // Generate it later, when you find a solution to embedding videos
+    this._parentEl.classList.remove('hidden');
     this._generateBillboard();
     this._generateTrailer();
     this._poster = this._parentEl.querySelector('.billboard-img');

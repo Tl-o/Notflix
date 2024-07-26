@@ -2,11 +2,11 @@
 body {
   background-color: var(--main-bg-color);
   color: var(--white);
-  font-family: "Netflix Sans", "Helvetica Neue", "Segoe UI", "Roboto", "Ubuntu",
+  font-family: 'Netflix Sans', 'Helvetica Neue', 'Segoe UI', 'Roboto', 'Ubuntu',
     sans-serif;
 }
 
-ul {
+.profile-list {
   list-style: none;
   padding: 0;
 }
@@ -37,6 +37,8 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  top: 0;
 }
 
 .centered-div {
@@ -81,15 +83,15 @@ ul {
   transition: border 0.5s;
 }
 
-.profile:hover .profile-picture {
+.profile:hover .profile-picture-selection {
   /* border: 3px solid var(--white); */
 }
 
-.profile:hover .profile-picture::after {
+.profile:hover .profile-picture-selection::after {
   border-color: var(--white);
 }
 
-.profile-picture {
+.profile-picture-selection {
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 8px;
@@ -97,9 +99,9 @@ ul {
   transition: border 0.25s;
 }
 
-.profile-picture::after {
+.profile-picture-selection::after {
   display: block;
-  content: "";
+  content: '';
   width: 100%;
   height: 100%;
   border-radius: 8px;
@@ -112,7 +114,7 @@ ul {
   color: var(--main-text-color);
 }
 
-.profile-name {
+.profile-name-selection {
   display: inline-block;
   padding-block: 0.5rem;
   font-size: calc(1.5vw);

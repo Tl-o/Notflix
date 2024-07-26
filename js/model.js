@@ -1,3 +1,4 @@
+import { all } from 'core-js/./es/promise';
 import { CreateUser, shuffleArray } from './helper.js';
 import { showsDatabase, billboardShows } from './placeholderDatabase.js';
 
@@ -67,6 +68,12 @@ export const state = {
     query: '',
     result: '',
   },
+};
+
+export const getCurrUserData = function (userID) {
+  state.users.currUser = state.users.allUsers.find(
+    (user) => user.username === userID
+  );
 };
 
 // Initalize all users, later should recreate from actual data
