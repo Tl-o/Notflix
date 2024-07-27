@@ -3,13 +3,24 @@ import 'core-js/stable';
 import { View } from './view';
 
 class Billboard extends View {
+  // Data
   _parentEl = document.querySelector('.billboard');
   _poster;
   _trailer;
   _trailerControls;
   _isPlaying = false;
-  _playFor = 10 * 1000;
+  // In seconds
+  _playFor = 10;
   _timeout;
+
+  // Intersection Observer
+  _observerOptions = {
+    root: null,
+    threshold: 0.4,
+  };
+  _observer;
+
+  // Icons
   _soundOnIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-volume-up billboard-icon" viewBox="0 0 16 16">
   <path d="M11.536 14.01A8.47 8.47 0 0 0 14.026 8a8.47 8.47 0 0 0-2.49-6.01l-.708.707A7.48 7.48 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303z"/>
   <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z"/>
@@ -26,8 +37,11 @@ class Billboard extends View {
   clear() {
     // Reset video position because videos are not being brought in by APIs.
     if (this._trailer) {
+      this._isPlaying = false;
+      this._observer.unobserve(this._trailer);
       clearTimeout(this._timeout);
       this._trailer.pause();
+      this._trailer.currentTime = 0;
       this._trailer.classList.add('opaque');
       document
         .querySelector('body')
@@ -43,12 +57,13 @@ class Billboard extends View {
     this._poster = this._parentEl.querySelector('.billboard-img');
     this._trailer = this._parentEl.querySelector('.billboard-video');
     this._trailerControls = this._parentEl.querySelector('.billboard-sound');
+    this._bindObserver();
     this._trailerControls.addEventListener(
       'click',
       this._controlSound.bind(this)
     );
 
-    // setTimeout(this._playTrailer.bind(this), 5000);
+    setTimeout(this._playTrailer.bind(this), 1000);
     return '';
   }
 
@@ -155,6 +170,44 @@ class Billboard extends View {
       .insertAdjacentElement('beforeend', video);
   }
 
+  _bindObserver() {
+    this._observer = new IntersectionObserver(
+      this._controlTrailer.bind(this),
+      this._observerOptions
+    );
+    this._observer.observe(this._trailer);
+  }
+
+  // Function to be passed into intersection observer
+  _controlTrailer(entries, observer) {
+    const lowerVolume = () => {
+      if (this._trailer.volume > 0.1) {
+        this._trailer.volume -= 0.025;
+        setTimeout(lowerVolume, 25);
+        return;
+      }
+      this._trailer.pause();
+    };
+
+    const raiseVolume = () => {
+      // Safe check to see if user muted the trailer
+      if (this._trailer.volume < 1 && this._trailer.volume !== 0) {
+        this._trailer.volume += 0.025;
+        setTimeout(raiseVolume, 25);
+        return;
+      }
+    };
+
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && this._isPlaying) {
+        this._trailer.play();
+        raiseVolume();
+      } else if (this._isPlaying) {
+        lowerVolume();
+      }
+    });
+  }
+
   _playTrailer() {
     // When restarting, check for previous user preference and set icon to show it.
     if (this._trailer.volume > 0) {
@@ -173,10 +226,14 @@ class Billboard extends View {
     this._trailer.muted = true;
     this._trailer.play();
     this._trailer.muted = false;
-    this._timeout = setTimeout(this._stopTrailer.bind(this), this._playFor);
+    this._timeout = setTimeout(this._stopTrailer.bind(this), 1000);
   }
 
   _stopTrailer() {
+    if (this._trailer.currentTime <= this._playFor) {
+      this._timeout = setTimeout(this._stopTrailer.bind(this), 1000);
+      return;
+    }
     // Fade out volume
     if (this._trailer.volume > 0.1) {
       this._trailer.volume -= 0.025;
