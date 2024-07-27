@@ -36,7 +36,7 @@ class Profile extends View {
 
   _generateProfiles() {
     let markup = '';
-    this._data.forEach((profile) => {
+    this._data.allUsers.forEach((profile) => {
       markup += `
       <li class="profile" data-id="${profile.username}">
         <a class="profile-link">

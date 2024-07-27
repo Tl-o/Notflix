@@ -24,3 +24,9 @@ export function shuffleArray(arr) {
 
   return arr;
 }
+
+export function autoResolvePromise() {
+  return new Promise(function (resolve, reject) {
+    setTimeout(() => resolve('Done!'), 2000);
+  });
+}

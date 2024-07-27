@@ -1,5 +1,5 @@
 import { all } from 'core-js/./es/promise';
-import { CreateUser, shuffleArray } from './helper.js';
+import { CreateUser, shuffleArray, autoResolvePromise } from './helper.js';
 import { showsDatabase, billboardShows } from './placeholderDatabase.js';
 
 // State object holds all data relevant to the current state of the application
@@ -70,10 +70,15 @@ export const state = {
   },
 };
 
-export const getCurrUserData = function (userID) {
+export const getCurrUserData = async function (userID) {
   state.users.currUser = state.users.allUsers.find(
     (user) => user.username === userID
   );
+
+  state.billboard =
+    billboardShows[Math.floor(Math.random() * (billboardShows.length - 1))];
+
+  await autoResolvePromise();
 };
 
 // Initalize all users, later should recreate from actual data

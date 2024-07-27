@@ -11,18 +11,27 @@ const init = function () {
   header.render(model.state.users);
   billboard.render(model.state.billboard);
 };
-console.log(model.state);
-console.log(categories);
+
+const clear = function () {
+  categories.clear();
+  header.clear();
+  billboard.clear();
+  profile.clear();
+};
 
 const controlCategories = function () {
   categories.render(model.state.media);
 };
 
-const controlUsers = function (userID) {
+const controlUsers = async function (userID) {
+  clear();
   model.getCurrUserData(userID);
+  profile.renderSpinner(true);
+  await model.getCurrUserData(userID);
   profile.clear();
   init();
 };
 
-profile.render(model.state.users.allUsers);
+profile.render(model.state.users);
 profile.addHandler(controlUsers);
+header.addHandler(controlUsers);

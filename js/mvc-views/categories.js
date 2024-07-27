@@ -19,6 +19,7 @@ class Categories extends View {
   _numOfResults;
 
   _generateMarkup() {
+    this.clear();
     this._generateViews();
     this._bindResponsiveness();
     return '';

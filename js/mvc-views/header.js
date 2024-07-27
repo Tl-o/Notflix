@@ -10,6 +10,16 @@ class Header extends View {
   _checkScrollTime = 100;
   _clearTimeoutTime = 500;
 
+  addHandler(handler) {
+    this._parentEl.addEventListener('click', function (e) {
+      const target = e.target.closest('.dropdown-item');
+      if (!target) return;
+
+      const userID = target.dataset.id;
+      handler(userID);
+    });
+  }
+
   _generateMarkup() {
     this.clear();
     this._generateHeader();
@@ -96,7 +106,7 @@ class Header extends View {
     this._data.allUsers.forEach((user) => {
       if (user.username !== this._data.currUser.username)
         profilesMarkup += `
-        <li class="dropdown-item">
+        <li class="dropdown-item" data-id="${user.username}">
             <img
             class="profile-picture"
             src="${user.profilePicture}"

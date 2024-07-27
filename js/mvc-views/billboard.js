@@ -8,7 +8,8 @@ class Billboard extends View {
   _trailer;
   _trailerControls;
   _isPlaying = false;
-  _playFor = 30 * 1000;
+  _playFor = 10 * 1000;
+  _timeout;
   _soundOnIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-volume-up billboard-icon" viewBox="0 0 16 16">
   <path d="M11.536 14.01A8.47 8.47 0 0 0 14.026 8a8.47 8.47 0 0 0-2.49-6.01l-.708.707A7.48 7.48 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303z"/>
   <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z"/>
@@ -22,8 +23,20 @@ class Billboard extends View {
   <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
 </svg>`;
 
+  clear() {
+    // Reset video position because videos are not being brought in by APIs.
+    if (this._trailer) {
+      clearTimeout(this._timeout);
+      this._trailer.pause();
+      this._trailer.classList.add('opaque');
+      document
+        .querySelector('body')
+        .insertAdjacentElement('afterbegin', this._trailer);
+    }
+    this._parentEl.innerHTML = '';
+  }
+
   _generateMarkup() {
-    // Generate it later, when you find a solution to embedding videos
     this._parentEl.classList.remove('hidden');
     this._generateBillboard();
     this._generateTrailer();
@@ -132,33 +145,35 @@ class Billboard extends View {
   }
 
   _generateTrailer() {
-    const allVids = [...this._parentEl.querySelectorAll('video')];
-    allVids.forEach((video) => {
-      if (video.getAttribute('id') !== this._data.trailer) video.remove();
-      else
-        this._parentEl
-          .querySelector('.billboard-backdrop')
-          .insertAdjacentElement('beforeend', video);
-    });
+    // Find video
+    const video = [...document.querySelectorAll('video')].find(
+      (video) => video.getAttribute('id') === this._data.trailer
+    );
+
+    this._parentEl
+      .querySelector('.billboard-backdrop')
+      .insertAdjacentElement('beforeend', video);
   }
 
   _playTrailer() {
     // When restarting, check for previous user preference and set icon to show it.
-    this._trailerControls.innerHTML =
-      this._trailer.volume > 0 ? this._soundOnIcon : this._soundOffIcon;
-    this._trailer.volume = this._trailer.volume > 0 ? 1 : 0;
+    if (this._trailer.volume > 0) {
+      this._trailer.volume = 1;
+      this._trailerControls.innerHTML = this._soundOnIcon;
+    } else {
+      this._trailerControls.innerHTML = this._soundOffIcon;
+    }
 
-    this._isPlaying = true;
-    this._hideMetadata();
     this._trailer.currentTime = 0;
+    this._isPlaying = true;
+
+    this._hideMetadata();
     this._poster.classList.add('opaque');
     this._trailer.classList.remove('opaque');
     this._trailer.muted = true;
     this._trailer.play();
     this._trailer.muted = false;
-    console.log(this._trailer.volume);
-
-    setTimeout(this._stopTrailer.bind(this), this._playFor);
+    this._timeout = setTimeout(this._stopTrailer.bind(this), this._playFor);
   }
 
   _stopTrailer() {
