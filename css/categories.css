@@ -154,7 +154,7 @@
   position: absolute;
   aspect-ratio: 1 / 1;
   overflow-y: visible;
-  z-index: 100;
+  z-index: 1000;
   /* border: 1px dashed white; */
   border-radius: 5%;
   animation: scaleUp 0.33s ease-out;
@@ -185,6 +185,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .category-icon-left,
@@ -293,6 +294,32 @@
   animation: scaleDown 0.66s ease-in;
 }
 
+.tooltip {
+  position: absolute;
+  top: 30%;
+  padding-inline: 0px;
+  font-size: 0.75vw;
+  background-color: rgb(230, 230, 230);
+  border-radius: 2px;
+  min-width: max-content;
+  z-index: 1001;
+}
+
+.tooltip-message {
+  color: var(--main-bg-color);
+  font-weight: bold;
+  padding-inline: 1vw;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  left: calc(50% - 7.5px);
+  top: 90%;
+  width: 10px;
+  border: 7.5px solid;
+  border-color: rgb(230, 230, 230) transparent transparent;
+}
+
 @keyframes scaleUp {
   0% {
     transform: scale(1);
@@ -334,7 +361,8 @@
     --category-title-size: 2vw;
   }
 
-  .category-hover-data {
+  .category-hover-data,
+  .tooltip {
     font-size: 0.9vw;
   }
 
@@ -346,6 +374,10 @@
   .category-age-rating {
     font-size: 0.7vw;
   }
+
+  .category-icon {
+    min-height: 2.75vh;
+  }
 }
 
 @media (min-width: 800px) and (max-width: 1100px) {
@@ -356,7 +388,8 @@
     --category-title-size: 2.5vw;
   }
 
-  .category-hover-data {
+  .category-hover-data,
+  .tooltip {
     font-size: 1.1vw;
   }
 
@@ -368,6 +401,10 @@
   .category-age-rating {
     font-size: 0.9vw;
   }
+
+  .category-icon {
+    min-height: 2.75vh;
+  }
 }
 
 @media (min-width: 500px) and (max-width: 800px) {
@@ -378,7 +415,8 @@
     --category-title-size: 3vw;
   }
 
-  .category-hover-data {
+  .category-hover-data,
+  .tooltip {
     font-size: 1.3vw;
   }
 
@@ -390,6 +428,10 @@
   .category-age-rating {
     font-size: 1.1vw;
   }
+
+  .category-icon {
+    min-height: 2.5vh;
+  }
 }
 
 @media (max-width: 500px) {
@@ -400,7 +442,8 @@
     --category-title-size: 3.5vw;
   }
 
-  .category-hover-data {
+  .category-hover-data,
+  .tooltip {
     font-size: 2vw;
   }
 
@@ -416,5 +459,9 @@
   .category-special-badge,
   .category-age-rating {
     font-size: 1.8vw;
+  }
+
+  .category-icon {
+    min-height: 2.25vh;
   }
 }

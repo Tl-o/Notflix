@@ -16,7 +16,7 @@ class Header extends View {
       if (!target) return;
 
       const userID = target.dataset.id;
-      handler(userID);
+      if (userID) handler(userID);
     });
   }
 

@@ -19,12 +19,14 @@ class Categories extends View {
   _numOfResults;
   _timeout;
   _waitForHover = 0.5 * 1000; // In millieseconds
+  _bound = false; // Check if hover and responsiveness are binded
 
   _generateMarkup() {
     this.clear();
     this._generateViews();
     this._bindResponsiveness();
     this._bindHover();
+    this._bound = true;
     return '';
   }
 
@@ -43,6 +45,7 @@ class Categories extends View {
   }
 
   _bindResponsiveness() {
+    if (this._bound) return;
     this._defaultQuery.addEventListener('change', (e) => {
       if (e.matches) this._updateCategories(6, 15);
     });
@@ -65,11 +68,18 @@ class Categories extends View {
   }
 
   _bindHover() {
+    if (this._bound) return;
+
     this._parentEl.addEventListener(
       'mouseenter',
       (e) => {
         if (!e.target?.classList.contains('category-item')) return;
         if (e.target.classList.contains('opaque')) return;
+
+        // If only a bit of the element is showing, ignore
+        const size = e.target.getBoundingClientRect();
+        // Number is half of header's length
+        if (size.top - 35 <= 0) return;
 
         this._timeout = setTimeout(() => {
           this._hover(e);
@@ -115,7 +125,7 @@ class Categories extends View {
                   />
                 </svg>
               </div>
-              <div class="category-icon category-icon-transparent">
+              <div class="category-icon category-icon-transparent" data-message="Add to my list">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -130,7 +140,7 @@ class Categories extends View {
                   />
                 </svg>
               </div>
-              <div class="category-icon category-icon-transparent">
+              <div class="category-icon category-icon-transparent" data-message="I like this!">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -146,7 +156,7 @@ class Categories extends View {
               </div>
             </div>
             <div class="category-icon-right">
-              <div class="category-icon category-icon-transparent">
+              <div class="category-icon category-icon-transparent" data-message="Episodes & info">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -185,6 +195,44 @@ class Categories extends View {
           right: ${size.right}px;
         `;
     document.body.insertAdjacentElement('afterbegin', hoverDiv);
+
+    // Add hover tooltip on buttons
+    hoverDiv.addEventListener(
+      'mouseenter',
+      (e) => {
+        if (!e.target.classList.contains('category-icon')) return;
+
+        const tooltipMessage = e.target.dataset.message;
+        // If has message
+        if (!tooltipMessage) return;
+
+        const coordinates = e.target.getBoundingClientRect();
+        const tooltipDiv = document.createElement('div');
+        tooltipDiv.classList.add('tooltip');
+        tooltipDiv.innerHTML = `
+          <span class="tooltip-message">${tooltipMessage}</span>
+          <div class="tooltip-arrow"></div>
+        `;
+
+        tooltipDiv.style.cssText += `
+          top: ${-coordinates.height}px;
+        `;
+
+        e.target.insertAdjacentElement('afterbegin', tooltipDiv);
+      },
+      true
+    );
+
+    hoverDiv.addEventListener(
+      'mouseleave',
+      (e) => {
+        if (!e.target.classList.contains('category-icon')) return;
+
+        const tooltip = e.target.querySelector('.tooltip');
+        if (tooltip) tooltip.remove();
+      },
+      true
+    );
 
     // Add animation
     hoverDiv.addEventListener('mouseleave', function (e) {

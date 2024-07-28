@@ -27,7 +27,7 @@ const controlUsers = async function (userID) {
   clear();
   model.getCurrUserData(userID);
   profile.renderSpinner(true);
-  // await model.getCurrUserData(userID);
+  await model.getCurrUserData(userID);
   profile.clear();
   init();
 };

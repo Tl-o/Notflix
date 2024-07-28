@@ -594,6 +594,20 @@ export const billboardShows = [
     trailer: 'barbarian',
   },
   {
+    name: 'Killing Eve',
+    type: 'TV Show',
+    description: `
+    Intrigue blossoms into obsession when a British spy pursues a playful, stylish and utterly ruthless assassin working for a
+    mysterious organization.`,
+    logo: 'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABQoN9Ov87jciDo8FGa6EwXY2e05uPGRVwTCh5KBnwNguUIYzydHSFUFAItTxkuj_et5vv3etqTubcPzMjWfs0sXwb81LSH-qyaNgpEQtkUtW.webp?r=633',
+    logoAlt: 'Killing Eve logo',
+    poster:
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABam2MLpwS3yPlWmA1NgW50rPHzuNUflQAy2CeJ2kfEr4Gzw84IZzXdq8EQud_rIsKgjDGWlVeWg3am_Bg34ZzDjygbb8_FTeObCM.webp?r=b9b',
+    posterAlt: 'Killing Eve poster',
+    rank: '1',
+    trailer: 'eve',
+  },
+  {
     name: 'Show_Name',
     type: 'Movie',
     description: '',
