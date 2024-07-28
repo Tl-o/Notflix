@@ -27,11 +27,12 @@ const controlUsers = async function (userID) {
   clear();
   model.getCurrUserData(userID);
   profile.renderSpinner(true);
-  await model.getCurrUserData(userID);
+  // await model.getCurrUserData(userID);
   profile.clear();
   init();
 };
 
-profile.render(model.state.users);
+// profile.render(model.state.users);
+init();
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
