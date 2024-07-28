@@ -82,7 +82,6 @@ class Categories extends View {
       'mouseleave',
       (e) => {
         if (!e.target?.classList.contains('category-item')) return;
-        console.log('Left element!');
         if (this._timeout) clearTimeout(this._timeout);
       },
       true
@@ -180,7 +179,7 @@ class Categories extends View {
     hoverDiv.innerHTML = markup;
     hoverDiv.style.cssText += `
           width: ${size.width}px;
-          top: ${size.top}px;
+          top: ${size.top + window.scrollY}px;
           bottom: ${size.bottom}px;
           left: ${size.left}px;
           right: ${size.right}px;

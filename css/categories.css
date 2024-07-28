@@ -151,7 +151,7 @@
 
 .category-item-hover {
   flex: 0 0 var(--show-item-size);
-  position: fixed;
+  position: absolute;
   aspect-ratio: 1 / 1;
   overflow-y: visible;
   z-index: 100;
