@@ -100,10 +100,12 @@ class Categories extends View {
 
   _hover(e) {
     const size = e.target.getBoundingClientRect();
+    const placement = e.target.dataset.placement;
 
     const hoverDiv = document.createElement('div');
     const showImg = e.target.querySelector('img').getAttribute('src');
     hoverDiv.classList.add('category-item-hover');
+    hoverDiv.classList.add(`category-${placement}`);
     const markup = `
         <div class="show-img-hover">
           <img src="${showImg}" />
@@ -215,7 +217,7 @@ class Categories extends View {
         `;
 
         tooltipDiv.style.cssText += `
-          top: ${-coordinates.height}px;
+          top: ${-coordinates.height / 1.2}px;
         `;
 
         e.target.insertAdjacentElement('afterbegin', tooltipDiv);
@@ -237,9 +239,10 @@ class Categories extends View {
     // Add animation
     hoverDiv.addEventListener('mouseleave', function (e) {
       e.target.addEventListener('animationend', (e) => {
-        if (e.target.classList.contains('category-item-unhover')) this.remove();
+        if (e.target.classList.contains(`category-item-unhover-${placement}`))
+          this.remove();
       });
-      e.target.classList.add('category-item-unhover');
+      e.target.classList.add(`category-item-unhover-${placement}`);
     });
   }
 

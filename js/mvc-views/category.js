@@ -155,7 +155,13 @@ export class Category extends View {
 
     for (let i = 0; i < until; i++) {
       markup += `
-        <div class="category-item">
+        <div class="category-item" data-placement="${
+          i === 0
+            ? 'first'
+            : i === until - 1 && i === this._resultsPerPage - 1
+            ? 'last'
+            : 'middle'
+        }">
           <div class="show-img">
             <img src="${this._data.shows[currEl]?.thumbnail}">
           </div>
