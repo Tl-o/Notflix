@@ -25,9 +25,13 @@ const controlCategories = function () {
 
 const controlUsers = async function (userID) {
   clear();
-  // model.getCurrUserData(userID);
+  model.getCurrUserData(userID);
   profile.renderSpinner(true);
-  await model.getCurrUserData(userID);
+  await model.getCategories();
+  // await model.getCategories('Western');
+  // await model.getCategories('Action & Adventure');
+  // await model.getCategories('Crime');
+  // await model.getCategories('Documentary');
   profile.clear();
   init();
 };

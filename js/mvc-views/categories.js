@@ -104,11 +104,13 @@ class Categories extends View {
 
     const hoverDiv = document.createElement('div');
     const showImg = e.target.querySelector('img').getAttribute('src');
+    const logoImg = e.target.querySelector('.show-logo')?.getAttribute('src');
     hoverDiv.classList.add('category-item-hover');
     hoverDiv.classList.add(`category-${placement}`);
     const markup = `
-        <div class="show-img-hover">
+        <div style="position: relative;" class="show-img-hover">
           <img src="${showImg}" />
+          ${logoImg ? `<img class="show-logo" src="${logoImg}"/>` : ''}
         </div>
         <div class="category-hover-data">
           <div class="category-icons">

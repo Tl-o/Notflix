@@ -163,7 +163,12 @@ export class Category extends View {
             : 'middle'
         }">
           <div class="show-img">
-            <img src="${this._data.shows[currEl]?.thumbnail}">
+            <img src="${this._data.shows[currEl]?.thumbnail}"/>
+            ${
+              this._data.shows[currEl]?.logo
+                ? `<img class="show-logo" src="${this._data.shows[currEl].logo}"/>`
+                : ''
+            }
           </div>
           <div class="progress-bar"></div>
         </div>
@@ -188,6 +193,11 @@ export class Category extends View {
         <div class="category-item">
           <div class="show-img">
             <img src="${this._data.shows[index]?.thumbnail}">
+            ${
+              this._data.shows[index]?.logo
+                ? `<img class="show-logo" src="${this._data.shows[index].logo}"/>`
+                : ''
+            }
           </div>
           <div class="progress-bar"></div>
         </div>
@@ -217,6 +227,11 @@ export class Category extends View {
         }">
           <div class="show-img">
             <img src="${this._data.shows[index]?.thumbnail}">
+            ${
+              this._data.shows[index]?.logo
+                ? `<img class="show-logo" src="${this._data.shows[index].logo}"/>`
+                : ''
+            }
           </div>
           <div class="progress-bar"></div>
         </div>
