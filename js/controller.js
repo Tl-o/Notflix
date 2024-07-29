@@ -7,7 +7,8 @@ import profile from './mvc-views/profile.js';
 
 /* Initalize */
 const init = function () {
-  // categories.render(model.state.media);
+  categories.render(model.state.media);
+  categories.addObserverHandler(controlInfiniteScrolling);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
 };
@@ -30,6 +31,13 @@ const controlUsers = async function (userID) {
   await model.getCategories();
   profile.clear();
   init();
+};
+
+const controlInfiniteScrolling = async function () {
+  categories.renderSkeleton();
+  await model.getCategories('Documentary');
+  categories.clearSkeleton();
+  categories.renderNewCategories();
 };
 
 // profile.render(model.state.users);

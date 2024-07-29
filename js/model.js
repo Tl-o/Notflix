@@ -117,7 +117,7 @@ export const getCategories = async function (genre = null) {
 
   console.log(shows);
 
-  state.media.categories.unshift({
+  state.media.categories.push({
     name: genre ? genre : 'Popular',
     shows,
   });

@@ -1,11 +1,17 @@
 import 'core-js/stable';
 import { View } from './view';
 import { Category } from './category';
+import { mark } from 'regenerator-runtime';
 
 class Categories extends View {
   _parentEl = document.querySelector('.categories');
   // An array of category view objects.
   _categories = [];
+  _lastRenderedCategory = 0;
+  _itemSize;
+  _numOfResults;
+
+  // Queries
   _defaultQuery = window.matchMedia('(min-width: 1400px)');
   _largeQuery = window.matchMedia(
     '(max-width: 1400px) and (min-width: 1100px)'
@@ -15,11 +21,86 @@ class Categories extends View {
   );
   _smallQuery = window.matchMedia('(max-width: 800px) and (min-width: 500px)');
   _tinyQuery = window.matchMedia('(max-width: 500px)');
-  _itemSize;
-  _numOfResults;
+
   _timeout;
   _waitForHover = 0.5 * 1000; // In millieseconds
   _bound = false; // Check if hover and responsiveness are binded
+  _observer;
+  _isFetching = false;
+
+  renderSkeleton() {
+    this._isFetching = true;
+    let numOfShows = '';
+    for (let i = 0; i < this._numOfResults + 1; i++) {
+      numOfShows += `
+        <div class="category-item">
+          <div class="category-loading-skeleton show-img"></div>
+        </div>
+      `;
+    }
+
+    const markup = `
+        <div class="category-container skeleton">
+          <div class="category-metadata">
+            <div class="category-title">
+              <h2 class="category-loading-skeleton"></h2>
+            </div>
+            <div class="category-pagination">
+              <ul class="category-pages">
+                <li class="category-loading-skeleton"></li>
+              </ul>
+            </div>
+          </div>
+          <div class="category-main-content">
+            <div class="category-shows">
+              ${numOfShows}
+            </div>
+          </div>
+        </div>
+    `;
+    this._parentEl.insertAdjacentHTML('beforeend', markup);
+  }
+
+  clearSkeleton() {
+    this._isFetching = false;
+    document.querySelector('.skeleton')?.remove();
+  }
+
+  addObserverHandler(handler) {
+    this._observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !this._isFetching) {
+            handler();
+          }
+        });
+      },
+      {
+        root: null,
+        threshold: 0.2,
+      }
+    );
+    this._observer.observe(document.querySelector('.intersection-observer'));
+  }
+
+  renderNewCategories() {
+    for (
+      let i = this._lastRenderedCategory;
+      i < this._data.categories.length;
+      i++
+    ) {
+      let newCategory = new Category();
+
+      // Set number of results based on this object's data
+      newCategory.setResultsPerPage(this._numOfResults, this._itemSize);
+      newCategory.init(this._data.categories[i]);
+
+      // Add it to the array to keep track of all categories from this object
+      this._categories.push(newCategory);
+    }
+
+    this._lastRenderedCategory = this._data.categories.length;
+  }
 
   _generateMarkup() {
     this.clear();
@@ -27,6 +108,7 @@ class Categories extends View {
     this._bindResponsiveness();
     this._bindHover();
     this._bound = true;
+    this._lastRenderedCategory = this._data.categories.length;
     return '';
   }
 
