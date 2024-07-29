@@ -96,6 +96,25 @@
   max-height: 50%;
 }
 
+.category-loading-skeleton {
+  min-width: 10vw;
+  min-height: 2vh;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(100, 100, 100, 0.2);
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: rgba(70, 70, 70, 0.2);
+  }
+
+  100% {
+    background-color: rgba(70, 70, 70, 0.8);
+  }
+}
+
 .slide {
   height: 100%;
   width: 5vw;

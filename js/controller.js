@@ -7,7 +7,7 @@ import profile from './mvc-views/profile.js';
 
 /* Initalize */
 const init = function () {
-  categories.render(model.state.media);
+  // categories.render(model.state.media);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
 };
@@ -28,15 +28,11 @@ const controlUsers = async function (userID) {
   model.getCurrUserData(userID);
   profile.renderSpinner(true);
   await model.getCategories();
-  // await model.getCategories('Western');
-  // await model.getCategories('Action & Adventure');
-  // await model.getCategories('Crime');
-  // await model.getCategories('Documentary');
   profile.clear();
   init();
 };
 
-profile.render(model.state.users);
-// init();
+// profile.render(model.state.users);
+init();
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
