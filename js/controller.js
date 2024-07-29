@@ -25,14 +25,14 @@ const controlCategories = function () {
 
 const controlUsers = async function (userID) {
   clear();
-  model.getCurrUserData(userID);
+  // model.getCurrUserData(userID);
   profile.renderSpinner(true);
   await model.getCurrUserData(userID);
   profile.clear();
   init();
 };
 
-// profile.render(model.state.users);
-init();
+profile.render(model.state.users);
+// init();
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);

@@ -1,5 +1,10 @@
 import { all } from 'core-js/./es/promise';
-import { CreateUser, shuffleArray, autoResolvePromise } from './helper.js';
+import {
+  CreateUser,
+  shuffleArray,
+  autoResolvePromise,
+  AJAX,
+} from './helper.js';
 import { showsDatabase, billboardShows } from './placeholderDatabase.js';
 
 // State object holds all data relevant to the current state of the application
@@ -12,6 +17,7 @@ export const state = {
   },
   billboard:
     billboardShows[Math.floor(Math.random() * (billboardShows.length - 1))],
+  genres: [],
   media: {
     // An array of objects where each object is a category.
     categories: [
@@ -78,11 +84,25 @@ export const getCurrUserData = async function (userID) {
   state.billboard =
     billboardShows[Math.floor(Math.random() * (billboardShows.length - 1))];
 
-  await autoResolvePromise();
+  const data = await AJAX(`https://api.themoviedb.org/3/authentication`);
+  console.log(data);
+};
+
+const getGenres = async function () {
+  const movies = await AJAX(
+    `https://api.themoviedb.org/3/genre/movie/list?language=en`
+  );
+  state.genres.movieGenres = movies.genres;
+
+  const tvShows = await AJAX(
+    `https://api.themoviedb.org/3/genre/tv/list?language=en`
+  );
+  state.genres.showGenres = movies.genres;
+  console.log(state);
 };
 
 // Initalize all users, later should recreate from actual data
-const init = function initalizeModel() {
+const init = async function initalizeModel() {
   const rosa = new CreateUser(
     'Rosa Umineko',
     'https://gcdnb.pbrd.co/images/Cyeeqtk7SoDO.png?o=1',
@@ -120,6 +140,8 @@ const init = function initalizeModel() {
 
   state.users.allUsers = [tara, louis, bojack, rosa, cheap];
   state.users.currUser = bojack;
+
+  getGenres();
 };
 
 init();

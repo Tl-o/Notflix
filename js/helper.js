@@ -1,4 +1,5 @@
 // Helper Functions //
+
 export function CreateUser(username, profilePicture, preference, watched) {
   this.username = username;
   this.profilePicture = profilePicture;
@@ -25,8 +26,23 @@ export function shuffleArray(arr) {
   return arr;
 }
 
+// Automatic timeout
+
 export function autoResolvePromise() {
   return new Promise(function (resolve, reject) {
     setTimeout(() => resolve('Done!'), 2000);
   });
+}
+
+export async function AJAX(url, data = undefined) {
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
+    },
+  });
+
+  const tmdbData = await res.json();
+  return tmdbData;
 }
