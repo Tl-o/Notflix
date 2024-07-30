@@ -1,9 +1,11 @@
 .footer {
   min-height: 25vh;
   background-color: var(--main-bg-color);
-  padding-inline: 18vw;
+  padding-inline-end: 10vw;
+  padding-inline-start: 15vw;
   color: rgb(128, 128, 128);
   font-size: 13px;
+  padding-block-end: 1vh;
 }
 
 .footer * {
@@ -46,6 +48,10 @@
   color: rgb(128, 128, 128);
 }
 
+.footer-copyright {
+  font-size: 11px;
+}
+
 @media (min-width: 800px) and (max-width: 1100px) {
   .footer-link {
     flex-basis: 33%;
@@ -64,7 +70,7 @@
 
 @media (max-width: 500px) {
   .footer {
-    padding-inline: 12vw;
+    padding-inline: 6vw;
   }
 
   .footer-attribution img {

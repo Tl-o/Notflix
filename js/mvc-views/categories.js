@@ -339,7 +339,7 @@ class Categories extends View {
 
     // When scrolling off-screen
     const observer = new IntersectionObserver(function (entries) {
-      if (!entries[0].isIntersecting) entry.target.remove();
+      if (!entries[0].isIntersecting) entries[0].target.remove();
     });
     observer.observe(hoverDiv);
   }
