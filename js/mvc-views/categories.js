@@ -61,12 +61,18 @@ class Categories extends View {
     this._parentEl.insertAdjacentHTML('beforeend', markup);
   }
 
+  clear() {
+    this._isFetching = true;
+    this._parentEl.innerHTML = '';
+  }
+
   clearSkeleton() {
     this._isFetching = false;
     document.querySelector('.skeleton')?.remove();
   }
 
   addObserverHandler(handler) {
+    if (this._observer) return;
     this._observer = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach((entry) => {
@@ -109,6 +115,7 @@ class Categories extends View {
     this._bindHover();
     this._bound = true;
     this._lastRenderedCategory = this._data.categories.length;
+    this._isFetching = false;
     return '';
   }
 

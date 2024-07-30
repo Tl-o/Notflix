@@ -4,6 +4,7 @@ import categories from './mvc-views/categories.js';
 import header from './mvc-views/header.js';
 import billboard from './mvc-views/billboard.js';
 import profile from './mvc-views/profile.js';
+import * as config from './config.js';
 
 /* Initalize */
 const init = function () {
@@ -14,6 +15,7 @@ const init = function () {
 };
 
 const clear = function () {
+  model.clearData();
   categories.clear();
   header.clear();
   billboard.clear();
@@ -28,19 +30,28 @@ const controlUsers = async function (userID) {
   clear();
   model.getCurrUserData(userID);
   profile.renderSpinner(true);
-  await model.getCategories();
+  await model.getCategory('tv');
   profile.clear();
   init();
 };
 
 const controlInfiniteScrolling = async function () {
+  if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
+    return;
+
+  console.log('Infinite activated...');
   categories.renderSkeleton();
-  await model.getCategories('Documentary');
+  // Get four different categories to render
+  model.getBuiltIn();
+  await model.getCategory('tv', null, true);
+  model.getBuiltIn();
+  await model.getCategory('movie', null, true);
+
   categories.clearSkeleton();
   categories.renderNewCategories();
 };
 
-// profile.render(model.state.users);
-init();
+profile.render(model.state.users);
+// init();
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
