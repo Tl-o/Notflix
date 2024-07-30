@@ -287,6 +287,16 @@ class Categories extends View {
           left: ${size.left}px;
           right: ${size.right}px;
         `;
+
+    // Add animation
+    hoverDiv.addEventListener('mouseleave', function (e) {
+      e.target.addEventListener('animationend', (e) => {
+        if (e.target.classList.contains(`category-item-unhover-${placement}`))
+          this.remove();
+      });
+      e.target.classList.add(`category-item-unhover-${placement}`);
+    });
+
     document.body.insertAdjacentElement('afterbegin', hoverDiv);
 
     // Add hover tooltip on buttons
@@ -327,14 +337,11 @@ class Categories extends View {
       true
     );
 
-    // Add animation
-    hoverDiv.addEventListener('mouseleave', function (e) {
-      e.target.addEventListener('animationend', (e) => {
-        if (e.target.classList.contains(`category-item-unhover-${placement}`))
-          this.remove();
-      });
-      e.target.classList.add(`category-item-unhover-${placement}`);
+    // When scrolling off-screen
+    const observer = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) entry.target.remove();
     });
+    observer.observe(hoverDiv);
   }
 
   _updateCategories(newItemCount, newItemSize) {

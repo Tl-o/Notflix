@@ -44,9 +44,44 @@ const builtInCategories = [
     ),
   },
   {
-    name: `Least Watched`,
+    name: 'Arabic',
     shows: shuffleArray(
-      showsDatabase.slice(config.TOP_TEN_INDEX, config.TOP_TEN_INDEX + 10)
+      showsDatabase.filter((show) => show.genres.includes('Arabic'))
+    ),
+  },
+  {
+    name: 'Based on Books',
+    shows: shuffleArray(
+      showsDatabase.filter((show) => show.genres.includes('Based On Books'))
+    ),
+  },
+  {
+    name: 'European Drama',
+    shows: shuffleArray(
+      showsDatabase.filter((show) => show.genres.includes('European Drama'))
+    ),
+  },
+  {
+    name: `We think you'll like those`,
+    shows: shuffleArray([
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+      showsDatabase[Math.floor(Math.random() * showsDatabase.length)],
+    ]),
+  },
+  {
+    name: 'Sports',
+    shows: shuffleArray(
+      showsDatabase.filter((show) => show.genres.includes('Sports'))
     ),
   },
 ];
