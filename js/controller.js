@@ -9,7 +9,7 @@ import * as config from './config.js';
 /* Initalize */
 const init = function () {
   categories.render(model.state.media);
-  categories.addObserverHandler(controlInfiniteScrolling);
+  // categories.addObserverHandler(controlInfiniteScrolling);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
 };
@@ -51,7 +51,7 @@ const controlInfiniteScrolling = async function () {
   categories.renderNewCategories();
 };
 
-profile.render(model.state.users);
-// init();
+// profile.render(model.state.users);
+init();
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
