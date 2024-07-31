@@ -163,6 +163,7 @@ export const getShowDetails = async function (id) {
     episodes: data['number_of_episodes'],
     seasons: data['number_of_seasons'],
     maturity: maturityRatingMapping[maturity] || '+13',
+    id: data['id'],
   };
   return showMetadata;
 };

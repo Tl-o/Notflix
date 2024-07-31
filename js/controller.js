@@ -26,9 +26,9 @@ const clear = function () {
   footer.clear();
 };
 
-const controlShowMetadata = async function (id, name, event) {
+const controlShowMetadata = async function (id) {
   const data = await model.getShowDetails(id);
-  categories.hover(event, data);
+  categories.updateHoverMetadata(data);
 };
 
 const controlUsers = async function (userID) {
