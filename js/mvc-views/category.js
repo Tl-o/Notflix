@@ -142,6 +142,17 @@ export class Category extends View {
     `;
   }
 
+  _generateDataAttributes(element, placement = false) {
+    let markup = `data-name="${element.name}"`;
+    markup += `data-id="${element.id}"`;
+    markup += `data-type="${
+      element.genres.includes('movie') || element.genres.includes('Movies')
+        ? 'movie'
+        : 'tv'
+    }"`;
+    return markup;
+  }
+
   _generateCurrShows() {
     let markup = '';
 
@@ -155,15 +166,15 @@ export class Category extends View {
 
     for (let i = 0; i < until; i++) {
       markup += `
-        <div class="category-item" data-id="${
-          this._data.shows[currEl].id
-        }" data-placement="${
+        <div class="category-item" ${this._generateDataAttributes(
+          this._data.shows[currEl]
+        )} data-placement="${
         i === 0
           ? 'first'
           : i === until - 1 && i === this._resultsPerPage - 1
           ? 'last'
           : 'middle'
-      }" data-name="${this._data.shows[currEl].name}">
+      }">
           <div class="show-img">
             <img src="${this._data.shows[currEl]?.thumbnail}"/>
             ${

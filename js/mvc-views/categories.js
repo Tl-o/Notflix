@@ -88,7 +88,7 @@ class Categories extends View {
 
         this._timeout = setTimeout(() => {
           this._hover(e);
-          handler(e.target.dataset.id, e.target.dataset.name, e);
+          handler(e.target.dataset.id, e.target.dataset.type);
         }, this._waitForHover);
       },
       true
@@ -199,7 +199,9 @@ class Categories extends View {
     const target = document.querySelector(`[data-id="${data.id}"]`);
     if (!target) return;
 
-    let genres = `<span class="item-genre">${data.genres[0].name}</span>`;
+    let genres = `<span class="item-genre">${
+      data.genres?.[0]?.name || 'Unclassified'
+    }</span>`;
     for (let i = 1; i < data.genres.length; i++) {
       // Break out of loop to only show 3 genres, max
       if (i === 3) break;
@@ -207,6 +209,16 @@ class Categories extends View {
         data.genres[i].name.split(' ')[0]
       }</span>`;
     }
+
+    // Get duration, either in runtime if movie, episodes if one season, or seasons
+    let duration;
+
+    if (data.runtime) duration = data.runtime;
+    if (data.seasons)
+      duration =
+        data.seasons > 1
+          ? `${data.seasons} Seasons`
+          : `${data.episodes} Episodes`;
 
     target.querySelector('.category-hover-data').innerHTML = `
     <div class="category-icons">
@@ -278,11 +290,7 @@ class Categories extends View {
           Math.floor(Math.random() * 50) + 50
         }% Match</span>
         <span class="category-age-rating">${data.maturity}</span>
-        <span class="category-duration">${
-          data.seasons > 1
-            ? `${data.seasons} Seasons`
-            : `${data.episodes} Episodes`
-        }</span>
+        <span class="category-duration">${duration}</span>
         <span class="category-special-badge">HD</span>
       </div>
       <div class="category-item-genres">
@@ -363,8 +371,6 @@ class Categories extends View {
         if (!e.target.classList.contains('category-icon')) return;
 
         const tooltipMessage = e.target.dataset.message;
-        console.log(tooltipMessage);
-        // If has message
         if (!tooltipMessage) return;
 
         const coordinates = e.target.getBoundingClientRect();

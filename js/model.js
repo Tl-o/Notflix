@@ -94,6 +94,11 @@ const maturityRatingMapping = {
   'TV-PG': '+10',
   'TV-14': '+14',
   'TV-MA': '+18',
+  G: 'G',
+  PG: 'PG',
+  'PG-13': '+13',
+  R: 'R',
+  'NC-17': '+18',
 };
 
 export const state = {
@@ -168,6 +173,25 @@ export const getShowDetails = async function (id) {
   return showMetadata;
 };
 
+export const getMovieDetails = async function (id) {
+  const data = await AJAX(
+    `https://api.themoviedb.org/3/movie/${id}?append_to_response=release_dates&language=en-US`
+  );
+
+  const maturity = data['release_dates']?.['results']?.find(
+    (result) => result['iso_3166_1'] === 'US'
+  )?.['release_dates']?.[0]?.['certification'];
+
+  const movieMetadata = {
+    genres: data['genres'],
+    runtime: `${Math.floor(data['runtime'] / 60)}h ${data['runtime'] % 60}m`,
+    maturity: maturityRatingMapping[maturity] || '+13',
+    id: data['id'],
+  };
+
+  return movieMetadata;
+};
+
 export const getCategory = async function (type, genre = null, random = false) {
   // Get random
   if (random && type == 'tv') {
@@ -206,6 +230,7 @@ export const getCategory = async function (type, genre = null, random = false) {
     return {
       name: show['original_name'],
       id: show['id'],
+      genres: [type],
       thumbnail: show['backdrop_path']
         ? `https://image.tmdb.org/t/p/original${show['backdrop_path']}`
         : 'https://picsum.photos/1600/900',
@@ -214,6 +239,8 @@ export const getCategory = async function (type, genre = null, random = false) {
         : null,
     };
   });
+
+  console.log(shows);
 
   state.media.categories.push({
     name: genre ? genre : 'Popular',

@@ -276,7 +276,7 @@ export const showsDatabase = [
     name: 'Bodyguard',
     id: 80307,
     thumbnail:
-      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABY66zzABq6R2KOm5YWCEoGrfkOaMrbL4eF7sA1jMDvYO1tUrYHoE-Be46wE72_e-p4R68lUpw5CpR_17vtiqlOPob1bmFOYXiESbyeIygCdNtMyl5yYh1gyduAVs7Q9TQ34I.jpg?r=0c6',
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABSp1MOjJ30BHcezPT7qDd34R1En3c8uJt__CT1DEdw8aAY7hvLtNO0abeiNbJXyk1mOXsNjNPcrNdu-FR3Qk5JvsEE2z5ym6OahqWvC9pqU0GLdaWEriImMg9Le8YgLj8Tyq.jpg?r=a86',
     genres: ['Suspenseful', 'Action'],
   },
   {
@@ -393,35 +393,35 @@ export const showsDatabase = [
   },
   {
     name: 'Devil Wears Prada',
-    id: 9797,
+    id: 350,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWFMf7DgcfOQXp6KmSUxhId-qloL4J950m80k9L61YBffcGP-dQb9ob7sZn5IuJwc-ncFcB1pVKeWWqQOIDzFoYyP-eK31PI_a9uyFEDxwlp96ZhvlOtqhhlrAXmgNS8XC_L4mrS_nNh427rCHtfW4pWJW6lFvhFYqRIYWw07qzJrrgSrBXaDzN5aQWsrwmIihppSdjIi_tULOUttTJ8a058N1Ck165i0OkS500Yg3fpinfbF5VjqcRlug5l4PNxUFoaTZurMS2HFuPK49c1VK3_Gw.webp?r=798',
     genres: ['Movies', 'Drama', 'Comedy'],
   },
   {
     name: 'The Platform',
-    id: 108948,
+    id: 1125510,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXrqV2PFqMPYVA9qemWgXjgAYsTBop3HsB__tUJGDr2olIIqVjWLw8tDjSWJHs_k2rdJd82jRlvS7PlP6CfzCci_6tchCwanaTMmIk9knYd6KfC-JpLnqaiQutCediitMj37.jpg?r=c3b',
     genres: ['Movies', 'Psychological', 'Thriller'],
   },
   {
     name: 'All Quiet on the Western Front',
-    id: 49046,
+    id: 10912,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABVTfAIKJucZkoYDqKf51mKZzbjkSxH-r21eIzMV1F0yAfXNyt2CSukUsOP4yBZEBf6OJgDvoi8GZ-GgQUx2TeavxEY586fao8ZEJqfsN3hJ_4bsn0jW4o5u_EVVglcL1ZNLH.jpg?r=8fe',
     genres: ['Movies', 'Drama', 'Violent', 'Political'],
   },
   {
     name: 'Hunger',
-    id: 251,
+    id: 10360,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABSr9Esq4vBmNfvLZ1EqSS86vJIMpG8MPwTPRkhMU69NvgzW0CIFxUTa7bkyvhKOgy8qpU6QWvc5HkrJzOlB8HxDoh1S88riAFnZ1Lx99JcxCgJjfOSIgbZQ1Baeoj3m-wWC_.jpg?r=063',
     genres: ['Movies', 'Drama'],
   },
   {
     name: 'Get Out',
-    id: 36709,
+    id: 419430,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABb6jDGau1XI2Ze1hFp2folmAHuk892tdz20ZOqCGsCGj7rwC6nzFTfzFW1ueBJk1P2XkiWaDRRdZkrdR5m246XBRhjlYcqe7ZSg.webp?r=22c',
     genres: ['Movies', 'Horror'],
@@ -435,7 +435,7 @@ export const showsDatabase = [
   },
   {
     name: 'Titanic',
-    id: 39016,
+    id: 597,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABU1H3YVdJNQX90_k1OoLOf_QyCELyCWpzatViuZqP9lPAtna_N-S6cG4OIYGCy9oc2DOLgU7i09JwY-7krzCzeKxWNEsN1YD-9NVYKlW-nJTY8E5F-TJX8a9oGgN01j_j5vrneuI0x-X8-mQIXpP7OeTI8E0lfJRfgg.webp?r=f6e',
     genres: ['Movies', 'Drama'],
@@ -449,7 +449,7 @@ export const showsDatabase = [
   },
   {
     name: 'Knives Out',
-    id: 205663,
+    id: 546554,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABf0a0kHrCwiYZ08ADYnnqj5D3zFR1A5OyhgC4DYpq8HTy8alGoVBogL9s8A4p06iySixhYRqdjy2R0GfTA08hyV1EjEXLWyNXFA.webp?r=5ee',
     genres: ['Movies', 'Comedy', 'Mystery'],
@@ -463,14 +463,14 @@ export const showsDatabase = [
   },
   {
     name: 'The Martian',
-    id: 3226,
+    id: 286217,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWkNfr4lrNX28Bf7jv65w8U8C5jXJ0e5LQzdpwyDIW9YvJ8fhXqlN7cYlgbL2X7vGnl1zj7FpBqy46XLB_8EepgHQq14GP2Le4s.webp?r=bf8',
     genres: ['Movies', 'Sci-Fi'],
   },
   {
     name: 'Top Gun',
-    id: 92595,
+    id: 361743,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABQSu4TkBp1EG22NmzA-NghyiXvC-Sy1ziTxPOzNwmWaJR21d4WqFhKEa5C6MDOlkTPh7JWn5qCHy_QEtjhV8cAiuYjgVAaAKY3E.webp?r=4dc',
     genres: ['Movies', 'Action'],
@@ -479,19 +479,19 @@ export const showsDatabase = [
     name: "Don't Look Up",
     id: 646380,
     thumbnail:
-      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABQSu4TkBp1EG22NmzA-NghyiXvC-Sy1ziTxPOzNwmWaJR21d4WqFhKEa5C6MDOlkTPh7JWn5qCHy_QEtjhV8cAiuYjgVAaAKY3E.webp?r=4dc',
+      'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABeX7goWxexHpoEo_xtwmqOsYhjJBrpwUngqoXhNHvq9Q6ZxnOhP7qL8reCrTO8A2AUU_pF94tY_nQPCN2j1LceTSOQc-Z36fbbOIR9DWvaAqGy7QruIDTPNed13sxSn4iJSt.jpg?r=49b',
     genres: ['Movies', 'Sci-Fi', 'Thriller'],
   },
   {
     name: 'The Godfather',
-    id: 39651,
+    id: 238,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABcocu3kExgk_7FhJLj8jflFkPcB9aukB4yvRM6rFrgBA4s8T6fFXKsaujZn7vH1LAHKzRnad-ddEVLBsxhIe5dUwXPNIt1_cblw.webp?r=7f9',
     genres: ['Movies', 'Drama'],
   },
   {
     name: 'Blade Runner',
-    id: 84553,
+    id: 78,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABY5wOiVtriBHaOY_GNzZaaju6RU8JeIhXjEDTmCpY1IDUcJP8P3BmHlpFnZ1xi7VzqMjCh9bEFtBKUl3Hnb40GLyTpsjSLPnrK4.webp?r=1bb',
     genres: ['Movies', 'Sci-Fi', 'Dystopian', 'Cyberpunk'],
@@ -505,28 +505,28 @@ export const showsDatabase = [
   },
   {
     name: 'Marriage Story',
-    id: 220076,
+    id: 492188,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABVD1FCphCoF3IUVMFvo1c3TdvKMTnSs5jC4WjqGjOKiVyKphfI95sbITq3NhogNgd9bUoLPgv-NUvJ2eREhFeCDdT8drhSbRIR9qYjQop1CcF9NXy3uHO1dsj0FSYmsEUEUV.jpg?r=cdc',
     genres: ['Movies', 'Drama'],
   },
   {
     name: 'Nope',
-    id: 232547,
+    id: 762504,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABbpBQRp5KlO_y9HLzwDmfvlkXQy0RyM0XeimNCBvqRz88lX6chq-N7i4EaBkR63fSVfn-b3QClcY1cDIgZKCOjvEB6d--1QB-sI.webp?r=76c',
     genres: ['Movies', 'Sci-Fi', 'Horror'],
   },
   {
     name: 'Gladiator',
-    id: 2461,
+    id: 98,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABcUiLR8VyIKytbdM1dNAOp1lifH48cSFS8XSJNbBMpN5m-ZMMTtlum7eRe4F6OwqNNlcoNTYiAhfx7Tm2DKn5YF5zGlSzQrO_KA_k2T1Gok6qs5MRBXUTqurxHyF3S8xhiuBNijbqidcyxwy2kvOmMTKdKg0CiEiArgklYz8LndUeeNPxgiLhySe5tC58HkG75o-qYX98MjnU0Nth7vf5O1aoPxTTTKFuaciS2OZ5ZracVA66k5hZjDLK_Vs3p3rvSz08TPhVevlhuI2Ue6i4bsrLw.webp?r=8e2',
     genres: ['Movies', 'Action'],
   },
   {
     name: 'Nocturnal Animals',
-    id: 112574,
+    id: 340666,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABV77zINmNH46l96IVWEwW5Mv4WKFrAaYebVwxRYkpNjx7Dt0nIWUNthA_guUk6FAaVXmLhhU0iIFVqtuByvj1yfrEjsR9yrjw6k.webp?r=925',
     genres: ['Movies', 'Psychological'],
@@ -540,7 +540,7 @@ export const showsDatabase = [
   },
   {
     name: 'A Quiet Place',
-    id: 245902,
+    id: 447332,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABb1ZovfcynnmfE3tcgDZYyiRyxk_1rDPOnYnhla3JWzo1ZYItdHMREzqri5KRtNtDgd0VHL92f7FfAt4podNUgwNCWv64Q5PPh0.webp?r=f65',
     genres: ['Movies', 'Horror'],

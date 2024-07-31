@@ -26,8 +26,10 @@ const clear = function () {
   footer.clear();
 };
 
-const controlShowMetadata = async function (id) {
-  const data = await model.getShowDetails(id);
+const controlShowMetadata = async function (id, type) {
+  let data;
+  if (type == 'tv') data = await model.getShowDetails(id);
+  if (type == 'movie') data = await model.getMovieDetails(id);
   categories.updateHoverMetadata(data);
 };
 

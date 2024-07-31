@@ -10,7 +10,7 @@ class Billboard extends View {
   _trailerControls;
   _isPlaying = false;
   // In seconds
-  _playFor = 10;
+  _playFor = 30;
   _timeout;
 
   // Intersection Observer
@@ -63,7 +63,7 @@ class Billboard extends View {
       this._controlSound.bind(this)
     );
 
-    // setTimeout(this._playTrailer.bind(this), 5000);
+    // setTimeout(this._playTrailer.bind(this), 3000);
     return '';
   }
 
