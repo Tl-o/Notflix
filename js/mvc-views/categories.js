@@ -23,7 +23,7 @@ class Categories extends View {
   _tinyQuery = window.matchMedia('(max-width: 500px)');
 
   _timeout;
-  _waitForHover = 0.5 * 1000; // In millieseconds
+  _waitForHover = 0.4 * 1000; // In millieseconds
   _bound = false; // Check if hover and responsiveness are binded
   _observer;
   _isFetching = false;
@@ -71,6 +71,46 @@ class Categories extends View {
     document.querySelector('.skeleton')?.remove();
   }
 
+  bindHover(handler) {
+    if (this._bound) return;
+    this._bound = true;
+
+    this._parentEl.addEventListener(
+      'mouseenter',
+      (e) => {
+        if (!e.target?.classList.contains('category-item')) return;
+        if (e.target.classList.contains('opaque')) return;
+
+        // If only a bit of the element is showing, ignore
+        const size = e.target.getBoundingClientRect();
+        // Number is half of header's length
+        if (size.top - 35 <= 0) return;
+
+        this._timeout = setTimeout(() => {
+          if (!e.target.dataset.gotData)
+            handler(e.target.dataset.id, e.target.dataset.name, e);
+        }, this._waitForHover);
+      },
+      true
+    );
+
+    this._parentEl.addEventListener(
+      'mouseleave',
+      (e) => {
+        if (!e.target?.classList.contains('category-item')) return;
+        if (this._timeout) clearTimeout(this._timeout);
+      },
+      true
+    );
+  }
+
+  updateMetadata(name) {
+    const allInstances = [
+      ...document.querySelectorAll(`[data-name="${name}"]`),
+    ];
+    console.log(allInstances);
+  }
+
   addObserverHandler(handler) {
     if (this._observer) return;
     this._observer = new IntersectionObserver(
@@ -112,8 +152,6 @@ class Categories extends View {
     this.clear();
     this._generateViews();
     this._bindResponsiveness();
-    this._bindHover();
-    this._bound = true;
     this._lastRenderedCategory = this._data.categories.length;
     this._isFetching = false;
     return '';
@@ -156,49 +194,27 @@ class Categories extends View {
     });
   }
 
-  _bindHover() {
-    if (this._bound) return;
-
-    this._parentEl.addEventListener(
-      'mouseenter',
-      (e) => {
-        if (!e.target?.classList.contains('category-item')) return;
-        if (e.target.classList.contains('opaque')) return;
-
-        // If only a bit of the element is showing, ignore
-        const size = e.target.getBoundingClientRect();
-        // Number is half of header's length
-        if (size.top - 35 <= 0) return;
-
-        this._timeout = setTimeout(() => {
-          this._hover(e);
-        }, this._waitForHover);
-      },
-      true
-    );
-
-    this._parentEl.addEventListener(
-      'mouseleave',
-      (e) => {
-        if (!e.target?.classList.contains('category-item')) return;
-        if (this._timeout) clearTimeout(this._timeout);
-      },
-      true
-    );
-  }
-
-  _hover(e) {
+  hover(e, data) {
     const size = e.target.getBoundingClientRect();
     const placement = e.target.dataset.placement;
-
     const hoverDiv = document.createElement('div');
     const showImg = e.target.querySelector('img').getAttribute('src');
     const logoImg = e.target.querySelector('.show-logo')?.getAttribute('src');
     hoverDiv.classList.add('category-item-hover');
     hoverDiv.classList.add(`category-${placement}`);
+
+    let genres = `<span class="item-genre">${data.genres[0].name}</span>`;
+    for (let i = 1; i < data.genres.length; i++) {
+      // Break out of loop to only show 3 genres, max
+      if (i === 3) break;
+      genres += `<span class="item-genre separator">${
+        data.genres[i].name.split(' ')[0]
+      }</span>`;
+    }
+
     const markup = `
         <div style="position: relative;" class="show-img-hover">
-          <img src="${showImg}" />
+          <img src="${showImg}"/>
           ${logoImg ? `<img class="show-logo" src="${logoImg}"/>` : ''}
         </div>
         <div class="category-hover-data">
@@ -267,15 +283,19 @@ class Categories extends View {
             </div>
           </div>
           <div class="category-item-metadata">
-            <span class="category-match">98% Match</span>
-            <span class="category-age-rating">+13</span>
-            <span class="category-duration">8 Seasons</span>
+            <span class="category-match">${
+              Math.floor(Math.random() * 50) + 50
+            }% Match</span>
+            <span class="category-age-rating">${data.maturity}</span>
+            <span class="category-duration">${
+              data.seasons > 1
+                ? `${data.seasons} Seasons`
+                : `${data.episodes} Episodes`
+            }</span>
             <span class="category-special-badge">HD</span>
           </div>
           <div class="category-item-genres">
-            <span class="item-genre">Mystery</span>
-            <span class="item-genre separator">Thriller</span>
-            <span class="item-genre separator">Suspenseful</span>
+            ${genres}
           </div>
         </div>
         `;

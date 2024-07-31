@@ -86,6 +86,16 @@ const builtInCategories = [
   },
 ];
 
+const maturityRatingMapping = {
+  'TV-Y': '+3',
+  'TV-Y7': '+7',
+  'TV-Y7 FV': '+7',
+  'TV-G': '+10',
+  'TV-PG': '+10',
+  'TV-14': '+14',
+  'TV-MA': '+18',
+};
+
 export const state = {
   users: {
     currUser: {},
@@ -139,6 +149,24 @@ export const getCurrUserData = function (userID) {
     billboardShows[Math.floor(Math.random() * (billboardShows.length - 1))];
 };
 
+export const getShowDetails = async function (id) {
+  const data = await AJAX(
+    `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings&language=en-US`
+  );
+
+  const maturity = data['content_ratings']['results'].find(
+    (result) => result['iso_3166_1'] === 'US'
+  )?.['rating'];
+
+  const showMetadata = {
+    genres: data['genres'],
+    episodes: data['number_of_episodes'],
+    seasons: data['number_of_seasons'],
+    maturity: maturityRatingMapping[maturity] || '+13',
+  };
+  return showMetadata;
+};
+
 export const getCategory = async function (type, genre = null, random = false) {
   // Get random
   if (random && type == 'tv') {
@@ -176,6 +204,7 @@ export const getCategory = async function (type, genre = null, random = false) {
   const shows = data.results.map((show) => {
     return {
       name: show['original_name'],
+      id: show['id'],
       thumbnail: show['backdrop_path']
         ? `https://image.tmdb.org/t/p/original${show['backdrop_path']}`
         : 'https://picsum.photos/1600/900',

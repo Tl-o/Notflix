@@ -10,9 +10,11 @@ import * as config from './config.js';
 /* Initalize */
 const init = function () {
   categories.render(model.state.media);
+  categories.bindHover(controlShowMetadata);
   categories.addObserverHandler(controlInfiniteScrolling);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
+  console.log(document.querySelector('[data-name="Killing Eve"]'));
 };
 
 const clear = function () {
@@ -21,10 +23,12 @@ const clear = function () {
   header.clear();
   billboard.clear();
   profile.clear();
+  footer.clear();
 };
 
-const controlCategories = function () {
-  categories.render(model.state.media);
+const controlShowMetadata = async function (id, name, event) {
+  const data = await model.getShowDetails(id);
+  categories.hover(event, data);
 };
 
 const controlUsers = async function (userID) {

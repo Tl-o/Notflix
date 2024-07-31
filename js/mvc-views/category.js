@@ -163,7 +163,7 @@ export class Category extends View {
           : i === until - 1 && i === this._resultsPerPage - 1
           ? 'last'
           : 'middle'
-      }">
+      }" data-name="${this._data.shows[currEl].name}">
           <div class="show-img">
             <img src="${this._data.shows[currEl]?.thumbnail}"/>
             ${
@@ -192,7 +192,7 @@ export class Category extends View {
 
     for (let i = 0; i < this._resultsPerPage + 1; i++) {
       markup += `
-        <div class="category-item">
+        <div class="category-item" data-name="${this._data.shows[index].name}">
           <div class="show-img">
             <img src="${this._data.shows[index]?.thumbnail}">
             ${
@@ -226,7 +226,7 @@ export class Category extends View {
       markup += `
         <div class="category-item ${
           this._endlessScrollEnabled === false ? 'opaque' : ''
-        }">
+        }" data-name="${this._data.shows[index].name}">
           <div class="show-img">
             <img src="${this._data.shows[index]?.thumbnail}">
             ${
