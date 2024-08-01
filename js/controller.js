@@ -65,3 +65,11 @@ profile.render(model.state.users);
 // init();
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
+
+document
+  .querySelector('.recommendations-show-more')
+  .addEventListener('click', () => {
+    document
+      .querySelector('.recommendations-container')
+      .classList.toggle('recommendations-container-full');
+  });

@@ -26,6 +26,25 @@ body {
   border-radius: 5px;
 }
 
+.modal-close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1005;
+  background-color: rgb(20, 20, 20);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.modal-close svg {
+  fill: var(--white);
+}
+
 .modal-body {
   padding-inline: 48px;
 }
@@ -264,7 +283,8 @@ body {
 }
 
 .media-episode:hover .play-icon,
-.recommendation:hover .play-icon {
+.recommendation:hover .play-icon,
+.trailer:hover .play-icon {
   opacity: 1;
 }
 
@@ -324,7 +344,11 @@ body {
 }
 
 /* All classes relating to recommendations */
-.more-like-this {
+.media-recommendations {
+  margin-block-end: 32px;
+}
+
+.header-title {
   font-size: 24px;
   font-weight: 500;
   margin-block-end: 16px;
@@ -347,6 +371,12 @@ body {
     rgba(0, 0, 0, 1) 70%,
     transparent 100%
   );
+}
+
+.recommendations-container-full {
+  mask-image: none;
+  max-height: none;
+  padding-block-end: 64px;
 }
 
 .recommendations-full-toggle {
@@ -408,9 +438,11 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 2 / 3;
+  overflow-x: clip;
 }
 
-.recommendation .play-icon {
+.recommendation .play-icon,
+.trailer .play-icon {
   width: 64px;
   height: 64px;
 }
@@ -420,6 +452,16 @@ body {
   border-top-right-radius: 5px;
   width: 100%;
   height: 100%;
+}
+
+.recommendation-duration {
+  position: absolute;
+  background-color: transparent;
+  right: 0;
+  top: 0;
+  margin-block-start: 10px;
+  margin-inline-end: 10px;
+  text-shadow: black 1px 0 10px;
 }
 
 /* Character limit 140 characters */
@@ -434,4 +476,46 @@ body {
 .recommendation-description {
   font-size: 14px;
   color: rgb(210, 210, 210);
+}
+
+/* All classes for trailers & more */
+
+.trailers {
+  margin-block-end: 32px;
+}
+
+.trailers-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-inline-start: 16px;
+}
+
+.trailer-link {
+  display: block;
+  flex: 0 0 250px;
+}
+
+.trailer {
+  position: relative;
+  aspect-ratio: 1 / 0.8;
+  text-align: center;
+}
+
+.trailer-image {
+  position: relative;
+  width: 100%;
+  border-radius: 5px;
+  margin-block-end: 8px;
+}
+
+.trailer-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.maturity {
+  display: flex;
+  gap: 8px;
 }
