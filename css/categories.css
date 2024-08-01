@@ -249,6 +249,10 @@
   position: relative;
 }
 
+.category-icon-info svg {
+  margin-top: 10%;
+}
+
 .category-icon-left,
 .category-icon-right {
   display: flex;

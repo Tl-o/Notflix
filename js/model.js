@@ -182,9 +182,15 @@ export const getMovieDetails = async function (id) {
     (result) => result['iso_3166_1'] === 'US'
   )?.['release_dates']?.[0]?.['certification'];
 
+  const hours = Math.floor(data['runtime'] / 60) || '';
+  const minutes = data['runtime'] % 60 || '';
+  let time = `${hours ? `${hours}h ` : ''} ${minutes ? `${minutes}m` : ''}`;
+
+  if (hours === '' && minutes === '') time = `1h 30m`;
+
   const movieMetadata = {
     genres: data['genres'],
-    runtime: `${Math.floor(data['runtime'] / 60)}h ${data['runtime'] % 60}m`,
+    runtime: time,
     maturity: maturityRatingMapping[maturity] || '+13',
     id: data['id'],
   };
@@ -246,24 +252,6 @@ export const getCategory = async function (type, genre = null, random = false) {
     name: genre ? genre : 'Popular',
     shows,
   });
-
-  const test = {
-    adult: false,
-    backdrop_path: '/tncbMvfV0V07UZozXdBEq4Wu9HH.jpg',
-    genre_ids: [28, 80, 53, 35],
-    id: 573435,
-    original_language: 'en',
-    original_title: 'Bad Boys: Ride or Die',
-    overview:
-      'After their late former Captain is framed, Lowrey and Burnett try to clear his name, only to end up on the run themselves.',
-    popularity: 9457.863,
-    poster_path: '/nP6RliHjxsz4irTKsxe8FRhKZYl.jpg',
-    release_date: '2024-06-05',
-    title: 'Bad Boys: Ride or Die',
-    video: false,
-    vote_average: 7.647,
-    vote_count: 1079,
-  };
 };
 
 export const getBuiltIn = function () {
@@ -281,7 +269,6 @@ const getGenres = async function () {
     `https://api.themoviedb.org/3/genre/tv/list?language=en`
   );
   state.genres.showGenres = tvShows.genres;
-  console.log(state.genres);
 };
 
 const mapGenre = function (category, type) {

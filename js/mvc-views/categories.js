@@ -268,7 +268,7 @@ class Categories extends View {
           </div>
         </div>
         <div class="category-icon-right">
-          <div class="category-icon category-icon-transparent" data-message="Episodes & info">
+          <div class="category-icon category-icon-transparent category-icon-info" data-message="Episodes & info">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
