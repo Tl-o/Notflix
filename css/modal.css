@@ -264,6 +264,11 @@ body {
   font-weight: 400;
 }
 
+.episodes-wrapper {
+  position: relative;
+  max-height: 155vh;
+}
+
 .first-episode {
   border-top-style: solid;
   border-top-color: rgb(64, 64, 64);
