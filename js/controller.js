@@ -5,6 +5,7 @@ import header from './mvc-views/header.js';
 import billboard from './mvc-views/billboard.js';
 import profile from './mvc-views/profile.js';
 import footer from './mvc-views/footer.js';
+import title from './mvc-views/title.js';
 import * as config from './config.js';
 
 /* Initalize */
