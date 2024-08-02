@@ -202,6 +202,7 @@ class Categories extends View {
     let genres = `<span class="item-genre">${
       data.genres?.[0]?.name || 'Unclassified'
     }</span>`;
+
     for (let i = 1; i < data.genres.length; i++) {
       // Break out of loop to only show 3 genres, max
       if (i === 3) break;

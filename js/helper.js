@@ -26,6 +26,13 @@ export function shuffleArray(arr) {
   return arr;
 }
 
+export function capitalizeEveryWord(string) {
+  return string
+    .split(' ')
+    .map((word) => word[0].toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 // Automatic timeout
 
 export function autoResolvePromise() {

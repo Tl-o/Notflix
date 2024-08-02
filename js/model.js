@@ -86,21 +86,6 @@ const builtInCategories = [
   },
 ];
 
-const maturityRatingMapping = {
-  'TV-Y': '+3',
-  'TV-Y7': '+7',
-  'TV-Y7 FV': '+7',
-  'TV-G': '+10',
-  'TV-PG': '+10',
-  'TV-14': '+14',
-  'TV-MA': '+18',
-  G: 'G',
-  PG: 'PG',
-  'PG-13': '+13',
-  R: 'R',
-  'NC-17': '+18',
-};
-
 export const state = {
   users: {
     currUser: {},
@@ -167,7 +152,7 @@ export const getShowDetails = async function (id) {
     genres: data['genres'],
     episodes: data['number_of_episodes'],
     seasons: data['number_of_seasons'],
-    maturity: maturityRatingMapping[maturity] || '+13',
+    maturity: config.MATURITY_RATING_MAPPING[maturity] || '+13',
     id: data['id'],
   };
   return showMetadata;
@@ -191,11 +176,25 @@ export const getMovieDetails = async function (id) {
   const movieMetadata = {
     genres: data['genres'],
     runtime: time,
-    maturity: maturityRatingMapping[maturity] || '+13',
+    maturity: config.MATURITY_RATING_MAPPING[maturity] || '+13',
     id: data['id'],
   };
 
   return movieMetadata;
+};
+
+export const getShowModal = async function (id) {
+  const data = await AJAX(
+    `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings,keywords,credits,images?include_image_language=en&language=en-US`
+  );
+  const season = await AJAX(
+    `https://api.themoviedb.org/3/tv/${id}/season/1?language=en-US`
+  );
+
+  data['season'] = season;
+  console.log(data);
+
+  return data;
 };
 
 export const getCategory = async function (type, genre = null, random = false) {
@@ -222,15 +221,6 @@ export const getCategory = async function (type, genre = null, random = false) {
     : await AJAX(
         'https://api.themoviedb.org/3/tv/popular?language=en-US&page=1'
       );
-
-  // Get logos to display
-  // for (let i = 0; i < data.results.length; i++) {
-  //   const show = data.results[i];
-  //   const logo = await AJAX(
-  //     `https://api.themoviedb.org/3/tv/${show.id}/images?language=en`
-  //   );
-  //   show.logo = logo['logos'][0]?.['file_path'];
-  // }
 
   const shows = data.results.map((show) => {
     return {

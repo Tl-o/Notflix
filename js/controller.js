@@ -74,3 +74,10 @@ document
       .querySelector('.recommendations-container')
       .classList.toggle('recommendations-container-full');
   });
+
+const updateTitleTest = async function () {
+  const data = await model.getShowModal(236235);
+  title.updateTitleMarkup(data);
+};
+updateTitleTest();
+// 236235 The Gentlemen ID
