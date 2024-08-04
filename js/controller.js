@@ -13,6 +13,7 @@ const init = function () {
   categories.render(model.state.media);
   categories.bindHover(controlShowMetadata);
   categories.addObserverHandler(controlInfiniteScrolling);
+  categories.addModalHandler(controlTitle);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
   console.log(document.querySelector('[data-name="Killing Eve"]'));
@@ -73,12 +74,12 @@ profile.render(model.state.users);
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
 
-const controlTitle = async function () {
+const controlTitle = async function (id) {
   title.render();
-  const data = await model.getShowModal(60059);
+  const data = await model.getShowModal(id);
   title.updateData(data);
   title.updateTitleMarkup();
   title.addSeasonHandler(controlSeasons);
 };
-controlTitle();
+// controlTitle();
 // 236235 The Gentlemen ID

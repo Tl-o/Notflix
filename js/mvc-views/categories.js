@@ -129,6 +129,17 @@ class Categories extends View {
     this._observer.observe(document.querySelector('.intersection-observer'));
   }
 
+  addModalHandler(handler) {
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('.category-icon-info');
+      if (!target) return;
+
+      const show = target.closest('.category-item-hover');
+      const showID = show.dataset.id;
+      handler(showID);
+    });
+  }
+
   renderNewCategories() {
     for (
       let i = this._lastRenderedCategory;

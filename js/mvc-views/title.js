@@ -9,7 +9,6 @@ class Title extends View {
   _parentEl = document.body;
   _modal;
   _overlay;
-  _boundClose = false;
   _dataHistory = [];
   _imgPath = `https://image.tmdb.org/t/p/original`;
 
@@ -27,6 +26,7 @@ class Title extends View {
   // Properties relating to results' DOM
 
   _generateMarkup() {
+    this._parentEl.style = 'overflow: hidden';
     this._generateTitleSkeleton();
     this._modal = document.querySelector('.media-modal');
     this._overlay = document.querySelector('.media-modal-overlay');
@@ -128,18 +128,18 @@ class Title extends View {
   }
 
   _bindClose() {
-    if (this._boundClose) return;
-
-    // Only hide it, actually
-    this._boundClose = true;
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
 
-      document.querySelector('.media-modal-overlay')?.remove();
+      this._hide();
     });
 
     this._overlay.addEventListener('click', (e) => {
-      const target = e;
+      const target = e.target.closest('.modal-close');
+      if (!target && !e.target.classList.contains('media-modal-overlay'))
+        return;
+
+      this._hide();
     });
   }
 
@@ -149,6 +149,19 @@ class Title extends View {
       if (!target) return;
 
       this._toggleSeasons(target);
+    });
+  }
+
+  _hide() {
+    this._overlay.classList.add('fade-out-modal');
+
+    this._overlay.addEventListener('animationend', (e) => {
+      if (e.target !== this._overlay) return;
+
+      e.target.remove();
+      this._dataHistory.splice(0); // Delete all history
+      this._data = null;
+      this._parentEl.style = 'overflow: visible';
     });
   }
 
