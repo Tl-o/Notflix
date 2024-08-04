@@ -62,7 +62,7 @@ class Title extends View {
   updateTitleMarkup(data) {
     this._bindToggles();
     this._bindClose();
-    this._parentEl.addEventListener('click', this._generateSeasons.bind(this));
+    this._bindSeason();
     document.querySelector('.media-modal-backdrop').innerHTML =
       this._generateBackdrop(data['images?include_image_language=en']);
     document.querySelector('.media-details').innerHTML =
@@ -138,6 +138,52 @@ class Title extends View {
     });
   }
 
+  _bindSeason() {
+    this._parentEl.addEventListener('click', (e) => {
+      const target = e.target.closest('.season-select');
+      if (!target) return;
+
+      this._toggleSeasons(target);
+    });
+  }
+
+  _toggleSeasons(target) {
+    target.classList.toggle('active');
+
+    if (target.classList.contains('active')) {
+      let ul = document.createElement('ul');
+      ul.classList.add('season-list');
+
+      let seasons = this._data['seasons'].filter((season) =>
+        season['name'].startsWith('Season')
+      );
+
+      let seasonsHTML = seasons
+        .map(
+          (season, i) => `
+          <li class="season-list-item" data-season="${i + 1}" data-ep="${
+            season['episode_count']
+          }">
+            Season ${i + 1}<span class="episode-count">(${
+            season['episode_count']
+          } episodes)</span>
+          </li>`
+        )
+        .join('');
+
+      // Add divider and all episodes
+      seasonsHTML += `
+      <div class="season-list-separator"></div>
+      <li class="season-list-item" data-season="all">See All Episodes</li>`;
+
+      ul.innerHTML = seasonsHTML;
+      // Insert as sibling
+      target.parentElement.insertAdjacentElement('beforeend', ul);
+    } else {
+      target.parentElement.querySelector('.season-list')?.remove();
+    }
+  }
+
   _generateTitleSkeleton() {}
 
   _generateResultsSkeleton() {}
@@ -192,7 +238,9 @@ class Title extends View {
       </div>`;
     }
 
-    wrapper.innerHTML = markup;
+    // If wrapper exists, update, if not, return markup
+    if (wrapper) wrapper.innerHTML = markup;
+    else return markup;
   }
 
   _generateBackdrop(data) {
@@ -489,51 +537,6 @@ class Title extends View {
     }
 
     return markup;
-  }
-
-  // Does not get data because it uses this._data
-  _generateSeasons(e) {
-    const target = e.target.closest('.season-select');
-    if (!target) return;
-
-    this._toggleSeasons(target);
-  }
-
-  _toggleSeasons(target) {
-    target.classList.toggle('active');
-
-    if (target.classList.contains('active')) {
-      let ul = document.createElement('ul');
-      ul.classList.add('season-list');
-
-      let seasons = this._data['seasons'].filter((season) =>
-        season['name'].startsWith('Season')
-      );
-
-      let seasonsHTML = seasons
-        .map(
-          (season, i) => `
-          <li class="season-list-item" data-season="${i + 1}" data-ep="${
-            season['episode_count']
-          }">
-            Season ${i + 1}<span class="episode-count">(${
-            season['episode_count']
-          } episodes)</span>
-          </li>`
-        )
-        .join('');
-
-      // Add divider and all episodes
-      seasonsHTML += `
-      <div class="season-list-separator"></div>
-      <li class="season-list-item" data-season="all">See All Episodes</li>`;
-
-      ul.innerHTML = seasonsHTML;
-      // Insert as sibling
-      target.parentElement.insertAdjacentElement('beforeend', ul);
-    } else {
-      target.parentElement.querySelector('.season-list')?.remove();
-    }
   }
 
   _generateRecommendations(data) {
