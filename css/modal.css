@@ -14,6 +14,17 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: 0.33s ease-out forwards fadeIn;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .media-modal {
@@ -24,6 +35,30 @@ body {
   background-color: var(--main-bg-color);
   padding-block-end: 5vh;
   border-radius: 5px;
+  animation: 0.33s ease-out forwards scaleUp;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.fade-out-modal {
+  animation: 0.33s ease-out forwards fadeOut;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .modal-close {
@@ -62,6 +97,15 @@ body {
   top: 0;
   left: 0;
   width: 100%;
+}
+
+.modal-backdrop .category-loading-skeleton {
+  height: 60vh;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 50%,
+    transparent 100%
+  );
 }
 
 .modal-backdrop-image {

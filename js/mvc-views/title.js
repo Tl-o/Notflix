@@ -6,8 +6,9 @@ import { capitalizeEveryWord } from '../helper';
 import { mark } from 'regenerator-runtime';
 
 class Title extends View {
-  _parentEl = document.querySelector('.media-modal');
-  _overlay = document.querySelector('.media-modal-overlay');
+  _parentEl = document.body;
+  _modal;
+  _overlay;
   _boundClose = false;
   _dataHistory = [];
   _imgPath = `https://image.tmdb.org/t/p/original`;
@@ -27,8 +28,12 @@ class Title extends View {
 
   _generateMarkup() {
     this._generateTitleSkeleton();
+    this._modal = document.querySelector('.media-modal');
+    this._overlay = document.querySelector('.media-modal-overlay');
     this._bindToggles();
     this._bindClose();
+    this._bindSeason();
+    return '';
   }
 
   addSeasonHandler(handler) {
@@ -46,7 +51,7 @@ class Title extends View {
         const markup = this._updateEpisodes(
           this._data[`season_${seasonNum}`]['episodes']
         );
-        this._parentEl.querySelector('.episodes-wrapper').innerHTML = markup;
+        this._modal.querySelector('.episodes-wrapper').innerHTML = markup;
       } else {
         this._generateEpisodesSkeleton(episodeNum);
         handler(this._data['id'], seasonNum);
@@ -56,25 +61,25 @@ class Title extends View {
       this._toggleSeasons(btn);
     };
 
-    this._parentEl.addEventListener('click', manageSeason);
+    this._modal.addEventListener('click', manageSeason);
   }
 
-  updateTitleMarkup(data) {
-    this._bindToggles();
-    this._bindClose();
-    this._bindSeason();
+  updateTitleMarkup() {
     document.querySelector('.media-modal-backdrop').innerHTML =
-      this._generateBackdrop(data['images?include_image_language=en']);
-    document.querySelector('.media-details').innerHTML =
-      this._generateDetails(data);
+      this._generateBackdrop(this._data['images?include_image_language=en']);
+    document.querySelector('.media-details').innerHTML = this._generateDetails(
+      this._data
+    );
     document.querySelector('.media-episodes').innerHTML =
-      this._generateEpisodes(data);
-    document.querySelector('.recommendations-container').innerHTML =
-      this._generateRecommendations(data['recommendations']['results']);
-    document.querySelector('.trailers-container').innerHTML =
-      this._generateTrailers(data['videos']['results']);
-    document.querySelector('.production').innerHTML =
-      this._generateProduction(data);
+      this._generateEpisodes(this._data);
+    document.querySelector('.media-recommendations').innerHTML =
+      this._generateRecommendations(this._data['recommendations']['results']);
+    document.querySelector('.trailers').innerHTML = this._generateTrailers(
+      this._data['videos']['results']
+    );
+    document.querySelector('.production').innerHTML = this._generateProduction(
+      this._data
+    );
   }
 
   updateData(data) {
@@ -91,12 +96,12 @@ class Title extends View {
     const markup = this._updateEpisodes(
       this._data[`season_${seasonNum}`]['episodes']
     );
-    this._parentEl.querySelector('.episodes-wrapper').innerHTML = markup;
-    this._parentEl.querySelector('.season-list')?.remove();
+    this._modal.querySelector('.episodes-wrapper').innerHTML = markup;
+    this._modal.querySelector('.season-list')?.remove();
   }
 
   _bindToggles() {
-    this._parentEl.addEventListener('click', (e) => {
+    this._modal.addEventListener('click', (e) => {
       const target = e.target.closest('.full-toggle');
       if (!target) return;
 
@@ -139,7 +144,7 @@ class Title extends View {
   }
 
   _bindSeason() {
-    this._parentEl.addEventListener('click', (e) => {
+    this._modal.addEventListener('click', (e) => {
       const target = e.target.closest('.season-select');
       if (!target) return;
 
@@ -184,12 +189,152 @@ class Title extends View {
     }
   }
 
-  _generateTitleSkeleton() {}
+  _generateTitleSkeleton() {
+    const markup = `
+    <div class="media-modal-overlay">
+      <div class="media-modal">
+        <div class="modal-close">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-x-circle-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+            />
+          </svg>
+        </div>
+        <div class="media-modal-backdrop">
+          <div class="media-backdrop-wrapper">
+            <div class="modal-backdrop">
+              <div class="category-loading-skeleton"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="media-details">
+            <div class="media-metadata">
+              <div class="metadata">
+                <div class="category-loading-skeleton"></div>
+                <div class="category-loading-skeleton"></div>
+                <div class="category-loading-skeleton"></div>
+                <div class="category-loading-skeleton"></div>
+                <div class="category-loading-skeleton"></div>
+                <div class="category-loading-skeleton"></div>
+              </div>
+              <div class="description">
+                <div class="category-loading-skeleton"></div>
+              </div>
+            </div>
+            <div class="media-production">
+              <div>
+                <div class="category-loading-skeleton"></div>
+              </div>
+              <div>
+                <div class="category-loading-skeleton"></div>
+              </div>
+              <div>
+                <div class="category-loading-skeleton"></div>
+              </div>
+            </div>
+          </div>
+          <div class="media-episodes">
+            <div class="episodes-header">
+              <div class="category-loading-skeleton"></div>
+            </div>
+            <div class="episodes-wrapper wrapper">
+              ${this._generateEpisodesSkeleton(8)}
+            </div>
+          </div>
+          <div class="media-recommendations">
+            <div class="recommendations-wrapper wrapper">
+              <div class="recommendations-container">
+                <div class="recommendation">
+                  <div class="poster">
+                    <div class="category-loading-skeleton"></div>
+                  </div>
+                  <div class="recommendation-body">
+                    <div class="metadata">
+                      <div class="category-loading-skeleton"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="recommendation">
+                  <div class="poster">
+                    <div class="category-loading-skeleton"></div>
+                  </div>
+                  <div class="recommendation-body">
+                    <div class="metadata">
+                      <div class="category-loading-skeleton"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="recommendation">
+                  <div class="poster">
+                    <div class="category-loading-skeleton"></div>
+                  </div>
+                  <div class="recommendation-body">
+                    <div class="metadata">
+                      <div class="category-loading-skeleton"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="trailers">
+            <div class="header-title">
+              <div class="category-loading-skeleton"></div>
+            </div>
+            <div class="trailers-container">
+              <a class="trailer-link" target="_blank" rel="noopener noreferrer">
+                <div class="category-loading-skeleton"></div>
+              </a>
+              <a class="trailer-link" target="_blank" rel="noopener noreferrer">
+                <div class="category-loading-skeleton"></div>
+              </a>
+              <a class="trailer-link" target="_blank" rel="noopener noreferrer">
+                <div class="category-loading-skeleton"></div>
+              </a>
+            </div>
+          </div>
+          <div class="production">
+            <div class="header-title">
+              <div class="category-loading-skeleton"></div>
+            </div>
+            <div class="media-production">
+              <div class="creators">
+                <div class="category-loading-skeleton"></div>
+              </div>
+              <div class="cast">
+                <div class="category-loading-skeleton"></div>
+              </div>
+              <div class="genres">
+                <div class="category-loading-skeleton"></div>
+              </div>
+              <div class="keywords">
+                <div class="category-loading-skeleton"></div>
+              </div>
+              <div class="maturity">
+                <div class="category-loading-skeleton"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="media-modal-spacer"></div>
+      </div>
+    </div>`;
+
+    document.body.insertAdjacentHTML('afterbegin', markup);
+  }
 
   _generateResultsSkeleton() {}
 
   _generateEpisodesSkeleton(episodeNum) {
-    const wrapper = this._parentEl.querySelector('.episodes-wrapper');
+    const wrapper = this._modal?.querySelector('.episodes-wrapper');
 
     let markup = `
     <div class="full-toggle">
@@ -540,7 +685,31 @@ class Title extends View {
   }
 
   _generateRecommendations(data) {
-    let markup = '';
+    let markup = `
+    <div class="header-title">More Like This</div>
+    <div class="recommendations-wrapper wrapper">
+      <div class="full-toggle">
+        <div
+          class="recommendations-show-more absolute-center show-more-icon"
+          data-message="Show More"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-down"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="recommendations-container">`;
+
     for (let i = 0; i < data.length; i++) {
       const year = data[i]['first_air_date'].split('-')[0];
 
@@ -607,11 +776,19 @@ class Title extends View {
         </div>`;
     }
 
+    markup += `
+    </div>
+    </div>
+    `; // To close up recommendations wrapper and recommendations container. Check initial markup.
+
     return markup;
   }
 
   _generateTrailers(data) {
-    let markup = ``;
+    let markup = `
+    <div class="header-title">Trailers & More</div>
+    <div class="trailers-container">`;
+
     for (let i = 0; i < data.length; i++) {
       markup += `
         <a
@@ -651,6 +828,8 @@ class Title extends View {
             </div>
         </a>`;
     }
+
+    markup += `</div>`; // Close trailers container.
 
     return markup;
   }

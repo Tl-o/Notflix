@@ -73,19 +73,12 @@ profile.render(model.state.users);
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
 
-document
-  .querySelector('.recommendations-show-more')
-  .addEventListener('click', () => {
-    document
-      .querySelector('.recommendations-container')
-      .classList.toggle('recommendations-container-full');
-  });
-
-const updateTitleTest = async function () {
+const controlTitle = async function () {
+  title.render();
   const data = await model.getShowModal(60059);
-  title.addSeasonHandler(controlSeasons);
   title.updateData(data);
-  title.updateTitleMarkup(data);
+  title.updateTitleMarkup();
+  title.addSeasonHandler(controlSeasons);
 };
-updateTitleTest();
+controlTitle();
 // 236235 The Gentlemen ID
