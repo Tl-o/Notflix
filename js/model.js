@@ -187,14 +187,18 @@ export const getShowModal = async function (id) {
   const data = await AJAX(
     `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings,keywords,credits,recommendations,videos,images?include_image_language=en&language=en-US`
   );
-  console.log(data);
-  const season = await AJAX(
-    `https://api.themoviedb.org/3/tv/${id}/season/1?language=en-US`
-  );
 
-  data['season'] = season;
+  data[`season_1`] = await getShowSeason(id, 1);
 
   return data;
+};
+
+export const getShowSeason = async function (id, seasonNum) {
+  const season = await AJAX(
+    `https://api.themoviedb.org/3/tv/${id}/season/${seasonNum}?language=en-US`
+  );
+
+  return season;
 };
 
 export const getCategory = async function (type, genre = null, random = false) {

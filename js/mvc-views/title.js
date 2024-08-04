@@ -3,6 +3,7 @@ import { View } from './view';
 import 'core-js/stable';
 import MATURITY_RATING_MAPPING from '../config.js';
 import { capitalizeEveryWord } from '../helper';
+import { mark } from 'regenerator-runtime';
 
 class Title extends View {
   _parentEl = document.querySelector('.media-modal');
@@ -30,10 +31,38 @@ class Title extends View {
     this._bindClose();
   }
 
+  addSeasonHandler(handler) {
+    // Arrow function so that the this keyword refers to the class
+    const manageSeason = (e) => {
+      const target = e.target.closest('.season-list-item');
+      if (!target) return;
+
+      const seasonNum = target.dataset.season;
+      const episodeNum = target.dataset.ep;
+      const btn = document.querySelector('.season-select');
+
+      // If season's data already exists
+      if (this._data[`season_${seasonNum}`]) {
+        const markup = this._updateEpisodes(
+          this._data[`season_${seasonNum}`]['episodes']
+        );
+        this._parentEl.querySelector('.episodes-wrapper').innerHTML = markup;
+      } else {
+        this._generateEpisodesSkeleton(episodeNum);
+        handler(this._data['id'], seasonNum);
+      }
+
+      btn.textContent = target.textContent.split('(')[0]; // Only get season, no episodes
+      this._toggleSeasons(btn);
+    };
+
+    this._parentEl.addEventListener('click', manageSeason);
+  }
+
   updateTitleMarkup(data) {
     this._bindToggles();
     this._bindClose();
-    this._bindSeasons();
+    this._parentEl.addEventListener('click', this._generateSeasons.bind(this));
     document.querySelector('.media-modal-backdrop').innerHTML =
       this._generateBackdrop(data['images?include_image_language=en']);
     document.querySelector('.media-details').innerHTML =
@@ -53,6 +82,17 @@ class Title extends View {
       this._dataHistory.push(this._data);
       this._data = data;
     } else this._data = data;
+  }
+
+  updateSeason(seasonData, seasonNum) {
+    this._data[`season_${seasonNum}`] = seasonData;
+    console.log(this._data);
+
+    const markup = this._updateEpisodes(
+      this._data[`season_${seasonNum}`]['episodes']
+    );
+    this._parentEl.querySelector('.episodes-wrapper').innerHTML = markup;
+    this._parentEl.querySelector('.season-list')?.remove();
   }
 
   _bindToggles() {
@@ -98,13 +138,62 @@ class Title extends View {
     });
   }
 
-  _bindSeasons() {
-    this._parentEl.addEventListener('click', this._generateSeasons.bind(this));
-  }
-
   _generateTitleSkeleton() {}
 
   _generateResultsSkeleton() {}
+
+  _generateEpisodesSkeleton(episodeNum) {
+    const wrapper = this._parentEl.querySelector('.episodes-wrapper');
+
+    let markup = `
+    <div class="full-toggle">
+      <div
+        class="recommendations-show-more absolute-center show-more-icon"
+        data-message="Show More"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-chevron-down"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+          />
+        </svg>
+      </div>
+    </div>`;
+
+    for (let i = 0; i < episodeNum; i++) {
+      markup += `
+      <div class="media-episode">
+        <div class="episode-wrapper">
+          <div class="episode-index">
+            <div class="category-loading-skeleton"></div>
+          </div>
+          <div class="episode-img">
+            <div class="category-loading-skeleton"></div>
+          </div>
+          <div class="episode-data">
+            <div class="episode-title-wrapper">
+              <span class="episode-title">
+                <div class="category-loading-skeleton"></div>
+              </span>
+              <span class="episode-duration">
+                <div class="category-loading-skeleton"></div>
+              </span>
+            </div>
+            <div class="category-loading-skeleton"></div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    wrapper.innerHTML = markup;
+  }
 
   _generateBackdrop(data) {
     // If no data, don't generate
@@ -323,7 +412,7 @@ class Title extends View {
         ${seasons}
     </div>
     <div class="episodes-wrapper wrapper">
-        ${this._updateEpisodes(data['season']['episodes'])}
+        ${this._updateEpisodes(data['season_1']['episodes'])}
     </div>`;
 
     return markup;
@@ -407,6 +496,10 @@ class Title extends View {
     const target = e.target.closest('.season-select');
     if (!target) return;
 
+    this._toggleSeasons(target);
+  }
+
+  _toggleSeasons(target) {
     target.classList.toggle('active');
 
     if (target.classList.contains('active')) {
@@ -420,7 +513,9 @@ class Title extends View {
       let seasonsHTML = seasons
         .map(
           (season, i) => `
-          <li class="season-list-item" data-id="${season['id']}">
+          <li class="season-list-item" data-season="${i + 1}" data-ep="${
+            season['episode_count']
+          }">
             Season ${i + 1}<span class="episode-count">(${
             season['episode_count']
           } episodes)</span>
@@ -431,7 +526,7 @@ class Title extends View {
       // Add divider and all episodes
       seasonsHTML += `
       <div class="season-list-separator"></div>
-      <li class="season-list-item" data-id="all">See All Episodes</li>`;
+      <li class="season-list-item" data-season="all">See All Episodes</li>`;
 
       ul.innerHTML = seasonsHTML;
       // Insert as sibling

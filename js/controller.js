@@ -62,6 +62,12 @@ const controlInfiniteScrolling = async function () {
     footer.render();
 };
 
+const controlSeasons = async function (id, seasonNum) {
+  const seasonData = await model.getShowSeason(id, seasonNum);
+  title.updateSeason(seasonData, seasonNum);
+  console.log(seasonData);
+};
+
 profile.render(model.state.users);
 // init();
 profile.addHandler(controlUsers);
@@ -77,6 +83,7 @@ document
 
 const updateTitleTest = async function () {
   const data = await model.getShowModal(60059);
+  title.addSeasonHandler(controlSeasons);
   title.updateData(data);
   title.updateTitleMarkup(data);
 };
