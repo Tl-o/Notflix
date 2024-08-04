@@ -266,7 +266,8 @@ body {
 
 .episodes-wrapper {
   position: relative;
-  max-height: 155vh;
+  max-height: 152.5vh;
+  overflow-y: hidden;
 }
 
 .first-episode {
@@ -309,8 +310,8 @@ body {
 
 .episode-img {
   height: 100%;
-  width: 20%;
   position: relative;
+  flex: 0 0 20%;
 }
 
 .episode-thumbnail {
@@ -378,13 +379,16 @@ body {
   );
 }
 
-.recommendations-container-full {
+.full-view {
   mask-image: none;
   max-height: none;
+}
+
+.recommendations-container.full-view {
   padding-block-end: 64px;
 }
 
-.recommendations-full-toggle {
+.full-toggle {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -393,6 +397,15 @@ body {
   background-color: rgb(20, 20, 20);
   border-top: 1px solid rgb(96, 96, 96);
   z-index: 2;
+}
+
+/* To remove overflow and allow the toggle to remain visible */
+.full-view.wrapper {
+  overflow: visible;
+}
+
+.full-view .full-toggle {
+  bottom: -28px;
 }
 
 .absolute-center {
@@ -459,14 +472,14 @@ body {
   height: 100%;
 }
 
-.recommendation-duration {
+.recommendation-type {
   position: absolute;
   background-color: transparent;
   right: 0;
   top: 0;
   margin-block-start: 10px;
   margin-inline-end: 10px;
-  text-shadow: black 1px 0 10px;
+  text-shadow: black 0 0 2px;
 }
 
 /* Character limit 140 characters */
@@ -512,6 +525,7 @@ body {
   width: 100%;
   border-radius: 5px;
   margin-block-end: 8px;
+  overflow: clip;
 }
 
 .trailer-title {

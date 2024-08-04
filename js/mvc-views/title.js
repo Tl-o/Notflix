@@ -5,7 +5,9 @@ import MATURITY_RATING_MAPPING from '../config.js';
 import { capitalizeEveryWord } from '../helper';
 
 class Title extends View {
-  _parentEl;
+  _parentEl = document.querySelector('.media-modal');
+  _overlay = document.querySelector('.media-modal-overlay');
+  _boundClose = false;
   _dataHistory = [];
   _imgPath = `https://image.tmdb.org/t/p/original`;
 
@@ -17,19 +19,32 @@ class Title extends View {
   _titleTrailers;
   _titleProduction;
 
+  _maxEpChars = 240;
+  _maxRecChars = 155;
+
   // Properties relating to results' DOM
 
   _generateMarkup() {
     this._generateTitleSkeleton();
+    this._bindToggles();
+    this._bindClose();
   }
 
   updateTitleMarkup(data) {
+    this._bindToggles();
+    this._bindClose();
     document.querySelector('.media-modal-backdrop').innerHTML =
       this._generateBackdrop(data['images?include_image_language=en']);
     document.querySelector('.media-details').innerHTML =
       this._generateDetails(data);
-    // document.querySelector('.media-episodes').innerHTML =
-    //   this._generateEpisodes(data['season']);
+    document.querySelector('.media-episodes').innerHTML =
+      this._generateEpisodes(data);
+    document.querySelector('.recommendations-container').innerHTML =
+      this._generateRecommendations(data['recommendations']['results']);
+    document.querySelector('.trailers-container').innerHTML =
+      this._generateTrailers(data['videos']['results']);
+    document.querySelector('.production').innerHTML =
+      this._generateProduction(data);
   }
 
   updateData(data) {
@@ -37,6 +52,49 @@ class Title extends View {
       this._dataHistory.push(this._data);
       this._data = data;
     } else this._data = data;
+  }
+
+  _bindToggles() {
+    this._parentEl.addEventListener('click', (e) => {
+      const target = e.target.closest('.full-toggle');
+      if (!target) return;
+
+      let targetContainer = target.parentElement.querySelector(
+        '.recommendations-container'
+      );
+
+      // To scroll back later
+      const scrollY = this._overlay.scrollTop;
+
+      // If toggling recommendations
+      if (targetContainer) {
+        targetContainer.classList.toggle('full-view');
+      } else {
+        targetContainer = target
+          .closest('.wrapper')
+          .classList.toggle('full-view');
+      }
+
+      // If expanded, keep scroll position. If shrunk, scroll back to the shrunk wrapper.
+      if (this._overlay.scrollTop >= scrollY) this._overlay.scrollTop = scrollY;
+      else target.closest('.wrapper').scrollIntoView({ behavior: 'instant' });
+    });
+  }
+
+  _bindClose() {
+    if (this._boundClose) return;
+
+    // Only hide it, actually
+    this._boundClose = true;
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+
+      document.querySelector('.media-modal-overlay')?.remove();
+    });
+
+    this._overlay.addEventListener('click', (e) => {
+      const target = e;
+    });
   }
 
   _generateTitleSkeleton() {}
@@ -156,7 +214,9 @@ class Title extends View {
         ? `${data['number_of_seasons']} Seasons`
         : `${data['number_of_episodes']} Episodes`;
 
-    const description = data['overview'];
+    // Get two first sentences, add period at end if no period exists.
+    let description = data['overview'].split('.').slice(0, 2).join('.');
+    if (description.at(-1) !== '.') description += '.';
 
     // Only three or less keywords in metadata summary
     const keywords = [];
@@ -230,8 +290,8 @@ class Title extends View {
     </div>
     <div class="media-production">
         <div>
-        <span class="media-tag">Cast:</span> ${cast.join(', ')}
-        <span class="emphasis">more...</span>
+        <span class="media-tag">Cast:</span> ${cast.join(', ')},
+        <span class="emphasis"> more...</span>
         </div>
         <div>
         <span class="media-tag">Genres:</span> ${genres.join(', ')}
@@ -243,14 +303,249 @@ class Title extends View {
   }
 
   _generateEpisodes(data) {
-    console.log(data);
+    if (!data) return;
+
+    let markup = `
+    <div class="episodes-header">
+        <h2>Episodes</h2>
+        <h3>${data.name}</h3>
+    </div>
+    <div class="episodes-wrapper wrapper">
+        ${this._updateEpisodes(data['season']['episodes'])}
+    </div>`;
+
+    return markup;
   }
 
-  _generateRecommendations(data) {}
+  _updateEpisodes(data) {
+    // Fullview toggle
+    let markup = `
+    <div class="full-toggle" ${data.length <= 10 ? 'hidden' : ''}>
+        <div
+        class="recommendations-show-more absolute-center show-more-icon"
+        data-message="Show More"
+        >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-down"
+            viewBox="0 0 16 16"
+        >
+            <path
+            fill-rule="evenodd"
+            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+            />
+        </svg>
+        </div>
+    </div>`;
 
-  _generateTrailers(data) {}
+    for (let i = 0; i < data.length; i++) {
+      let description =
+        data[i]['overview'].length > this._maxEpChars
+          ? data[i]['overview'].slice(0, this._maxEpChars) + '...'
+          : data[i]['overview'];
 
-  _generateProduction(data) {}
+      markup += `
+        <div class="media-episode ${i === 0 ? 'first-episode' : ''}">
+            <div class="episode-wrapper">
+            <div class="episode-index">${data[i]['episode_number']}</div>
+            <div class="episode-img">
+                <img
+                class="episode-thumbnail"
+                src="${this._imgPath + data[i]['still_path']}"
+                />
+                <div class="play-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    fill="currentColor"
+                    class="bi bi-play-circle"
+                    viewBox="0 0 16 16"
+                >
+                    <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+                    />
+                    <path
+                    d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"
+                    />
+                </svg>
+                </div>
+            </div>
+            <div class="episode-data[i]">
+                <div class="episode-title-wrapper">
+                <span class="episode-title">${data[i]['name']}</span>
+                <span class="episode-duration">${data[i]['runtime']}m</span>
+                </div>
+                <div class="episode-description">
+                ${description}
+                </div>
+            </div>
+            </div>
+        </div>`;
+    }
+
+    return markup;
+  }
+
+  _generateRecommendations(data) {
+    let markup = '';
+    for (let i = 0; i < data.length; i++) {
+      const year = data[i]['first_air_date'].split('-')[0];
+
+      const type = data[i]['media_type'] === 'tv' ? 'TV Show' : 'Movie';
+
+      const rating = data[i]['vote_average'].toFixed(1);
+
+      // Get two first sentences, add period at end if no period exists.
+      let description =
+        data[i]['overview'].length > this._maxRecChars
+          ? data[i]['overview'].slice(0, this._maxRecChars) + '...'
+          : data[i]['overview'];
+
+      markup += `
+        <div class="recommendation">
+            <div class="poster">
+            <div class="recommendation-type">${type}</div>
+            <img
+                src="${this._imgPath + data[i]['poster_path']}"
+            />
+            <div class="play-icon">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="64"
+                height="64"
+                fill="currentColor"
+                class="bi bi-play-circle"
+                viewBox="0 0 16 16"
+                >
+                <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+                />
+                <path
+                    d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"
+                />
+                </svg>
+            </div>
+            </div>
+            <div class="recommendation-body">
+            <div class="metadata">
+                <span class="media-year-small">${year}</span>
+                <span class="media-badge age">${rating}</span>
+                <span class="media-badge special">HD</span>
+                <button class="modal-icon small">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-plus-lg"
+                    viewBox="0 0 16 16"
+                >
+                    <path
+                    fill-rule="evenodd"
+                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                    />
+                </svg>
+                </button>
+            </div>
+            <div class="recommendation-description">
+                ${description}
+            </div>
+            </div>
+        </div>`;
+    }
+
+    return markup;
+  }
+
+  _generateTrailers(data) {
+    let markup = ``;
+    for (let i = 0; i < data.length; i++) {
+      markup += `
+        <a
+        class="trailer-link"
+        href="https://www.youtube.com/watch?v=${data[i]['key']}"
+        target="_blank"
+        rel="noopener noreferrer"
+        >
+            <div class="trailer">
+            <div class="trailer-image">
+                <img
+                src="http://img.youtube.com/vi/${data[i]['key']}/maxresdefault.jpg
+                "
+                />
+                <div class="play-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="64"
+                    height="64"
+                    fill="currentColor"
+                    class="bi bi-play-circle"
+                    viewBox="0 0 16 16"
+                >
+                    <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+                    />
+                    <path
+                    d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"
+                    />
+                </svg>
+                </div>
+            </div>
+
+            <span class="trailer-title"
+                >${data[i]['name']}</span
+            >
+            </div>
+        </a>`;
+    }
+
+    return markup;
+  }
+
+  _generateProduction(data) {
+    const createdBy = data['created_by'].map((creators) => creators.name);
+
+    const filteredActing = data['credits']['cast']
+      .filter((castMember) => castMember['known_for_department'] === 'Acting')
+      .map((actor) => actor.name);
+
+    const genres = data['genres'].map((genre) => genre.name);
+
+    const keywords = data['keywords']['results'].map((keyword) =>
+      capitalizeEveryWord(keyword.name)
+    );
+
+    const maturity = data['content_ratings']['results'].find(
+      (result) => result['iso_3166_1'] === 'US'
+    )?.['rating'];
+
+    return `
+    <div class="header-title">About ${data.name}</div>
+    <div class="media-production">
+      <div class="creators">
+        <span class="media-tag">Creators:</span> ${
+          createdBy.join(', ') || 'Unknown'
+        }
+      </div>
+      <div class="cast">
+        <span class="media-tag">Cast:</span> ${filteredActing.join(', ')}
+      </div>
+      <div class="genres">
+        <span class="media-tag">Genres:</span> ${genres.join(', ')}
+      </div>
+      <div class="keywords">
+        <span class="media-tag">Keywords:</span> ${keywords.join(', ')}
+      </div>
+      <div class="maturity">
+        <span class="media-tag">Maturity Rating:</span>
+        <span class="media-badge age">${maturity}</span>
+      </div>
+    </div>`;
+  }
 }
 
 export default new Title();
