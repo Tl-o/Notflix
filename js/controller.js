@@ -77,6 +77,7 @@ document
 
 const updateTitleTest = async function () {
   const data = await model.getShowModal(60059);
+  title.updateData(data);
   title.updateTitleMarkup(data);
 };
 updateTitleTest();

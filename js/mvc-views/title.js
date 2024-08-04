@@ -33,6 +33,7 @@ class Title extends View {
   updateTitleMarkup(data) {
     this._bindToggles();
     this._bindClose();
+    this._bindSeasons();
     document.querySelector('.media-modal-backdrop').innerHTML =
       this._generateBackdrop(data['images?include_image_language=en']);
     document.querySelector('.media-details').innerHTML =
@@ -95,6 +96,10 @@ class Title extends View {
     this._overlay.addEventListener('click', (e) => {
       const target = e;
     });
+  }
+
+  _bindSeasons() {
+    this._parentEl.addEventListener('click', this._generateSeasons.bind(this));
   }
 
   _generateTitleSkeleton() {}
@@ -305,10 +310,17 @@ class Title extends View {
   _generateEpisodes(data) {
     if (!data) return;
 
+    let seasons =
+      data['seasons'].length > 1
+        ? `<div class="custom-select">
+            <button class="season-select">Season 1</button>
+          </div>`
+        : `<h3>${data.name}</h3>`;
+
     let markup = `
     <div class="episodes-header">
         <h2>Episodes</h2>
-        <h3>${data.name}</h3>
+        ${seasons}
     </div>
     <div class="episodes-wrapper wrapper">
         ${this._updateEpisodes(data['season']['episodes'])}
@@ -388,6 +400,45 @@ class Title extends View {
     }
 
     return markup;
+  }
+
+  // Does not get data because it uses this._data
+  _generateSeasons(e) {
+    const target = e.target.closest('.season-select');
+    if (!target) return;
+
+    target.classList.toggle('active');
+
+    if (target.classList.contains('active')) {
+      let ul = document.createElement('ul');
+      ul.classList.add('season-list');
+
+      let seasons = this._data['seasons'].filter((season) =>
+        season['name'].startsWith('Season')
+      );
+
+      let seasonsHTML = seasons
+        .map(
+          (season, i) => `
+          <li class="season-list-item" data-id="${season['id']}">
+            Season ${i + 1}<span class="episode-count">(${
+            season['episode_count']
+          } episodes)</span>
+          </li>`
+        )
+        .join('');
+
+      // Add divider and all episodes
+      seasonsHTML += `
+      <div class="season-list-separator"></div>
+      <li class="season-list-item" data-id="all">See All Episodes</li>`;
+
+      ul.innerHTML = seasonsHTML;
+      // Insert as sibling
+      target.parentElement.insertAdjacentElement('beforeend', ul);
+    } else {
+      target.parentElement.querySelector('.season-list')?.remove();
+    }
   }
 
   _generateRecommendations(data) {
