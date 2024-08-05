@@ -14,10 +14,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: 0.33s ease-out forwards modalFadeIn;
+  animation: 0.33s ease-out forwards fadeIn;
 }
 
-@keyframes modalFadeIn {
+@keyframes fadeIn {
   0% {
     opacity: 0;
   }
@@ -480,6 +480,15 @@
   margin-block-end: 16px;
 }
 
+.center {
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block: 32px;
+  animation: 0.33s ease-out forwards fadeIn;
+}
+
 .recommendations-wrapper {
   position: relative;
 }
@@ -609,6 +618,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow-y: hidden;
 }
 
 .recommendation-description {
@@ -663,4 +673,22 @@
 .navigation:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.navigation-result {
+  opacity: 0;
+  transform: scale(0.5);
+  animation: 0.33s ease-out forwards showUp;
+}
+
+@keyframes showUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

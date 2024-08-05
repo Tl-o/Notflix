@@ -85,7 +85,9 @@ class Title extends View {
       const target = e.target.closest('.navigation');
       if (!target) return;
 
-      this._generateTitleSkeleton();
+      this._modal.classList.add('full-size');
+      this._generateNavigationSkeleton();
+      handler(target.textContent, 'cast');
     });
   }
 
@@ -100,6 +102,87 @@ class Title extends View {
       this._data['videos']?.['results']
     );
     this._titleProduction.innerHTML = this._generateProduction(this._data);
+  }
+
+  updateNavigationMarkup() {
+    const results = this._data['results'].map((show, i) => {
+      const year =
+        show['first_air_date']?.split('-')[0] ||
+        show['release_date']?.split('-')[0];
+
+      const type = show['media_type'] === 'tv' ? 'TV Show' : 'Movie';
+
+      const rating = show['vote_average'].toFixed(1);
+
+      // Get two first sentences, add period at end if no period exists.
+      let description =
+        show['overview'].length > this._maxRecChars
+          ? show['overview'].slice(0, this._maxRecChars).trim() + '...'
+          : show['overview'];
+
+      return `
+        <div class="recommendation navigation-result" style="animation-delay: ${
+          0.05 * i
+        }s;">
+            <div class="poster">
+            <div class="recommendation-type">${type}</div>
+            <img
+                src="${this._imgPath + show['poster_path']}"
+            />
+            <div class="play-icon">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="64"
+                height="64"
+                fill="currentColor"
+                class="bi bi-play-circle"
+                viewBox="0 0 16 16"
+                >
+                <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+                />
+                <path
+                    d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"
+                />
+                </svg>
+            </div>
+            </div>
+            <div class="recommendation-body">
+            <div class="metadata">
+                <span class="media-year-small">${year || 'Unknown'}</span>
+                <span class="media-badge age">${rating}</span>
+                <span class="media-badge special">HD</span>
+                <button class="modal-icon small">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="currentColor"
+                    class="bi bi-plus-lg"
+                    viewBox="0 0 16 16"
+                >
+                  <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
+                </svg>
+                </button>
+            </div>
+            <div class="recommendation-description">
+                ${description}
+            </div>
+            </div>
+        </div>`;
+    });
+
+    const recommendations = results.join('');
+
+    this._titleRecommendations.innerHTML = `
+    <div class="header-title center">
+      More From ${this._data['cast_name']}
+    </div>
+    <div class="recommendations-wrapper wrapper">
+      <div class="recommendations-container full-view">
+        ${recommendations}
+      </div>
+    </div>`;
   }
 
   updateData(data) {
@@ -383,7 +466,43 @@ class Title extends View {
     </div>`;
   }
 
-  _generateResultsSkeleton() {}
+  _generateNavigationSkeleton() {
+    let recommendations = '';
+
+    for (let i = 0; i < 8; i++) {
+      recommendations += `
+      <div class="recommendation">
+        <div class="poster">
+          <div class="category-loading-skeleton"></div>
+        </div>
+        <div class="recommendation-body">
+          <div class="metadata">
+            <div class="category-loading-skeleton"></div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    this._titleBackdrop.innerHTML = ``;
+
+    this._titleDetails.innerHTML = ``;
+
+    this._titleEpisodes.innerHTML = ``;
+
+    this._titleRecommendations.innerHTML = `
+    <div class="header-title center">
+      <div class="category-loading-skeleton"></div>
+    </div>
+    <div class="recommendations-wrapper wrapper">
+      <div class="recommendations-container">
+        ${recommendations}
+      </div>
+    </div>`;
+
+    this._titleTrailers.innerHTML = ``;
+
+    this._titleProduction.innerHTML = ``;
+  }
 
   _generateEpisodesSkeleton(episodeNum) {
     if (!episodeNum) return '';
@@ -814,7 +933,7 @@ class Title extends View {
       // Get two first sentences, add period at end if no period exists.
       let description =
         data[i]['overview'].length > this._maxRecChars
-          ? data[i]['overview'].slice(0, this._maxRecChars) + '...'
+          ? data[i]['overview'].slice(0, this._maxRecChars).trim() + '...'
           : data[i]['overview'];
 
       markup += `

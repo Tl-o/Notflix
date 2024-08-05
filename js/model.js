@@ -220,9 +220,7 @@ export const getMediaWithCast = async function (cast) {
   // Have to only filter TV Shows from known_for, since API does not yet support TV Show search through cast member
   const data = {
     cast_name: castMember['results']?.[0]['name'],
-    known_for: castMember['results']?.[0]['known_for'],
-    featured_in: moviesWithCast['results'],
-    combined: [
+    results: [
       ...castMember['results']?.[0]['known_for'].filter(
         (show) => show['media_type'] === 'tv'
       ),
