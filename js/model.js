@@ -240,8 +240,6 @@ export const getCategory = async function (type, genre = null, random = false) {
     };
   });
 
-  console.log(shows);
-
   state.media.categories.push({
     name: genre ? genre : 'Popular',
     shows,

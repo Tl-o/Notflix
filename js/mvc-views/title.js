@@ -26,10 +26,22 @@ class Title extends View {
   // Properties relating to results' DOM
 
   _generateMarkup() {
+    // Generate modal
     this._parentEl.style = 'overflow: hidden';
     this._generateTitleSkeleton();
+
+    // Update all DOM-related variables
     this._modal = document.querySelector('.media-modal');
     this._overlay = document.querySelector('.media-modal-overlay');
+    this._titleBackdrop = document.querySelector('.media-modal-backdrop');
+    this._titleDetails = document.querySelector('.media-details');
+    this._titleEpisodes = document.querySelector('.media-episodes');
+    this._titleRecommendations = document.querySelector(
+      '.media-recommendations'
+    );
+    this._titleTrailers = document.querySelector('.trailers');
+    this._titleProduction = document.querySelector('.production');
+    // Bind all events
     this._bindToggles();
     this._bindClose();
     this._bindSeason();
@@ -65,21 +77,18 @@ class Title extends View {
   }
 
   updateTitleMarkup() {
-    document.querySelector('.media-modal-backdrop').innerHTML =
-      this._generateBackdrop(this._data['images?include_image_language=en']);
-    document.querySelector('.media-details').innerHTML = this._generateDetails(
-      this._data
+    this._titleBackdrop.innerHTML = this._generateBackdrop(
+      this._data['images?include_image_language=en']
     );
-    document.querySelector('.media-episodes').innerHTML =
-      this._generateEpisodes(this._data);
-    document.querySelector('.media-recommendations').innerHTML =
-      this._generateRecommendations(this._data['recommendations']['results']);
-    document.querySelector('.trailers').innerHTML = this._generateTrailers(
-      this._data['videos']['results']
+    this._titleDetails.innerHTML = this._generateDetails(this._data);
+    this._titleEpisodes.innerHTML = this._generateEpisodes(this._data);
+    this._titleRecommendations.innerHTML = this._generateRecommendations(
+      this._data['recommendations']?.['results']
     );
-    document.querySelector('.production').innerHTML = this._generateProduction(
-      this._data
+    this._titleTrailers.innerHTML = this._generateTrailers(
+      this._data['videos']?.['results']
     );
+    this._titleProduction.innerHTML = this._generateProduction(this._data);
   }
 
   updateData(data) {
@@ -157,6 +166,8 @@ class Title extends View {
 
     this._overlay.addEventListener('animationend', (e) => {
       if (e.target !== this._overlay) return;
+
+      console.log(this._data, this._dataHistory);
 
       e.target.remove();
       this._dataHistory.splice(0); // Delete all history
@@ -403,7 +414,7 @@ class Title extends View {
 
   _generateBackdrop(data) {
     // If no data, don't generate
-    if (!data) return;
+    if (!data) return '';
 
     // All images
     const backdrop = data['backdrops'][0]?.[`file_path`];
@@ -501,7 +512,7 @@ class Title extends View {
   }
 
   _generateDetails(data) {
-    if (!data) return; // Change later to account for wrong data
+    if (!data) return '';
 
     const year = data['first_air_date'].split('-')[0];
 
@@ -603,7 +614,7 @@ class Title extends View {
   }
 
   _generateEpisodes(data) {
-    if (!data) return;
+    if (!data) return '';
 
     let seasons =
       data['seasons'].length > 1
@@ -698,6 +709,8 @@ class Title extends View {
   }
 
   _generateRecommendations(data) {
+    if (!data) return '';
+
     let markup = `
     <div class="header-title">More Like This</div>
     <div class="recommendations-wrapper wrapper">
@@ -798,6 +811,8 @@ class Title extends View {
   }
 
   _generateTrailers(data) {
+    if (!data) return '';
+
     let markup = `
     <div class="header-title">Trailers & More</div>
     <div class="trailers-container">`;
@@ -848,6 +863,7 @@ class Title extends View {
   }
 
   _generateProduction(data) {
+    if (!data) return '';
     const createdBy = data['created_by'].map((creators) => creators.name);
 
     const filteredActing = data['credits']['cast']

@@ -16,7 +16,6 @@ const init = function () {
   categories.addModalHandler(controlTitle);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
-  console.log(document.querySelector('[data-name="Killing Eve"]'));
 };
 
 const clear = function () {
@@ -66,7 +65,6 @@ const controlInfiniteScrolling = async function () {
 const controlSeasons = async function (id, seasonNum) {
   const seasonData = await model.getShowSeason(id, seasonNum);
   title.updateSeason(seasonData, seasonNum);
-  console.log(seasonData);
 };
 
 profile.render(model.state.users);
