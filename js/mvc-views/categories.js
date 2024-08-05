@@ -130,6 +130,9 @@ class Categories extends View {
   }
 
   addModalHandler(handler) {
+    if (this._boundModal) return;
+
+    this._boundModal = true;
     document.addEventListener('click', (e) => {
       const target = e.target.closest('.category-icon-info');
       if (!target) return;

@@ -208,6 +208,30 @@ export const getShowSeason = async function (id, seasonNum) {
   return season;
 };
 
+export const getMediaWithCast = async function (cast) {
+  const castMember = await AJAX(
+    `https://api.themoviedb.org/3/search/person?query=${cast}&include_adult=false&language=en-US&page=1`
+  );
+
+  const moviesWithCast = await AJAX(
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_cast=${castMember['results'][0]['id']}`
+  );
+
+  // Have to only filter TV Shows from known_for, since API does not yet support TV Show search through cast member
+  const data = {
+    cast_name: castMember['results']?.[0]['name'],
+    known_for: castMember['results']?.[0]['known_for'],
+    featured_in: moviesWithCast['results'],
+    combined: [
+      ...castMember['results']?.[0]['known_for'].filter(
+        (show) => show['media_type'] === 'tv'
+      ),
+      ...moviesWithCast['results'],
+    ],
+  };
+  return data;
+};
+
 export const getCategory = async function (type, genre = null, random = false) {
   // Get random
   if (random && type == 'tv') {

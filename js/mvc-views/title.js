@@ -20,7 +20,7 @@ class Title extends View {
   _titleTrailers;
   _titleProduction;
 
-  _maxEpChars = 240;
+  _maxEpChars = 225;
   _maxRecChars = 155;
 
   // Properties relating to results' DOM
@@ -74,6 +74,15 @@ class Title extends View {
     };
 
     this._modal.addEventListener('click', manageSeason);
+  }
+
+  addNavigationHandler(handler) {
+    this._modal.addEventListener('click', (e) => {
+      const target = e.closest('.navigation');
+      if (!target) return;
+
+      console.log('Clicked navigation!');
+    });
   }
 
   updateTitleMarkup() {
@@ -182,7 +191,7 @@ class Title extends View {
       ul.classList.add('season-list');
 
       let seasons = this._data['seasons'].filter((season) =>
-        season['name'].startsWith('Season')
+        season['name'].startsWith('Se')
       );
 
       let seasonsHTML = seasons
@@ -548,18 +557,21 @@ class Title extends View {
       if (
         data['keywords']?.['results']?.[i] ||
         data['keywords']?.['keywords']?.[i]
-      )
+      ) {
+        const keyword =
+          data['keywords']?.['results']?.[i]['name'] ||
+          data['keywords']?.['keywords']?.[i]['name'];
+        const capitalized = capitalizeEveryWord(keyword);
         keywords.push(
-          capitalizeEveryWord(
-            data['keywords']?.['results']?.[i]['name'] ||
-              data['keywords']?.['keywords']?.[i]['name']
-          )
+          `<span class='navigation navigation-keyword'>${capitalized}</span>`
         );
+      }
     }
 
     const genres = [];
     for (let i = 0; i < data['genres'].length; i++) {
-      genres.push(data['genres'][i]['name']);
+      const genre = data['genres'][i]['name'];
+      genres.push(`<span class='navigation navigation-genre'>${genre}</span>`);
     }
 
     const filteredActing = data['credits']['cast'].filter(
@@ -568,7 +580,10 @@ class Title extends View {
     // Only three or less acting cast members in metadata summary
     const cast = [];
     for (let i = 0; i < 3; i++) {
-      if (filteredActing[i]) cast.push(filteredActing[i]['name']);
+      if (filteredActing[i]) {
+        const actor = filteredActing[i]['name'];
+        cast.push(`<span class='navigation navigation-cast'>${actor}</span>`);
+      }
     }
 
     return `
@@ -893,18 +908,30 @@ class Title extends View {
 
   _generateProduction(data) {
     if (!data) return '';
-    const createdBy = data['created_by']?.map((creators) => creators.name);
+    const createdBy = data['created_by']?.map(
+      (creator) =>
+        `<span class='navigation navigation-creator'>${creator.name}</span>`
+    );
 
     const filteredActing = data['credits']['cast']
       .filter((castMember) => castMember['known_for_department'] === 'Acting')
-      .map((actor) => actor.name);
+      .map(
+        (actor) =>
+          `<span class='navigation navigation-cast'>${actor.name}</span>`
+      );
 
-    const genres = data['genres'].map((genre) => genre.name);
+    const genres = data['genres'].map(
+      (genre) =>
+        `<span class='navigation navigation-genre'>${genre.name}</span>`
+    );
 
     const keywordsArr =
       data['keywords']?.['results'] || data['keywords']?.['keywords'];
-    const keywords = keywordsArr.map((keyword) =>
-      capitalizeEveryWord(keyword.name)
+    const keywords = keywordsArr.map(
+      (keyword) =>
+        `<span class='navigation navigation-keyword'>${capitalizeEveryWord(
+          keyword.name
+        )}</span>`
     );
 
     // Either TV show or Movie, based on API schema

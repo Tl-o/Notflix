@@ -81,5 +81,12 @@ const controlTitle = async function (id, type) {
   title.updateTitleMarkup();
   title.addSeasonHandler(controlSeasons);
 };
+
+const controlNavigation = async function (query, type) {
+  let data;
+  if (type === 'cast') data = await model.getMediaWithCast(query);
+};
+
+controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID
