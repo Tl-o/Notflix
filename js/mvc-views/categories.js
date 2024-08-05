@@ -233,6 +233,9 @@ class Categories extends View {
           ? `${data.seasons} Seasons`
           : `${data.episodes} Episodes`;
 
+    // Check, element might have been deleted
+    if (!target.querySelector('.category-hover-data')) return;
+
     target.querySelector('.category-hover-data').innerHTML = `
     <div class="category-icons">
         <div class="category-icon-left">

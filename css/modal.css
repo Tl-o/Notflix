@@ -306,7 +306,7 @@
 
 .custom-select {
   position: relative;
-  width: 200px;
+  width: 220px;
   font-size: 18px;
   font-weight: 500;
 }
@@ -414,6 +414,7 @@
   justify-content: center;
   align-items: center;
   font-size: 24px;
+  min-width: 48px;
   color: rgb(210, 210, 210);
 }
 

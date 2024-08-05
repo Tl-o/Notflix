@@ -620,14 +620,18 @@ class Title extends View {
     </div>
     <div class="media-production">
         <div>
-        <span class="media-tag">Cast:</span> ${cast.join(', ')},
+        <span class="media-tag">Cast:</span> ${cast.join(', ') || 'None Found'},
         <span class="emphasis"> more...</span>
         </div>
         <div>
-        <span class="media-tag">Genres:</span> ${genres.join(', ')}
+        <span class="media-tag">Genres:</span> ${
+          genres.join(', ') || 'None Found'
+        }
         </div>
         <div>
-        <span class="media-tag">Keywords:</span> ${keywords.join(', ')}
+        <span class="media-tag">Keywords:</span> ${
+          keywords.join(', ') || 'None Found'
+        }
         </div>
     </div>`;
   }
@@ -691,7 +695,11 @@ class Title extends View {
             <div class="episode-img">
                 <img
                 class="episode-thumbnail"
-                src="${this._imgPath + data[i]['still_path']}"
+                src="${
+                  data[i]['still_path']
+                    ? this._imgPath + data[i]['still_path']
+                    : 'https://media.lordicon.com/icons/wired/gradient/980-not-applicable.svg'
+                }"
                 />
                 <div class="play-icon">
                 <svg
@@ -711,7 +719,7 @@ class Title extends View {
                 </svg>
                 </div>
             </div>
-            <div class="episode-data[i]">
+            <div class="episode-data">
                 <div class="episode-title-wrapper">
                 <span class="episode-title">${data[i]['name']}</span>
                 <span class="episode-duration">${data[i]['runtime']}m</span>
@@ -758,7 +766,7 @@ class Title extends View {
     for (let i = 0; i < data.length; i++) {
       const year =
         data[i]['first_air_date']?.split('-')[0] ||
-        data[i]['release_date'].split('-')[0];
+        data[i]['release_date']?.split('-')[0];
 
       const type = data[i]['media_type'] === 'tv' ? 'TV Show' : 'Movie';
 
@@ -797,7 +805,7 @@ class Title extends View {
             </div>
             <div class="recommendation-body">
             <div class="metadata">
-                <span class="media-year-small">${year}</span>
+                <span class="media-year-small">${year || 'Unknown'}</span>
                 <span class="media-badge age">${rating}</span>
                 <span class="media-badge special">HD</span>
                 <button class="modal-icon small">
