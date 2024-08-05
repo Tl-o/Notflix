@@ -28,7 +28,7 @@ class Title extends View {
   _generateMarkup() {
     // Generate modal
     this._parentEl.style = 'overflow: hidden';
-    this._generateTitleSkeleton();
+    this._generateStructure();
 
     // Update all DOM-related variables
     this._modal = document.querySelector('.media-modal');
@@ -41,6 +41,10 @@ class Title extends View {
     );
     this._titleTrailers = document.querySelector('.trailers');
     this._titleProduction = document.querySelector('.production');
+
+    // Generate Skeleton
+    this._generateTitleSkeleton();
+
     // Bind all events
     this._bindToggles();
     this._bindClose();
@@ -78,10 +82,10 @@ class Title extends View {
 
   addNavigationHandler(handler) {
     this._modal.addEventListener('click', (e) => {
-      const target = e.closest('.navigation');
+      const target = e.target.closest('.navigation');
       if (!target) return;
 
-      console.log('Clicked navigation!');
+      this._generateTitleSkeleton();
     });
   }
 
@@ -220,7 +224,7 @@ class Title extends View {
     }
   }
 
-  _generateTitleSkeleton() {
+  _generateStructure() {
     const markup = `
     <div class="media-modal-overlay">
       <div class="media-modal">
@@ -239,120 +243,17 @@ class Title extends View {
           </svg>
         </div>
         <div class="media-modal-backdrop">
-          <div class="media-backdrop-wrapper">
-            <div class="modal-backdrop">
-              <div class="category-loading-skeleton"></div>
-            </div>
-          </div>
         </div>
         <div class="modal-body">
           <div class="media-details">
-            <div class="media-metadata">
-              <div class="metadata">
-                <div class="category-loading-skeleton"></div>
-                <div class="category-loading-skeleton"></div>
-                <div class="category-loading-skeleton"></div>
-                <div class="category-loading-skeleton"></div>
-                <div class="category-loading-skeleton"></div>
-                <div class="category-loading-skeleton"></div>
-              </div>
-              <div class="description">
-                <div class="category-loading-skeleton"></div>
-              </div>
-            </div>
-            <div class="media-production">
-              <div>
-                <div class="category-loading-skeleton"></div>
-              </div>
-              <div>
-                <div class="category-loading-skeleton"></div>
-              </div>
-              <div>
-                <div class="category-loading-skeleton"></div>
-              </div>
-            </div>
           </div>
           <div class="media-episodes">
-            <div class="episodes-header">
-              <div class="category-loading-skeleton"></div>
-            </div>
-            <div class="episodes-wrapper wrapper">
-              ${this._generateEpisodesSkeleton(8)}
-            </div>
           </div>
           <div class="media-recommendations">
-            <div class="recommendations-wrapper wrapper">
-              <div class="recommendations-container">
-                <div class="recommendation">
-                  <div class="poster">
-                    <div class="category-loading-skeleton"></div>
-                  </div>
-                  <div class="recommendation-body">
-                    <div class="metadata">
-                      <div class="category-loading-skeleton"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="recommendation">
-                  <div class="poster">
-                    <div class="category-loading-skeleton"></div>
-                  </div>
-                  <div class="recommendation-body">
-                    <div class="metadata">
-                      <div class="category-loading-skeleton"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="recommendation">
-                  <div class="poster">
-                    <div class="category-loading-skeleton"></div>
-                  </div>
-                  <div class="recommendation-body">
-                    <div class="metadata">
-                      <div class="category-loading-skeleton"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="trailers">
-            <div class="header-title">
-              <div class="category-loading-skeleton"></div>
-            </div>
-            <div class="trailers-container">
-              <a class="trailer-link" target="_blank" rel="noopener noreferrer">
-                <div class="category-loading-skeleton"></div>
-              </a>
-              <a class="trailer-link" target="_blank" rel="noopener noreferrer">
-                <div class="category-loading-skeleton"></div>
-              </a>
-              <a class="trailer-link" target="_blank" rel="noopener noreferrer">
-                <div class="category-loading-skeleton"></div>
-              </a>
-            </div>
           </div>
           <div class="production">
-            <div class="header-title">
-              <div class="category-loading-skeleton"></div>
-            </div>
-            <div class="media-production">
-              <div class="creators">
-                <div class="category-loading-skeleton"></div>
-              </div>
-              <div class="cast">
-                <div class="category-loading-skeleton"></div>
-              </div>
-              <div class="genres">
-                <div class="category-loading-skeleton"></div>
-              </div>
-              <div class="keywords">
-                <div class="category-loading-skeleton"></div>
-              </div>
-              <div class="maturity">
-                <div class="category-loading-skeleton"></div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="media-modal-spacer"></div>
@@ -362,9 +263,130 @@ class Title extends View {
     document.body.insertAdjacentHTML('afterbegin', markup);
   }
 
+  _generateTitleSkeleton() {
+    this._titleBackdrop.innerHTML = `
+    <div class="media-backdrop-wrapper">
+      <div class="modal-backdrop">
+        <div class="category-loading-skeleton"></div>
+      </div>
+    </div>`;
+
+    this._titleDetails.innerHTML = `
+    <div class="media-metadata">
+      <div class="metadata">
+        <div class="category-loading-skeleton"></div>
+        <div class="category-loading-skeleton"></div>
+        <div class="category-loading-skeleton"></div>
+        <div class="category-loading-skeleton"></div>
+        <div class="category-loading-skeleton"></div>
+        <div class="category-loading-skeleton"></div>
+      </div>
+      <div class="description">
+        <div class="category-loading-skeleton"></div>
+      </div>
+    </div>
+    <div class="media-production">
+      <div>
+        <div class="category-loading-skeleton"></div>
+      </div>
+      <div>
+        <div class="category-loading-skeleton"></div>
+      </div>
+      <div>
+        <div class="category-loading-skeleton"></div>
+      </div>
+    </div>`;
+
+    this._titleEpisodes.innerHTML = `
+    <div class="episodes-header">
+      <div class="category-loading-skeleton"></div>
+    </div>
+    <div class="episodes-wrapper wrapper">
+    </div>`;
+
+    // This is called here and not inserted in the above string literal because it automatically inserts itself.
+    // It is coded this way because this function is called whenever the user is loading a new season's info.
+    this._generateEpisodesSkeleton(8);
+
+    this._titleRecommendations.innerHTML = `
+    <div class="recommendations-wrapper wrapper">
+      <div class="recommendations-container">
+        <div class="recommendation">
+          <div class="poster">
+            <div class="category-loading-skeleton"></div>
+          </div>
+          <div class="recommendation-body">
+            <div class="metadata">
+              <div class="category-loading-skeleton"></div>
+            </div>
+          </div>
+        </div>
+        <div class="recommendation">
+          <div class="poster">
+            <div class="category-loading-skeleton"></div>
+          </div>
+          <div class="recommendation-body">
+            <div class="metadata">
+              <div class="category-loading-skeleton"></div>
+            </div>
+          </div>
+        </div>
+        <div class="recommendation">
+          <div class="poster">
+            <div class="category-loading-skeleton"></div>
+          </div>
+          <div class="recommendation-body">
+            <div class="metadata">
+              <div class="category-loading-skeleton"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+    this._titleTrailers.innerHTML = `
+    <div class="header-title">
+      <div class="category-loading-skeleton"></div>
+    </div>
+    <div class="trailers-container">
+      <a class="trailer-link" target="_blank" rel="noopener noreferrer">
+        <div class="category-loading-skeleton"></div>
+      </a>
+      <a class="trailer-link" target="_blank" rel="noopener noreferrer">
+        <div class="category-loading-skeleton"></div>
+      </a>
+      <a class="trailer-link" target="_blank" rel="noopener noreferrer">
+        <div class="category-loading-skeleton"></div>
+      </a>
+    </div>`;
+
+    this._titleProduction.innerHTML = `
+    <div class="header-title">
+      <div class="category-loading-skeleton"></div>
+    </div>
+    <div class="media-production">
+      <div class="creators">
+        <div class="category-loading-skeleton"></div>
+      </div>
+      <div class="cast">
+        <div class="category-loading-skeleton"></div>
+      </div>
+      <div class="genres">
+        <div class="category-loading-skeleton"></div>
+      </div>
+      <div class="keywords">
+        <div class="category-loading-skeleton"></div>
+      </div>
+      <div class="maturity">
+        <div class="category-loading-skeleton"></div>
+      </div>
+    </div>`;
+  }
+
   _generateResultsSkeleton() {}
 
   _generateEpisodesSkeleton(episodeNum) {
+    if (!episodeNum) return '';
     const wrapper = this._modal?.querySelector('.episodes-wrapper');
 
     let markup = `
@@ -674,6 +696,8 @@ class Title extends View {
   }
 
   _updateEpisodes(data) {
+    if (!data) return '';
+
     // Fullview toggle
     let markup = `
     <div class="full-toggle" ${data.length <= 10 ? 'hidden' : ''}>

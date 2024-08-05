@@ -80,6 +80,7 @@ const controlTitle = async function (id, type) {
   title.updateData(data);
   title.updateTitleMarkup();
   title.addSeasonHandler(controlSeasons);
+  title.addNavigationHandler(controlNavigation);
 };
 
 const controlNavigation = async function (query, type) {
