@@ -96,7 +96,11 @@ class Title extends View {
       if (target.classList.contains('navigation-keyword')) type = 'keyword';
 
       this._generateNavigationSkeleton();
-      handler(target.textContent, type);
+      // Either get target's ID, in case of keyword or other title navigation, or the text content in case of cast or genre.
+      const query = target.dataset.id
+        ? [target.dataset.id, target.textContent]
+        : target.textContent;
+      handler(query, type);
     });
   }
 
@@ -711,9 +715,13 @@ class Title extends View {
         const keyword =
           data['keywords']?.['results']?.[i]['name'] ||
           data['keywords']?.['keywords']?.[i]['name'];
+        const keywordID =
+          data['keywords']?.['results']?.[i]['id'] ||
+          data['keywords']?.['keywords']?.[i]['id'];
+
         const capitalized = capitalizeEveryWord(keyword);
         keywords.push(
-          `<span class='navigation navigation-keyword'>${capitalized}</span>`
+          `<span data-id="${keywordID}" class='navigation navigation-keyword'>${capitalized}</span>`
         );
       }
     }
@@ -1081,7 +1089,9 @@ class Title extends View {
       data['keywords']?.['results'] || data['keywords']?.['keywords'];
     const keywords = keywordsArr.map(
       (keyword) =>
-        `<span class='navigation navigation-keyword'>${capitalizeEveryWord(
+        `<span data-id="${
+          keyword.id
+        }" class='navigation navigation-keyword'>${capitalizeEveryWord(
           keyword.name
         )}</span>`
     );

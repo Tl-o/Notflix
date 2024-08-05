@@ -219,7 +219,7 @@ export const getMediaWithCast = async function (cast) {
 
   // Have to only filter TV Shows from known_for, since API does not yet support TV Show search through cast member
   const data = {
-    name: `Shows From ${castMember['results']?.[0]['name']}`,
+    name: `Shows Featuring ${castMember['results']?.[0]['name']}`,
     results: [
       ...castMember['results']?.[0]['known_for'].filter(
         (show) => show['media_type'] === 'tv'
@@ -254,6 +254,33 @@ export const getMediaWithGenre = async function (genre) {
 
   const data = {
     name: `Navigating ${genre}`,
+    results: shuffleArray([...tvShows['results'], ...movies['results']]),
+  };
+  console.log(data);
+  return data;
+};
+
+export const getMediaWithKeyword = async function (keyword) {
+  const tvShows = await AJAX(
+    `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_keywords=${keyword[0]}`
+  );
+
+  // Since these API calls do NOT add media type
+  tvShows['results'].forEach((tvShow) => {
+    tvShow['media_type'] = 'tv';
+  });
+
+  const movies = await AJAX(
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=16&with_keywords=${keyword[0]}`
+  );
+
+  // Since these API calls do NOT add media type
+  movies['results'].forEach((movie) => {
+    movie['media_type'] = 'movie';
+  });
+
+  const data = {
+    name: `Navigating ${keyword[1]}`,
     results: shuffleArray([...tvShows['results'], ...movies['results']]),
   };
   console.log(data);
