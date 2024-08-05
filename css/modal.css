@@ -497,7 +497,7 @@
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  padding-inline-start: 32px;
+  justify-content: space-evenly;
   gap: 32px;
   max-height: 90vh;
   overflow-y: hidden;

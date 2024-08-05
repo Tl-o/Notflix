@@ -86,8 +86,17 @@ class Title extends View {
       if (!target) return;
 
       this._modal.classList.add('full-size');
+      let type;
+      if (
+        target.classList.contains('navigation-cast') ||
+        target.classList.contains('navigation-creator')
+      )
+        type = 'cast';
+      if (target.classList.contains('navigation-genre')) type = 'genre';
+      if (target.classList.contains('navigation-keyword')) type = 'keyword';
+
       this._generateNavigationSkeleton();
-      handler(target.textContent, 'cast');
+      handler(target.textContent, type);
     });
   }
 
@@ -166,7 +175,7 @@ class Title extends View {
                 </button>
             </div>
             <div class="recommendation-description">
-                ${description}
+                ${description || 'No description was found for this show.'}
             </div>
             </div>
         </div>`;
@@ -176,7 +185,7 @@ class Title extends View {
 
     this._titleRecommendations.innerHTML = `
     <div class="header-title center">
-      More From ${this._data['cast_name']}
+      ${this._data['name']}
     </div>
     <div class="recommendations-wrapper wrapper">
       <div class="recommendations-container full-view">
@@ -983,7 +992,7 @@ class Title extends View {
                 </button>
             </div>
             <div class="recommendation-description">
-                ${description}
+                ${description || 'No description was found for this show.'}
             </div>
             </div>
         </div>`;

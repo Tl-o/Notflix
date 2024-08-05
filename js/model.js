@@ -231,21 +231,32 @@ export const getMediaWithCast = async function (cast) {
 };
 
 export const getMediaWithGenre = async function (genre) {
-  const genreShowID = mapGenre(genre, tv);
-  const genreMovieID = mapGenre(genre, movie);
+  const genreShowID = mapGenre(genre, 'tv');
+  const genreMovieID = mapGenre(genre, 'movie');
 
   const tvShows = await AJAX(
     `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreShowID}`
   );
 
+  // Since these API calls do NOT add media type
+  tvShows['results'].forEach((tvShow) => {
+    tvShow['media_type'] = 'tv';
+  });
+
   const movies = await AJAX(
     `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreMovieID}`
   );
 
+  // Since these API calls do NOT add media type
+  movies['results'].forEach((movie) => {
+    movie['media_type'] = 'movie';
+  });
+
   const data = {
-    name: `Shows That Are ${genre}`,
-    results: shuffleArray([...tvShows, ...movies]),
+    name: `Navigating ${genre}`,
+    results: shuffleArray([...tvShows['results'], ...movies['results']]),
   };
+  console.log(data);
   return data;
 };
 
