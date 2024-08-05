@@ -4,6 +4,7 @@ import {
   shuffleArray,
   autoResolvePromise,
   AJAX,
+  parseMovieDuration,
 } from './helper.js';
 import * as config from './config.js';
 import { showsDatabase, billboardShows } from './placeholderDatabase.js';
@@ -163,15 +164,13 @@ export const getMovieDetails = async function (id) {
     `https://api.themoviedb.org/3/movie/${id}?append_to_response=release_dates&language=en-US`
   );
 
-  const maturity = data['release_dates']?.['results']?.find(
-    (result) => result['iso_3166_1'] === 'US'
-  )?.['release_dates']?.[0]?.['certification'];
+  const maturity = data['release_dates']?.['results']
+    ?.find((result) => result['iso_3166_1'] === 'US')
+    ?.['release_dates']?.find((cert) => cert['certification'])?.[
+    'certification'
+  ];
 
-  const hours = Math.floor(data['runtime'] / 60) || '';
-  const minutes = data['runtime'] % 60 || '';
-  let time = `${hours ? `${hours}h ` : ''} ${minutes ? `${minutes}m` : ''}`;
-
-  if (hours === '' && minutes === '') time = `1h 30m`;
+  const time = parseMovieDuration(data);
 
   const movieMetadata = {
     genres: data['genres'],
@@ -189,6 +188,14 @@ export const getShowModal = async function (id) {
   );
 
   data[`season_1`] = await getShowSeason(id, 1);
+
+  return data;
+};
+
+export const getMovieModal = async function (id) {
+  const data = await AJAX(
+    `https://api.themoviedb.org/3/movie/${id}?append_to_response=credits%2Crelease_dates%2Crecommendations%2Cvideos%2Ckeywords%2Cimages%3Finclude_image_language%3Den&language=en-US`
+  );
 
   return data;
 };

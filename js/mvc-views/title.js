@@ -2,7 +2,7 @@
 import { View } from './view';
 import 'core-js/stable';
 import MATURITY_RATING_MAPPING from '../config.js';
-import { capitalizeEveryWord } from '../helper';
+import { capitalizeEveryWord, parseMovieDuration } from '../helper';
 import { mark } from 'regenerator-runtime';
 
 class Title extends View {
@@ -77,9 +77,7 @@ class Title extends View {
   }
 
   updateTitleMarkup() {
-    this._titleBackdrop.innerHTML = this._generateBackdrop(
-      this._data['images?include_image_language=en']
-    );
+    this._titleBackdrop.innerHTML = this._generateBackdrop(this._data);
     this._titleDetails.innerHTML = this._generateDetails(this._data);
     this._titleEpisodes.innerHTML = this._generateEpisodes(this._data);
     this._titleRecommendations.innerHTML = this._generateRecommendations(
@@ -417,8 +415,10 @@ class Title extends View {
     if (!data) return '';
 
     // All images
-    const backdrop = data['backdrops'][0]?.[`file_path`];
-    const logo = data['logos'][0]?.[`file_path`];
+    const imgData = data['images?include_image_language=en'];
+    const backdrop = imgData['backdrops'][0]?.[`file_path`];
+    const logo = imgData['logos'][0]?.[`file_path`];
+    const type = data['number_of_episodes'] ? 'Episode' : 'Movie';
 
     return `
     <div class="media-backdrop-wrapper">
@@ -452,7 +452,7 @@ class Title extends View {
                     d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"
                 />
                 </svg>
-                Play Episode
+                Play ${type}
             </button>
             <button class="modal-icon">
                 <svg
@@ -514,27 +514,46 @@ class Title extends View {
   _generateDetails(data) {
     if (!data) return '';
 
-    const year = data['first_air_date'].split('-')[0];
+    const year =
+      data['first_air_date']?.split('-')[0] ||
+      data['release_date']?.split('-')[0];
 
-    const maturity = data['content_ratings']['results'].find(
-      (result) => result['iso_3166_1'] === 'US'
-    )?.['rating'];
+    // Either TV show or Movie, based on API schema
+    const maturity =
+      data['content_ratings']?.['results'].find(
+        (result) => result['iso_3166_1'] === 'US'
+      )?.['rating'] ||
+      data['release_dates']?.['results']
+        ?.find((result) => result['iso_3166_1'] === 'US')
+        ?.['release_dates']?.find((cert) => cert['certification'])?.[
+        'certification'
+      ];
 
+    // Get duration in seasons, episodes, or runtime if movie
     const duration =
       data['number_of_seasons'] > 1
         ? `${data['number_of_seasons']} Seasons`
-        : `${data['number_of_episodes']} Episodes`;
+        : data['number_of_episodes']
+        ? `${data['number_of_episodes']} Episodes`
+        : parseMovieDuration(data);
 
     // Get two first sentences, add period at end if no period exists.
     let description = data['overview'].split('.').slice(0, 2).join('.');
     if (description.at(-1) !== '.') description += '.';
 
+    console.log(data);
     // Only three or less keywords in metadata summary
     const keywords = [];
     for (let i = 0; i < 3; i++) {
-      if (data['keywords']['results'][i])
+      if (
+        data['keywords']?.['results']?.[i] ||
+        data['keywords']?.['keywords']?.[i]
+      )
         keywords.push(
-          capitalizeEveryWord(data['keywords']['results'][i]['name'])
+          capitalizeEveryWord(
+            data['keywords']?.['results']?.[i]['name'] ||
+              data['keywords']?.['keywords']?.[i]['name']
+          )
         );
     }
 
@@ -556,7 +575,7 @@ class Title extends View {
     <div class="media-metadata">
         <div class="metadata">
         <span class="media-year">${year}</span>
-        <span class="media-badge age">${maturity || '13+'}</span>
+        <span class="media-badge age">${maturity || 'G'}</span>
         <span class="media-duration">${duration}</span>
         <span class="media-badge special">HD</span>
         <svg
@@ -614,7 +633,7 @@ class Title extends View {
   }
 
   _generateEpisodes(data) {
-    if (!data) return '';
+    if (!data || !data['number_of_episodes']) return '';
 
     let seasons =
       data['seasons'].length > 1
@@ -737,7 +756,9 @@ class Title extends View {
       <div class="recommendations-container">`;
 
     for (let i = 0; i < data.length; i++) {
-      const year = data[i]['first_air_date'].split('-')[0];
+      const year =
+        data[i]['first_air_date']?.split('-')[0] ||
+        data[i]['release_date'].split('-')[0];
 
       const type = data[i]['media_type'] === 'tv' ? 'TV Show' : 'Movie';
 
@@ -864,7 +885,7 @@ class Title extends View {
 
   _generateProduction(data) {
     if (!data) return '';
-    const createdBy = data['created_by'].map((creators) => creators.name);
+    const createdBy = data['created_by']?.map((creators) => creators.name);
 
     const filteredActing = data['credits']['cast']
       .filter((castMember) => castMember['known_for_department'] === 'Acting')
@@ -872,20 +893,29 @@ class Title extends View {
 
     const genres = data['genres'].map((genre) => genre.name);
 
-    const keywords = data['keywords']['results'].map((keyword) =>
+    const keywordsArr =
+      data['keywords']?.['results'] || data['keywords']?.['keywords'];
+    const keywords = keywordsArr.map((keyword) =>
       capitalizeEveryWord(keyword.name)
     );
 
-    const maturity = data['content_ratings']['results'].find(
-      (result) => result['iso_3166_1'] === 'US'
-    )?.['rating'];
+    // Either TV show or Movie, based on API schema
+    const maturity =
+      data['content_ratings']?.['results'].find(
+        (result) => result['iso_3166_1'] === 'US'
+      )?.['rating'] ||
+      data['release_dates']?.['results']
+        ?.find((result) => result['iso_3166_1'] === 'US')
+        ?.['release_dates']?.find((cert) => cert['certification'])?.[
+        'certification'
+      ];
 
     return `
     <div class="header-title">About ${data.name}</div>
     <div class="media-production">
       <div class="creators">
         <span class="media-tag">Creators:</span> ${
-          createdBy.join(', ') || 'Unknown'
+          createdBy?.join(', ') || 'Unknown'
         }
       </div>
       <div class="cast">
@@ -899,7 +929,7 @@ class Title extends View {
       </div>
       <div class="maturity">
         <span class="media-tag">Maturity Rating:</span>
-        <span class="media-badge age">${maturity}</span>
+        <span class="media-badge age">${maturity || 'G'}</span>
       </div>
     </div>`;
   }

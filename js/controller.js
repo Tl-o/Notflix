@@ -29,8 +29,8 @@ const clear = function () {
 
 const controlShowMetadata = async function (id, type) {
   let data;
-  if (type == 'tv') data = await model.getShowDetails(id);
-  if (type == 'movie') data = await model.getMovieDetails(id);
+  if (type === 'tv') data = await model.getShowDetails(id);
+  if (type === 'movie') data = await model.getMovieDetails(id);
   categories.updateHoverMetadata(data);
 };
 
@@ -72,12 +72,14 @@ profile.render(model.state.users);
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
 
-const controlTitle = async function (id) {
+const controlTitle = async function (id, type) {
   title.render();
-  const data = await model.getShowModal(id);
+  let data;
+  if (type === 'tv') data = await model.getShowModal(id);
+  else if (type === 'movie') data = await model.getMovieModal(id);
   title.updateData(data);
   title.updateTitleMarkup();
   title.addSeasonHandler(controlSeasons);
 };
-// controlTitle();
+// controlTitle(419430);
 // 236235 The Gentlemen ID

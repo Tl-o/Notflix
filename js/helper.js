@@ -33,6 +33,16 @@ export function capitalizeEveryWord(string) {
     .join(' ');
 }
 
+export function parseMovieDuration(data) {
+  const hours = Math.floor(data['runtime'] / 60) || '';
+  const minutes = data['runtime'] % 60 || '';
+  let time = `${hours ? `${hours}h ` : ''} ${minutes ? `${minutes}m` : ''}`;
+
+  if (hours === '' && minutes === '') time = `1h 30m`;
+
+  return time;
+}
+
 // Automatic timeout
 
 export function autoResolvePromise() {

@@ -136,7 +136,8 @@ class Categories extends View {
 
       const show = target.closest('.category-item-hover');
       const showID = show.dataset.id;
-      handler(showID);
+      const showType = show.dataset.type;
+      handler(showID, showType);
     });
   }
 
@@ -320,6 +321,7 @@ class Categories extends View {
     hoverDiv.classList.add('category-item-hover');
     hoverDiv.classList.add(`category-${placement}`);
     hoverDiv.dataset.id = e.target.dataset.id;
+    hoverDiv.dataset.type = e.target.dataset.type;
 
     const markup = `
         <div style="position: relative;" class="show-img-hover">
