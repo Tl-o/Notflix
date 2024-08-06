@@ -237,25 +237,32 @@ class Title extends View {
   }
 
   _bindToggles() {
+    const upChevron = `<path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>`;
+    const downChevron = `<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>`;
+
     this._modal.addEventListener('click', (e) => {
       const target = e.target.closest('.full-toggle');
       if (!target) return;
 
-      let targetContainer = target.parentElement.querySelector(
-        '.recommendations-container'
-      );
+      let targetContainer =
+        target.parentElement.querySelector('.toggle-target');
 
       // To scroll back later
       const scrollY = this._overlay.scrollTop;
 
-      // If toggling recommendations
+      // If toggling recommendations or trailers
       if (targetContainer) {
         targetContainer.classList.toggle('full-view');
       } else {
-        targetContainer = target
-          .closest('.wrapper')
-          .classList.toggle('full-view');
+        targetContainer = target.closest('.wrapper');
+        targetContainer.classList.toggle('full-view');
       }
+
+      // Update Chevron
+      target.querySelector('svg').innerHTML =
+        targetContainer.classList.contains('full-view')
+          ? upChevron
+          : downChevron;
 
       // If expanded, keep scroll position. If shrunk, scroll back to the shrunk wrapper.
       if (this._overlay.scrollTop >= scrollY) this._overlay.scrollTop = scrollY;
@@ -315,8 +322,6 @@ class Title extends View {
 
     this._overlay.addEventListener('animationend', (e) => {
       if (e.target !== this._overlay) return;
-
-      console.log(this._data, this._dataHistory);
 
       e.target.remove();
       this._dataHistory.splice(0); // Delete all history
@@ -758,7 +763,6 @@ class Title extends View {
     let description = data['overview'].split('.').slice(0, 2).join('.');
     if (description.at(-1) !== '.') description += '.';
 
-    console.log(data);
     // Only three or less keywords in metadata summary
     const keywords = [];
     for (let i = 0; i < 3; i++) {
@@ -903,10 +907,7 @@ class Title extends View {
             class="bi bi-chevron-down"
             viewBox="0 0 16 16"
         >
-            <path
-            fill-rule="evenodd"
-            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
-            />
+          <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
         </svg>
         </div>
     </div>`;
@@ -983,14 +984,11 @@ class Title extends View {
             class="bi bi-chevron-down"
             viewBox="0 0 16 16"
           >
-            <path
-              fill-rule="evenodd"
-              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
-            />
+            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
           </svg>
         </div>
       </div>
-      <div class="recommendations-container">`;
+      <div class="recommendations-container toggle-target">`;
 
     for (let i = 0; i < data.length; i++) {
       const year =
@@ -1072,7 +1070,28 @@ class Title extends View {
 
     let markup = `
     <div class="header-title">Trailers & More</div>
-    <div class="trailers-container">`;
+    <div class="trailers-wrapper wrapper}">
+      <div class="full-toggle ${data.length > 6 ? '' : 'hidden'}">
+        <div
+          class="recommendations-show-more absolute-center show-more-icon"
+          data-message="Show More"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-down"
+            viewBox="0 0 16 16"
+          >
+            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+          </svg>
+        </div>
+      </div>
+      <div class="trailers-container toggle-target ${
+        data.length > 6 ? '' : 'maskless'
+      }">
+        `;
 
     for (let i = 0; i < data.length; i++) {
       markup += `
@@ -1114,7 +1133,8 @@ class Title extends View {
         </a>`;
     }
 
-    markup += `</div>`; // Close trailers container.
+    markup += `</div>
+    </div>`; // Close trailers container & wrapper. Check HTML above.
 
     return markup;
   }
@@ -1161,7 +1181,7 @@ class Title extends View {
       ];
 
     return `
-    <div class="header-title">About ${data.name}</div>
+    <div class="header-title">About ${data.name || data['original_title']}</div>
     <div class="media-production">
       <div class="creators">
         <span class="media-tag">Creators:</span> ${

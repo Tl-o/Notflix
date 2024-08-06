@@ -355,9 +355,10 @@ const getGenres = async function () {
 
 const mapGenre = function (category, type) {
   if (type === 'tv')
-    return state.genres.showGenres.find((genre) => genre.name === category).id;
+    return state.genres.showGenres.find((genre) => genre.name === category)?.id;
   else
-    return state.genres.movieGenres.find((genre) => genre.name === category).id;
+    return state.genres.movieGenres.find((genre) => genre.name === category)
+      ?.id;
 };
 
 // Initalize all users, later should recreate from actual data

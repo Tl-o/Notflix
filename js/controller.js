@@ -100,6 +100,8 @@ const controlNavigation = async function (query, type) {
   title.updateNavigationMarkup();
 };
 
+renderModal(361743, 'movie');
+
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID
