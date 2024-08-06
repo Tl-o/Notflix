@@ -217,6 +217,10 @@ export const getMediaWithCast = async function (cast) {
     `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_cast=${castMember['results'][0]['id']}`
   );
 
+  moviesWithCast['results'].forEach((movie) => {
+    movie['media_type'] = 'movie';
+  });
+
   // Have to only filter TV Shows from known_for, since API does not yet support TV Show search through cast member
   const data = {
     name: `Shows Featuring ${castMember['results']?.[0]['name']}`,

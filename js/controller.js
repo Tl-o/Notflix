@@ -13,7 +13,7 @@ const init = function () {
   categories.render(model.state.media);
   categories.bindHover(controlShowMetadata);
   categories.addObserverHandler(controlInfiniteScrolling);
-  categories.addModalHandler(controlTitle);
+  categories.addModalHandler(renderModal);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
 };
@@ -72,16 +72,20 @@ profile.render(model.state.users);
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
 
-const controlTitle = async function (id, type) {
+const renderModal = async function (id, type) {
   title.render();
+  controlTitle(id, type);
+  title.addSeasonHandler(controlSeasons);
+  title.addNavigationHandler(controlNavigation);
+};
+
+const controlTitle = async function (id, type) {
   let data;
   if (type === 'tv') data = await model.getShowModal(id);
   else if (type === 'movie') data = await model.getMovieModal(id);
   data['type'] = 'title';
   title.updateData(data);
   title.updateTitleMarkup();
-  title.addSeasonHandler(controlSeasons);
-  title.addNavigationHandler(controlNavigation);
 };
 
 const controlNavigation = async function (query, type) {

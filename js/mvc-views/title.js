@@ -83,11 +83,16 @@ class Title extends View {
     this._modal.addEventListener('click', manageSeason);
   }
 
-  addNavigationHandler(handler) {
+  addNavigationHandler(resultHandler, titleHandler) {
     this._modal.addEventListener('click', (e) => {
       const target = e.target.closest('.navigation');
       if (!target) return;
 
+      // Check if title first
+      if (target.classList.contains('navigation-title')) {
+      }
+
+      // Continue as normal, since navigation is results-based
       this._modal.classList.add('full-size');
       let type;
       if (
@@ -103,7 +108,7 @@ class Title extends View {
       const query = target.dataset.id
         ? [target.dataset.id, target.textContent]
         : target.textContent;
-      handler(query, type);
+      resultHandler(query, type);
     });
   }
 
@@ -168,7 +173,9 @@ class Title extends View {
                 <span class="media-year-small">${year || 'Unknown'}</span>
                 <span class="media-badge age">${rating}</span>
                 <span class="media-badge special">HD</span>
-                <button class="modal-icon small">
+                <button class="modal-icon small navigation navigation-title" data-type="${
+                  show['media_type']
+                }" data-id="${show['id']}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
