@@ -90,6 +90,14 @@ class Title extends View {
 
       // Check if title first
       if (target.classList.contains('navigation-title')) {
+        const mediaType = target.dataset.type;
+        const id = target.dataset.id;
+
+        this._modal.classList.remove('full-size');
+        this._generateTitleSkeleton();
+        titleHandler(id, mediaType);
+        this._titleBackdrop.scrollIntoView({ behavior: 'smooth' });
+        return;
       }
 
       // Continue as normal, since navigation is results-based
@@ -104,6 +112,7 @@ class Title extends View {
       if (target.classList.contains('navigation-keyword')) type = 'keyword';
 
       this._generateNavigationSkeleton();
+      this._overlay.scrollTop = 0;
       // Either get target's ID, in case of keyword or other title navigation, or the text content in case of cast or genre.
       const query = target.dataset.id
         ? [target.dataset.id, target.textContent]
@@ -176,16 +185,16 @@ class Title extends View {
                 <button class="modal-icon small navigation navigation-title" data-type="${
                   show['media_type']
                 }" data-id="${show['id']}">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="currentColor"
-                    class="bi bi-plus-lg"
-                    viewBox="0 0 16 16"
-                >
-                  <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
-                </svg>
+                  <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      class="bi bi-plus-lg"
+                      viewBox="0 0 16 16"
+                  >
+                    <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
+                  </svg>
                 </button>
             </div>
             <div class="recommendation-description">
@@ -294,6 +303,8 @@ class Title extends View {
         this.updateTitleMarkup();
       } else if (this._data['type'] === 'nav') {
         this._modal.classList.add('full-size');
+        // Generates skeleton to empty out all other containers
+        this._generateNavigationSkeleton();
         this.updateNavigationMarkup();
       }
     });
@@ -1026,20 +1037,19 @@ class Title extends View {
                 <span class="media-year-small">${year || 'Unknown'}</span>
                 <span class="media-badge age">${rating}</span>
                 <span class="media-badge special">HD</span>
-                <button class="modal-icon small">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-plus-lg"
-                    viewBox="0 0 16 16"
-                >
-                    <path
-                    fill-rule="evenodd"
-                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
-                    />
-                </svg>
+                <button class="modal-icon small navigation navigation-title" data-type="${
+                  data[i]['media_type']
+                }" data-id="${data[i]['id']}">
+                  <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-plus-lg"
+                      viewBox="0 0 16 16"
+                  >
+                    <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
+                  </svg>
                 </button>
             </div>
             <div class="recommendation-description">

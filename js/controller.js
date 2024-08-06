@@ -76,7 +76,7 @@ const renderModal = async function (id, type) {
   title.render();
   controlTitle(id, type);
   title.addSeasonHandler(controlSeasons);
-  title.addNavigationHandler(controlNavigation);
+  title.addNavigationHandler(controlNavigation, controlTitle);
 };
 
 const controlTitle = async function (id, type) {
