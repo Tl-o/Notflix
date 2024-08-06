@@ -291,6 +291,33 @@ export const getMediaWithKeyword = async function (keyword) {
   return data;
 };
 
+export const getMediaWithCompany = async function (company) {
+  const tvShows = await AJAX(
+    `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_companies=${company[0]}`
+  );
+
+  // Since these API calls do NOT add media type
+  tvShows['results'].forEach((tvShow) => {
+    tvShow['media_type'] = 'tv';
+  });
+
+  const movies = await AJAX(
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_companies=${company[0]}}`
+  );
+
+  // Since these API calls do NOT add media type
+  movies['results'].forEach((movie) => {
+    movie['media_type'] = 'movie';
+  });
+
+  const data = {
+    name: `Produced By ${company[1]}`,
+    results: shuffleArray([...tvShows['results'], ...movies['results']]),
+  };
+
+  return data;
+};
+
 export const getCategory = async function (type, genre = null, random = false) {
   // Get random
   if (random && type == 'tv') {

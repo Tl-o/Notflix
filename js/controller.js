@@ -94,6 +94,7 @@ const controlNavigation = async function (query, type) {
   if (type === 'cast') data = await model.getMediaWithCast(query);
   if (type === 'genre') data = await model.getMediaWithGenre(query);
   if (type === 'keyword') data = await model.getMediaWithKeyword(query);
+  if (type === 'company') data = await model.getMediaWithCompany(query);
 
   data['type'] = 'nav';
   title.updateData(data);

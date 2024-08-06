@@ -110,6 +110,7 @@ class Title extends View {
         type = 'cast';
       if (target.classList.contains('navigation-genre')) type = 'genre';
       if (target.classList.contains('navigation-keyword')) type = 'keyword';
+      if (target.classList.contains('navigation-company')) type = 'company';
 
       this._generateNavigationSkeleton();
       this._overlay.scrollTop = 0;
@@ -1141,9 +1142,16 @@ class Title extends View {
 
   _generateProduction(data) {
     if (!data) return '';
+
+    // Either creators if TV Show, or production companies if movie
     const createdBy = data['created_by']?.map(
       (creator) =>
         `<span class='navigation navigation-creator'>${creator.name}</span>`
+    );
+
+    const producedBy = data['production_companies']?.map(
+      (company) =>
+        `<span class='navigation navigation-company' data-id="${company.id}">${company.name}</span>`
     );
 
     const filteredActing = data['credits']['cast']
@@ -1180,13 +1188,21 @@ class Title extends View {
         'certification'
       ];
 
+    // Creators if tv sow, production companies if movie
+    const creators =
+      createdBy?.length > 0
+        ? `<span class="media-tag">Creators:</span> ${
+            createdBy?.join(', ') || 'Unknown'
+          }`
+        : `<span class="media-tag">Production Companies:</span> ${
+            producedBy?.join(', ') || 'Unknown'
+          }`;
+
     return `
     <div class="header-title">About ${data.name || data['original_title']}</div>
     <div class="media-production">
       <div class="creators">
-        <span class="media-tag">Creators:</span> ${
-          createdBy?.join(', ') || 'Unknown'
-        }
+        ${creators}
       </div>
       <div class="cast">
         <span class="media-tag">Cast:</span> ${filteredActing.join(', ')}
