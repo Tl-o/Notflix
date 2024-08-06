@@ -76,6 +76,7 @@ class Title extends View {
         );
         this._modal.querySelector('.episodes-wrapper').innerHTML = markup;
       } else if (seasonNum === 'all') {
+        this._generateEpisodesSkeleton(10);
         allHandler(this._data);
       } else {
         this._generateEpisodesSkeleton(episodeNum);
@@ -255,7 +256,7 @@ class Title extends View {
   </div>`;
 
     // Render each seasons
-    for (let i = 1; i < numOfSeasons; i++) {
+    for (let i = 1; i <= numOfSeasons; i++) {
       let data = this._data[`season_${i}`]['episodes'];
       markup += `<div class="season-header ${
         i === 1 ? 'season-one' : ''
