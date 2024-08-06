@@ -62,9 +62,26 @@ const controlInfiniteScrolling = async function () {
     footer.render();
 };
 
-const controlSeasons = async function (id, seasonNum) {
+const controlSeasons = async function (id, seasonNum, render = true) {
   const seasonData = await model.getShowSeason(id, seasonNum);
-  title.updateSeason(seasonData, seasonNum);
+  title.updateSeason(seasonData, seasonNum, render);
+};
+
+const controlAllEpisodes = async function (data) {
+  const numSeasons = data['number_of_seasons'];
+  const id = data['id'];
+  const allSeasons = [];
+  for (let i = 1; i <= numSeasons; i++) {
+    if (data[`season_${i}`]) continue;
+
+    allSeasons.push([id, i]);
+  }
+
+  // Get all missing seasons in parellal
+  await Promise.all(
+    allSeasons.map((season) => controlSeasons(...season, false))
+  );
+  title.updateAllEpisodesMarkup();
 };
 
 profile.render(model.state.users);
@@ -75,7 +92,7 @@ header.addHandler(controlUsers);
 const renderModal = async function (id, type) {
   title.render();
   controlTitle(id, type);
-  title.addSeasonHandler(controlSeasons);
+  title.addSeasonHandler(controlSeasons, controlAllEpisodes);
   title.addNavigationHandler(controlNavigation, controlTitle);
 };
 
@@ -101,7 +118,7 @@ const controlNavigation = async function (query, type) {
   title.updateNavigationMarkup();
 };
 
-renderModal(361743, 'movie');
+renderModal(61222, 'tv');
 
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);

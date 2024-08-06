@@ -21,6 +21,10 @@ class Title extends View {
   _titleProduction;
   _btnBack;
 
+  // Path
+  _upChevron = `<path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>`;
+  _downChevron = `<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>`;
+
   _maxEpChars = 225;
   _maxRecChars = 155;
 
@@ -55,7 +59,7 @@ class Title extends View {
     return '';
   }
 
-  addSeasonHandler(handler) {
+  addSeasonHandler(seasonHandler, allHandler) {
     // Arrow function so that the this keyword refers to the class
     const manageSeason = (e) => {
       const target = e.target.closest('.season-list-item');
@@ -71,9 +75,11 @@ class Title extends View {
           this._data[`season_${seasonNum}`]['episodes']
         );
         this._modal.querySelector('.episodes-wrapper').innerHTML = markup;
+      } else if (seasonNum === 'all') {
+        allHandler(this._data);
       } else {
         this._generateEpisodesSkeleton(episodeNum);
-        handler(this._data['id'], seasonNum);
+        seasonHandler(this._data['id'], seasonNum);
       }
 
       btn.textContent = target.textContent.split('(')[0]; // Only get season, no episodes
@@ -218,6 +224,97 @@ class Title extends View {
     </div>`;
   }
 
+  updateAllEpisodesMarkup() {
+    const numOfSeasons = this._data['number_of_seasons'];
+    const episodesWrapper =
+      this._titleEpisodes.querySelector('.episodes-wrapper');
+
+    let markup = `
+    <div class="full-toggle" ${
+      this._data['number_of_episodes'] <= 10 ? 'hidden' : ''
+    }>
+      <div
+      class="recommendations-show-more absolute-center show-more-icon"
+      data-message="Show More"
+      >
+      <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-chevron-down"
+          viewBox="0 0 16 16"
+      >
+        ${
+          episodesWrapper.classList.contains('full-view')
+            ? this._upChevron
+            : this._downChevron
+        }
+      </svg>
+      </div>
+  </div>`;
+
+    // Render each seasons
+    for (let i = 1; i < numOfSeasons; i++) {
+      let data = this._data[`season_${i}`]['episodes'];
+      markup += `<div class="season-header ${
+        i === 1 ? 'season-one' : ''
+      }">Season ${i}</div>`;
+      // Render episodes for each season
+      for (let j = 0; j < data.length; j++) {
+        let description =
+          data[j]['overview'].length > this._maxEpChars
+            ? data[j]['overview'].slice(0, this._maxEpChars) + '...'
+            : data[j]['overview'];
+
+        markup += `
+          <div class="media-episode ${j === 0 ? 'first-episode' : ''}">
+              <div class="episode-wrapper">
+              <div class="episode-index">${data[j]['episode_number']}</div>
+              <div class="episode-img">
+                  <img
+                  class="episode-thumbnail"
+                  src="${
+                    data[j]['still_path']
+                      ? this._imgPath + data[j]['still_path']
+                      : 'https://media.lordicon.com/icons/wired/gradient/980-not-applicable.svg'
+                  }"
+                  />
+                  <div class="play-icon">
+                  <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      fill="currentColor"
+                      class="bi bi-play-circle"
+                      viewBox="0 0 16 16"
+                  >
+                      <path
+                      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+                      />
+                      <path
+                      d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"
+                      />
+                  </svg>
+                  </div>
+              </div>
+              <div class="episode-data">
+                  <div class="episode-title-wrapper">
+                  <span class="episode-title">${data[j]['name']}</span>
+                  <span class="episode-duration">${data[j]['runtime']}m</span>
+                  </div>
+                  <div class="episode-description">
+                  ${description}
+                  </div>
+              </div>
+              </div>
+          </div>`;
+      }
+    }
+
+    episodesWrapper.innerHTML = markup;
+  }
+
   updateData(data) {
     if (this._data) {
       this._dataHistory.push(this._data);
@@ -226,9 +323,11 @@ class Title extends View {
     } else this._data = data;
   }
 
-  updateSeason(seasonData, seasonNum) {
+  updateSeason(seasonData, seasonNum, render = true) {
     this._data[`season_${seasonNum}`] = seasonData;
     console.log(this._data);
+
+    if (!render) return;
 
     const markup = this._updateEpisodes(
       this._data[`season_${seasonNum}`]['episodes']
@@ -238,9 +337,6 @@ class Title extends View {
   }
 
   _bindToggles() {
-    const upChevron = `<path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>`;
-    const downChevron = `<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>`;
-
     this._modal.addEventListener('click', (e) => {
       const target = e.target.closest('.full-toggle');
       if (!target) return;
@@ -262,8 +358,8 @@ class Title extends View {
       // Update Chevron
       target.querySelector('svg').innerHTML =
         targetContainer.classList.contains('full-view')
-          ? upChevron
-          : downChevron;
+          ? this._upChevron
+          : this._downChevron;
 
       // If expanded, keep scroll position. If shrunk, scroll back to the shrunk wrapper.
       if (this._overlay.scrollTop >= scrollY) this._overlay.scrollTop = scrollY;
@@ -908,7 +1004,13 @@ class Title extends View {
             class="bi bi-chevron-down"
             viewBox="0 0 16 16"
         >
-          <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+        ${
+          this._titleEpisodes
+            .querySelector('.episodes-wrapper')
+            .classList.contains('full-view')
+            ? this._upChevron
+            : this._downChevron
+        }
         </svg>
         </div>
     </div>`;
@@ -1071,7 +1173,7 @@ class Title extends View {
 
     let markup = `
     <div class="header-title">Trailers & More</div>
-    <div class="trailers-wrapper wrapper}">
+    <div class="trailers-wrapper wrapper">
       <div class="full-toggle ${data.length > 6 ? '' : 'hidden'}">
         <div
           class="recommendations-show-more absolute-center show-more-icon"
