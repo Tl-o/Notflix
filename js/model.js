@@ -256,7 +256,7 @@ export const getMediaWithGenre = async function (genre) {
     name: `Navigating ${genre}`,
     results: shuffleArray([...tvShows['results'], ...movies['results']]),
   };
-  console.log(data);
+
   return data;
 };
 
@@ -283,7 +283,7 @@ export const getMediaWithKeyword = async function (keyword) {
     name: `Navigating ${keyword[1]}`,
     results: shuffleArray([...tvShows['results'], ...movies['results']]),
   };
-  console.log(data);
+
   return data;
 };
 

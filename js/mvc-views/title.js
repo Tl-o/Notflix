@@ -19,6 +19,7 @@ class Title extends View {
   _titleRecommendations;
   _titleTrailers;
   _titleProduction;
+  _btnBack;
 
   _maxEpChars = 225;
   _maxRecChars = 155;
@@ -41,6 +42,7 @@ class Title extends View {
     );
     this._titleTrailers = document.querySelector('.trailers');
     this._titleProduction = document.querySelector('.production');
+    this._btnBack = this._modal.querySelector('.modal-back');
 
     // Generate Skeleton
     this._generateTitleSkeleton();
@@ -49,6 +51,7 @@ class Title extends View {
     this._bindToggles();
     this._bindClose();
     this._bindSeason();
+    this._bindBack();
     return '';
   }
 
@@ -202,6 +205,7 @@ class Title extends View {
     if (this._data) {
       this._dataHistory.push(this._data);
       this._data = data;
+      this._btnBack.classList.remove('hidden');
     } else this._data = data;
   }
 
@@ -268,6 +272,26 @@ class Title extends View {
     });
   }
 
+  _bindBack() {
+    this._modal.addEventListener('click', (e) => {
+      const target = e.target.closest('.modal-back');
+      if (!target) return;
+
+      this._data = this._dataHistory.pop();
+
+      // Hide button if no more history
+      if (this._dataHistory.length === 0) this._btnBack.classList.add('hidden');
+
+      if (this._data['type'] === 'title') {
+        this._modal.classList.remove('full-size');
+        this.updateTitleMarkup();
+      } else if (this._data['type'] === 'nav') {
+        this._modal.classList.add('full-size');
+        this.updateNavigationMarkup();
+      }
+    });
+  }
+
   _hide() {
     this._overlay.classList.add('fade-out-modal');
 
@@ -324,7 +348,7 @@ class Title extends View {
     const markup = `
     <div class="media-modal-overlay">
       <div class="media-modal">
-        <div class="modal-close">
+        <div class="nav-icon modal-close">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -336,6 +360,18 @@ class Title extends View {
             <path
               d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
             />
+          </svg>
+        </div>
+        <div class="nav-icon modal-back hidden">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-x-circle-fill"
+            viewBox="0 0 16 16"
+          >
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
           </svg>
         </div>
         <div class="media-modal-backdrop">
