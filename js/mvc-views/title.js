@@ -1021,8 +1021,8 @@ class Title extends View {
         >
         ${
           this._titleEpisodes
-            .querySelector('.episodes-wrapper')
-            .classList.contains('full-view')
+            ?.querySelector('.episodes-wrapper')
+            ?.classList.contains('full-view')
             ? this._upChevron
             : this._downChevron
         }

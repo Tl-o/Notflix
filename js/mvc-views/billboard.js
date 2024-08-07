@@ -66,7 +66,6 @@ class Billboard extends View {
     const bottomLimit =
       window.innerHeight || document.documentElement.clientHeight;
 
-    console.log(rect, topLimit, bottomLimit);
     if (rect.top >= topLimit && rect.bottom <= bottomLimit)
       this._trailer.play();
   }
@@ -246,7 +245,6 @@ class Billboard extends View {
     this._trailer.classList.remove('opaque');
     this._trailer.muted = true;
     this._trailer.play();
-    this._trailer.muted = false;
     this._timeout = setTimeout(this._stopTrailer.bind(this), 1000);
   }
 
