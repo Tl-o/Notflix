@@ -27,6 +27,8 @@ class Categories extends View {
   _bound = false; // Check if hover and responsiveness are binded
   _observer;
   _isFetching = false;
+  // This is used to prevent hover as the user scrolls
+  _isScrolling = false;
 
   renderSkeleton() {
     this._isFetching = true;
@@ -78,6 +80,7 @@ class Categories extends View {
     this._parentEl.addEventListener(
       'mouseenter',
       (e) => {
+        if (this._isScrolling) return;
         if (!e.target?.classList.contains('category-item')) return;
         if (e.target.classList.contains('opaque')) return;
 
@@ -167,6 +170,7 @@ class Categories extends View {
     this.clear();
     this._generateViews();
     this._bindResponsiveness();
+    this._bindScroll();
     this._lastRenderedCategory = this._data.categories.length;
     this._isFetching = false;
     return '';
@@ -207,6 +211,23 @@ class Categories extends View {
     this._tinyQuery.addEventListener('change', (e) => {
       if (e.matches) this._updateCategories(2, 45);
     });
+  }
+
+  // To disable hovering temporarily
+  _bindScroll() {
+    const scroll = (e) => {
+      this._isScrolling = true;
+      document.removeEventListener('scroll', scroll);
+      document.addEventListener('mousemove', mouseMove);
+    };
+
+    const mouseMove = (e) => {
+      this._isScrolling = false;
+      document.removeEventListener('mousemove', mouseMove);
+      document.addEventListener('scroll', scroll);
+    };
+
+    document.addEventListener('scroll', scroll);
   }
 
   updateHoverMetadata(data) {

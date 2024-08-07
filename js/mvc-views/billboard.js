@@ -84,7 +84,7 @@ class Billboard extends View {
       this._controlSound.bind(this)
     );
 
-    setTimeout(this._playTrailer.bind(this), 1000);
+    // setTimeout(this._playTrailer.bind(this), 1000);
     return '';
   }
 
