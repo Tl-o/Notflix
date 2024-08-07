@@ -319,6 +319,11 @@
   font-style: italic;
 }
 
+.more:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /* All classes relating to episodes */
 
 .media-episodes {

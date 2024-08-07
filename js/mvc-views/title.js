@@ -91,6 +91,7 @@ class Title extends View {
   }
 
   addNavigationHandler(resultHandler, titleHandler) {
+    // For data navigation
     this._modal.addEventListener('click', (e) => {
       const target = e.target.closest('.navigation');
       if (!target) return;
@@ -126,6 +127,14 @@ class Title extends View {
         ? [target.dataset.id, target.textContent]
         : target.textContent;
       resultHandler(query, type);
+    });
+
+    // For navigation to full production information
+    this._modal.addEventListener('click', (e) => {
+      const target = e.target.closest('.more');
+      if (!target) return;
+
+      this._titleProduction.scrollIntoView({ behavior: 'smooth' });
     });
   }
 
@@ -862,18 +871,13 @@ class Title extends View {
     if (description.at(-1) !== '.') description += '.';
 
     // Only three or less keywords in metadata summary
+    const allKeywords =
+      data['keywords']?.['results'] || data['keywords']?.['keywords'];
     const keywords = [];
     for (let i = 0; i < 3; i++) {
-      if (
-        data['keywords']?.['results']?.[i] ||
-        data['keywords']?.['keywords']?.[i]
-      ) {
-        const keyword =
-          data['keywords']?.['results']?.[i]['name'] ||
-          data['keywords']?.['keywords']?.[i]['name'];
-        const keywordID =
-          data['keywords']?.['results']?.[i]['id'] ||
-          data['keywords']?.['keywords']?.[i]['id'];
+      if (allKeywords[i]) {
+        const keyword = allKeywords[i]['name'];
+        const keywordID = allKeywords[i]['id'];
 
         const capitalized = capitalizeEveryWord(keyword);
         keywords.push(
@@ -949,8 +953,12 @@ class Title extends View {
     </div>
     <div class="media-production">
         <div>
-        <span class="media-tag">Cast:</span> ${cast.join(', ') || 'None Found'},
-        <span class="emphasis"> more...</span>
+        <span class="media-tag">Cast:</span> ${cast.join(', ') || 'None Found'}
+        ${
+          filteredActing.length > 3
+            ? `<span class="emphasis more">, more...</span>`
+            : ''
+        }
         </div>
         <div>
         <span class="media-tag">Genres:</span> ${
@@ -960,7 +968,11 @@ class Title extends View {
         <div>
         <span class="media-tag">Keywords:</span> ${
           keywords.join(', ') || 'None Found'
-        }
+        } ${
+      allKeywords.length > 3
+        ? `<span class="emphasis more">, more...</span>`
+        : ''
+    }
         </div>
     </div>`;
   }
