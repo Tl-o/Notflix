@@ -89,8 +89,14 @@ profile.render(model.state.users);
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
 
+const controlBillboard = function () {
+  billboard.resume();
+};
+
 const renderModal = async function (id, type) {
+  billboard.pause();
   title.render();
+  title.addCloseHandler(controlBillboard);
   controlTitle(id, type);
   title.addSeasonHandler(controlSeasons, controlAllEpisodes);
   title.addNavigationHandler(controlNavigation, controlTitle);

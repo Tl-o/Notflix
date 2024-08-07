@@ -50,6 +50,27 @@ class Billboard extends View {
     this._parentEl.innerHTML = '';
   }
 
+  // Only used when rendering modal
+  pause() {
+    if (!this._trailer) return;
+
+    this._trailer.pause();
+  }
+
+  resume() {
+    if (!this._trailer) return;
+
+    const rect = this._trailer.getBoundingClientRect();
+    // A third of the trailer's size
+    const topLimit = rect.height * 0.6 * -1;
+    const bottomLimit =
+      window.innerHeight || document.documentElement.clientHeight;
+
+    console.log(rect, topLimit, bottomLimit);
+    if (rect.top >= topLimit && rect.bottom <= bottomLimit)
+      this._trailer.play();
+  }
+
   _generateMarkup() {
     this._parentEl.classList.remove('hidden');
     this._generateBillboard();
@@ -63,7 +84,7 @@ class Billboard extends View {
       this._controlSound.bind(this)
     );
 
-    // setTimeout(this._playTrailer.bind(this), 3000);
+    setTimeout(this._playTrailer.bind(this), 1000);
     return '';
   }
 
@@ -179,7 +200,7 @@ class Billboard extends View {
   }
 
   // Function to be passed into intersection observer
-  _controlTrailer(entries, observer) {
+  _controlTrailer(entries) {
     const lowerVolume = () => {
       if (this._trailer.volume > 0.1) {
         this._trailer.volume -= 0.025;

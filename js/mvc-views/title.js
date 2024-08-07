@@ -53,7 +53,6 @@ class Title extends View {
 
     // Bind all events
     this._bindToggles();
-    this._bindClose();
     this._bindSeason();
     this._bindBack();
     return '';
@@ -135,6 +134,23 @@ class Title extends View {
       if (!target) return;
 
       this._titleProduction.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  // For billboard
+  addCloseHandler(handler) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+
+      this._hide(handler);
+    });
+
+    this._overlay.addEventListener('click', (e) => {
+      const target = e.target.closest('.modal-close');
+      if (!target && !e.target.classList.contains('media-modal-overlay'))
+        return;
+
+      this._hide(handler);
     });
   }
 
@@ -377,22 +393,6 @@ class Title extends View {
     });
   }
 
-  _bindClose() {
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape') return;
-
-      this._hide();
-    });
-
-    this._overlay.addEventListener('click', (e) => {
-      const target = e.target.closest('.modal-close');
-      if (!target && !e.target.classList.contains('media-modal-overlay'))
-        return;
-
-      this._hide();
-    });
-  }
-
   _bindSeason() {
     this._modal.addEventListener('click', (e) => {
       const target = e.target.closest('.season-select');
@@ -424,12 +424,13 @@ class Title extends View {
     });
   }
 
-  _hide() {
+  _hide(handler) {
     this._overlay.classList.add('fade-out-modal');
 
     this._overlay.addEventListener('animationend', (e) => {
       if (e.target !== this._overlay) return;
 
+      handler();
       e.target.remove();
       this._dataHistory.splice(0); // Delete all history
       this._data = null;
@@ -953,12 +954,13 @@ class Title extends View {
     </div>
     <div class="media-production">
         <div>
-        <span class="media-tag">Cast:</span> ${cast.join(', ') || 'None Found'}
-        ${
-          filteredActing.length > 3
-            ? `<span class="emphasis more">, more...</span>`
-            : ''
-        }
+        <span class="media-tag">Cast:</span> ${
+          cast.join(', ') || 'None Found'
+        }${
+      filteredActing.length > 3
+        ? `<span class="emphasis more">, more...</span>`
+        : ''
+    }
         </div>
         <div>
         <span class="media-tag">Genres:</span> ${
