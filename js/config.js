@@ -19,3 +19,4 @@ export const MATURITY_RATING_MAPPING = {
   R: 'R',
   'NC-17': '+18',
 };
+export const MILLISECONDS_IN_SECOND = 1000;

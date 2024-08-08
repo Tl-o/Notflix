@@ -1,6 +1,7 @@
 'use strict';
 import 'core-js/stable';
 import { View } from './view';
+import { MILLISECONDS_IN_SECOND } from '../config.js';
 
 class Billboard extends View {
   // Data
@@ -8,10 +9,15 @@ class Billboard extends View {
   _poster;
   _trailer;
   _trailerControls;
+  // This checks if the player has already started
+  _hasActivated = false;
+  _playTimeout;
+
   _isPlaying = false;
   // In seconds
   _playFor = 30;
-  _timeout;
+  _playAfter = 2 * MILLISECONDS_IN_SECOND;
+  _stopTimeout;
 
   // Intersection Observer
   _observerOptions = {
@@ -39,7 +45,7 @@ class Billboard extends View {
     if (this._trailer) {
       this._isPlaying = false;
       this._observer.unobserve(this._trailer);
-      clearTimeout(this._timeout);
+      clearTimeout(this._stopTimeout);
       this._trailer.pause();
       this._trailer.currentTime = 0;
       this._trailer.classList.add('opaque');
@@ -58,7 +64,7 @@ class Billboard extends View {
   }
 
   resume() {
-    if (!this._trailer) return;
+    if (!this._trailer || !this._hasActivated) return;
 
     const rect = this._trailer.getBoundingClientRect();
     // A third of the trailer's size
@@ -76,6 +82,7 @@ class Billboard extends View {
     this._generateTrailer();
     this._poster = this._parentEl.querySelector('.billboard-img');
     this._trailer = this._parentEl.querySelector('.billboard-video');
+    this._trailer.volume = 0;
     this._trailerControls = this._parentEl.querySelector('.billboard-sound');
     this._bindObserver();
     this._trailerControls.addEventListener(
@@ -83,7 +90,7 @@ class Billboard extends View {
       this._controlSound.bind(this)
     );
 
-    // setTimeout(this._playTrailer.bind(this), 1000);
+    // Billboard timeout is set using intersection observer.
     return '';
   }
 
@@ -219,6 +226,19 @@ class Billboard extends View {
     };
 
     entries.forEach((entry) => {
+      if (entry.isIntersecting && !this._hasActivated) {
+        // To account for user scrolling down too fast before it plays and then going back up.
+        this._playTimeout = setTimeout(
+          this._playTrailer.bind(this),
+          this._playAfter
+        );
+        return;
+      } else if (!entry.isIntersecting && !this._hasActivated) {
+        // If user scrolled too fast before it played, clear the timeout.
+        clearTimeout(this._playTimeout);
+        return;
+      }
+
       if (entry.isIntersecting && this._isPlaying) {
         this._trailer.play();
         raiseVolume();
@@ -238,19 +258,19 @@ class Billboard extends View {
     }
 
     this._trailer.currentTime = 0;
+    this._hasActivated = true;
     this._isPlaying = true;
 
     this._hideMetadata();
     this._poster.classList.add('opaque');
     this._trailer.classList.remove('opaque');
-    this._trailer.muted = true;
     this._trailer.play();
-    this._timeout = setTimeout(this._stopTrailer.bind(this), 1000);
+    this._stopTimeout = setTimeout(this._stopTrailer.bind(this), 1000);
   }
 
   _stopTrailer() {
     if (this._trailer.currentTime <= this._playFor) {
-      this._timeout = setTimeout(this._stopTrailer.bind(this), 1000);
+      this._stopTimeout = setTimeout(this._stopTrailer.bind(this), 1000);
       return;
     }
     // Fade out volume

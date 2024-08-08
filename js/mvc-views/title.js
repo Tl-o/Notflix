@@ -764,10 +764,14 @@ class Title extends View {
         </div>
         <div class="modal-backdrop-metadata">
         <div class="modal-backdrop-left">
-            <img
-            class="modal-metadata-logo"
-            ${logo ? `src="${this._imgPath + logo}"` : ''}
-            />
+            
+            ${
+              logo
+                ? `<img
+            class="modal-metadata-logo" src="${this._imgPath + logo}"/>`
+                : `<div class="title-name">${this._data['name']}</div>`
+            }
+            
             <div class="modal-backdrop-icons">
             <button class="modal-play">
                 <svg
@@ -868,7 +872,9 @@ class Title extends View {
         : parseMovieDuration(data);
 
     // Get two first sentences, add period at end if no period exists.
-    let description = data['overview'].split('.').slice(0, 2).join('.');
+    let description =
+      data['overview'].split('.').slice(0, 2).join('.') ||
+      'No description was found for this title.';
     if (description.at(-1) !== '.') description += '.';
 
     // Only three or less keywords in metadata summary
@@ -1069,11 +1075,15 @@ class Title extends View {
             </div>
             <div class="episode-data">
                 <div class="episode-title-wrapper">
-                <span class="episode-title">${data[i]['name']}</span>
-                <span class="episode-duration">${data[i]['runtime']}m</span>
+                <span class="episode-title">${
+                  data[i]['name'] || 'Unknown'
+                }</span>
+                <span class="episode-duration">${
+                  data[i]['runtime'] || 'N/A '
+                }m</span>
                 </div>
                 <div class="episode-description">
-                ${description}
+                ${description || 'No description for this episode was found.'}
                 </div>
             </div>
             </div>
