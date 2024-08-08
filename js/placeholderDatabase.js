@@ -217,8 +217,8 @@ export const showsDatabase = [
     genres: ['Sci-Fi', 'Fantasy', 'Comedy'],
   },
   {
-    name: 'Supercell',
-    id: 842945,
+    name: 'Supacell',
+    id: 158141,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABU96Ud4sLsIiycjuzQeE2KHbDMpDihG2I5lZVMP8oYHHk6s57hGCwGrZ78Eo1VFASs4JT5g1qdzEGIf0m3DJ8UjosYrbqbzbxtulEF0lmfs4ScVE_D9dAVwTsp4QNCRwF74BSo-8DCXU8wvQs_zv3FY7Mq-x7hkvr9tVcFx8KdpjY0egjPn59eNb-Dt4Bc2pQRT2MPDioICF6P3LoAejKaAo-k4TseaS84792ux2rUkk-ZvLsGpheOAR2PJdwTpVzmDtH1ak4TLgWsxwIO_FMpkFsDVnGIWJeIM6hkmwSJ5GSxqTZWQ167dOVGYLyzEORE_HigqY9s47ZanWvn_KXOXpMdXRshllZQhfLImHzNQxkj3kMec.jpg?r=e83',
     genres: ['Sci-Fi', 'Mystery', 'Emotional'],

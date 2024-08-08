@@ -145,7 +145,7 @@ export const getShowDetails = async function (id) {
     `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings&language=en-US`
   );
 
-  const maturity = data['content_ratings']['results'].find(
+  const maturity = data['content_ratings']?.['results'].find(
     (result) => result['iso_3166_1'] === 'US'
   )?.['rating'];
 
