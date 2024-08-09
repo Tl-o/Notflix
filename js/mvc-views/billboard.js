@@ -16,7 +16,7 @@ class Billboard extends View {
   _isPlaying = false;
   // In seconds
   _playFor = 30;
-  _playAfter = 2 * MILLISECONDS_IN_SECOND;
+  _playAfter = 100000000000 * MILLISECONDS_IN_SECOND;
   _stopTimeout;
 
   // Intersection Observer

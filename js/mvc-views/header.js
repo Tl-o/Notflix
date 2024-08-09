@@ -1,14 +1,19 @@
 import 'core-js/stable';
 import { View } from './view';
 import { mark } from 'regenerator-runtime';
+import { MILLISECONDS_IN_SECOND } from '../config.js';
 
 class Header extends View {
   _parentEl = document.querySelector('header');
   _userDropdown;
   _browseDropdown;
-  // Check time for scroll in millieseconds
-  _checkScrollTime = 100;
-  _clearTimeoutTime = 500;
+  // Check time for scroll in milliseconds.
+  _checkScrollTime = 0.1 * MILLISECONDS_IN_SECOND;
+  _clearTimeoutTime = 0.5 * MILLISECONDS_IN_SECOND;
+  // For search
+  _isVisible = false;
+  _searchTimeout;
+  _searchAfter = 0.5 * MILLISECONDS_IN_SECOND;
 
   addHandler(handler) {
     this._parentEl.addEventListener('click', function (e) {
@@ -27,6 +32,7 @@ class Header extends View {
     this._browseDropdown = this._parentEl.querySelector('.browse-dropdown');
     this._bindScroll();
     this._bindHover();
+    this._bindSearch();
     return ``;
   }
 
@@ -61,18 +67,37 @@ class Header extends View {
         </div>
         <div class="header-block-end">
             <ul class="secondary-navigation">
-                <li class="secondary-navigation-item">
+                <li class="secondary-navigation-item search-icon">
                 <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    class="bi bi-search icon"
-                    viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  class="bi bi-search icon"
+                  viewBox="0 0 16 16"
                 >
-                    <path
-                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-                    />
+                  <path
+                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
+                  />
                 </svg>
+                </li>
+                <li>
+                  <div class="search" tabindex="-1">
+                    <input class="search-box" type="text" id="fname" name="fname" />
+                    <span class="clear-btn">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-x-lg"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
                 </li>
                 <li class="secondary-navigation-item">
                 <svg
@@ -231,6 +256,56 @@ class Header extends View {
       hideBrowseDropdown = setTimeout(() => {
         this._browseDropdown.classList.remove('show');
       }, this._clearTimeoutTime);
+    });
+  }
+
+  _bindSearch() {
+    // Search event
+    const search = () => {
+      console.log('Typed!');
+    };
+
+    this._parentEl.addEventListener('click', (e) => {
+      const target = e.target.closest('.search-icon');
+      if (!target || this._isVisible) return;
+
+      this._isVisible = true;
+
+      const search = target
+        .closest('.secondary-navigation')
+        .querySelector('.search');
+
+      if (!search) return;
+      target.classList.add('fade-out');
+      target.classList.remove('fade-in');
+      search.classList.add('active');
+      search.querySelector('input').focus();
+    });
+
+    this._parentEl.addEventListener(
+      'blur',
+      (e) => {
+        if (!e.target.classList.contains('search-box')) return;
+
+        const target = e.target;
+        if (target.value !== '') return;
+
+        this._isVisible = false;
+
+        const searchIcon = target
+          .closest('.secondary-navigation')
+          .querySelector('.search-icon');
+
+        target.closest('.search').classList.remove('active');
+        searchIcon.classList.add('fade-in');
+        searchIcon.classList.remove('fade-out');
+      },
+      true
+    );
+
+    this._parentEl.addEventListener('input', (e) => {
+      if (this._searchTimeout) clearTimeout(this._searchTimeout);
+      this._searchTimeout = setTimeout(search, this._searchAfter);
     });
   }
 }
