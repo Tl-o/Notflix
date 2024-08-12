@@ -169,6 +169,7 @@ Item width: (100 - Reserve width) / items_per_row. */
 }
 
 .description {
+  height: 60%;
   margin-block: 1vw;
   font-size: 1vw;
 }
