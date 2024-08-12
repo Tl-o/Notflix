@@ -82,6 +82,13 @@ Item width: (100 - Reserve width) / items_per_row. */
   z-index: 2000;
 }
 
+.search-wrapper {
+  height: 105%;
+  width: 208%; /* 110% width + margin of metadata percentage */
+  position: absolute;
+  top: 0;
+}
+
 .search-hover:hover {
   transform: scale(1.1);
   z-index: 2001;
@@ -193,4 +200,10 @@ Item width: (100 - Reserve width) / items_per_row. */
 
 .search-genres span {
   font-size: 1vw;
+}
+
+/* Utility */
+.uppermost {
+  position: absolute;
+  z-index: 2100;
 }

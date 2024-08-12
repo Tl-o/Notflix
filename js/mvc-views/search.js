@@ -1,7 +1,12 @@
 'use strict';
 import { View } from './view';
 import 'core-js/stable';
-import { IMG_PATH, MILLISECONDS_IN_SECOND } from '../config';
+import {
+  IMG_PATH,
+  MILLISECONDS_IN_SECOND,
+  MATURITY_RATING_MAPPING,
+} from '../config';
+import { parseMovieDuration } from '../helper';
 import { mark } from 'regenerator-runtime';
 
 class Search extends View {
@@ -14,11 +19,15 @@ class Search extends View {
   _timeout;
   _activateDuration = 0.75 * MILLISECONDS_IN_SECOND;
   _savedData = []; // Array that holds data of all requested shows
+  _descriptionCharLimit = 255;
 
   addHoverHandler(handler) {
     this._parentEl.addEventListener('mouseover', (e) => {
+      if (!e.target.closest('.search-image-container')) return;
+
       const target = e.target.closest('.search-item');
-      if (!target) return;
+      // Already hovering
+      if (target.classList.contains('search-hover')) return;
 
       this._timeout = setTimeout(() => {
         const result = target.dataset.order % this._itemsPerRow === 0;
@@ -30,16 +39,39 @@ class Search extends View {
         metadata.innerHTML = this._generateMetadataSkeleton();
 
         target.classList.add(slideDirection, 'search-hover');
+        this._generateWrapper(target, target.dataset.order);
+
+        // If already gotten show before, only render the data
+        const exists = this._savedData.find(
+          (title) => title['id'] === +target.dataset.id
+        );
+        if (exists) {
+          this.updateMetadataMarkup(exists);
+          return;
+        }
+
+        handler(target.dataset.id, target.dataset.type);
       }, this._activateDuration);
     });
 
     this._parentEl.addEventListener('mouseout', (e) => {
-      const target = e.target.closest('.search-item');
-      if (!target) return;
+      // Logic for clearing out timeout if you unhovered image before activation
+      if (
+        (e.target.classList.contains('search-image') ||
+          e.target.classList.contains('search-image-placeholder')) &&
+        this._timeout
+      )
+        clearTimeout(this._timeout);
+
+      // Logic for removing wrapper if you activated hover
+      if (!e.target.classList.contains('search-wrapper')) return;
+
+      const target = e.target.parentElement;
+      e.target.remove();
+      // First, clear timeout
+      if (this._timeout) clearTimeout(this._timeout);
 
       target.classList.remove('slide-left', 'slide-right', 'search-hover');
-
-      if (this._timeout) clearTimeout(this._timeout);
     });
   }
 
@@ -62,11 +94,104 @@ class Search extends View {
     });
   }
 
-  updateMarkup() {
-    return `
-    <div class="search-metadata">
-      <div class="category-icons">
-        <div class="category-icon-left">
+  _bindTooltip() {
+    // Add hover tooltip on buttons
+    this._parentEl.addEventListener(
+      'mouseenter',
+      (e) => {
+        if (!e.target.classList.contains('search-icon')) return;
+
+        const tooltipMessage = e.target.dataset.message;
+        if (!tooltipMessage) return;
+
+        const coordinates = e.target.getBoundingClientRect();
+        const tooltipDiv = document.createElement('div');
+        tooltipDiv.classList.add('tooltip');
+        tooltipDiv.innerHTML = `
+          <span class="tooltip-message">${tooltipMessage}</span>
+          <div class="tooltip-arrow"></div>
+        `;
+
+        tooltipDiv.style.cssText += `
+          top: ${-coordinates.height / 1.2}px;
+        `;
+
+        e.target.insertAdjacentElement('afterbegin', tooltipDiv);
+      },
+      true
+    );
+
+    this._parentEl.addEventListener(
+      'mouseleave',
+      (e) => {
+        if (!e.target.classList.contains('search-icon')) return;
+
+        const tooltip = e.target.querySelector('.tooltip');
+        if (tooltip) tooltip.remove();
+      },
+      true
+    );
+  }
+
+  updateDataHistory(data) {
+    this._savedData.push(data);
+    console.log(this._savedData);
+  }
+
+  updateMetadataMarkup(data) {
+    const target = this._parentEl.querySelector(
+      `.search-item[data-id='${data['id']}'] .search-metadata`
+    );
+
+    const order = target.closest('.search-item').dataset.order;
+
+    const description =
+      data['overview'].length > this._descriptionCharLimit
+        ? data['overview'].slice(0, this._descriptionCharLimit).trim() + '...'
+        : data['overview'];
+
+    const year =
+      data['first_air_date']?.split('-')[0] ||
+      data['release_date']?.split('-')[0];
+
+    // Either TV show or Movie, based on API schema
+    const maturity =
+      data['content_ratings']?.['results'].find(
+        (result) => result['iso_3166_1'] === 'US'
+      )?.['rating'] ||
+      data['release_dates']?.['results']
+        ?.find((result) => result['iso_3166_1'] === 'US')
+        ?.['release_dates']?.find((cert) => cert['certification'])?.[
+        'certification'
+      ];
+
+    // Get duration in seasons, episodes, or runtime if movie
+    const duration =
+      data['number_of_seasons'] > 1
+        ? `${data['number_of_seasons']} Seasons`
+        : data['number_of_episodes']
+        ? `${data['number_of_episodes']} Episodes`
+        : parseMovieDuration(data);
+
+    let genres = `<span class="item-genre">${
+      data.genres?.[0]?.name || 'Unclassified'
+    }</span>`;
+
+    for (let i = 1; i < data.genres.length; i++) {
+      // Break out of loop to only show 3 genres, max
+      if (i === 3) break;
+      genres += `<span class="item-genre separator">${
+        data.genres[i].name.split(' ')[0]
+      }</span>`;
+    }
+
+    target.innerHTML = `
+      <div class="category-icons" style="${
+        order % this._itemsPerRow === 0 ? 'flex-direction: row-reverse;' : ''
+      }">
+        <div class="category-icon-left" style="${
+          order % this._itemsPerRow === 0 ? 'flex-direction: row-reverse;' : ''
+        }">
           <div class="search-icon category-icon-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -139,30 +264,25 @@ class Search extends View {
         </div>
       </div>
       <div class="description">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-        Consectetur iste deserunt corrupti ipsam dignissimos ipsum. Incidunt
-        ut quibusdam, cum maiores repudiandae magnam hic dolores doloribus,
-        similique odit deleniti laborum aliquam.
+        ${description || 'No description was found.'}
       </div>
       <div class="search-metadata-wrapper">
-        <div class="category-item-genres search-genres">
-          <span class="search-genre">Sci-Fi</span>
-          <span class="search-genre separator">Fantasy</span>
+        <div class="category-item-genres search-genres" style="animation-delay: 0.25s;">
+          ${genres}
         </div>
         <div class="metadata-search">
-          <span class="media-year-small vw-dependent">2024</span>
-          <span class="media-badge age vw-dependent">TV-MA</span>
+          <span class="media-year-small vw-dependent">${year || 'N/A'}</span>
+          <span class="media-badge age vw-dependent">${maturity || 'N/A'}</span>
           <span class="media-badge special vw-dependent">HD</span>
-          <span class="media-duration vw-dependent">Episodes</span>
+          <span class="media-duration vw-dependent">${duration}</span>
         </div>
-      </div>
-    </div>`;
+      </div>`;
   }
 
   _generateMarkup() {
     this.clear();
-    this.addHoverHandler('');
     this._bindTransitions();
+    this._bindTooltip();
     return this._generateResults(this._data['results']);
   }
 
@@ -196,6 +316,16 @@ class Search extends View {
     return `<div class="search-image-placeholder">${
       result['name'] || result['original_title'] || 'N/A'
     }</div>`;
+  }
+
+  _generateWrapper(container, wrapperOrder) {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('search-wrapper');
+
+    wrapper.style =
+      wrapperOrder % this._itemsPerRow === 0 ? 'right: -10%' : 'left: -10%';
+
+    container.insertAdjacentElement('afterbegin', wrapper);
   }
 
   _generateMetadataSkeleton() {

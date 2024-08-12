@@ -131,8 +131,17 @@ const controlSearch = async function (query) {
   search.render(data);
 };
 
+const controlSearchMetadata = async function (id, type) {
+  let data;
+  if (type === 'tv') data = await model.getShowModal(id);
+  else if (type === 'movie') data = await model.getMovieModal(id);
+  search.updateDataHistory(data);
+  search.updateMetadataMarkup(data);
+};
+
 // renderModal(236235, 'tv');
 controlSearch('Breaking');
+search.addHoverHandler(controlSearchMetadata);
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID
