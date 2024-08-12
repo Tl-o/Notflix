@@ -128,9 +128,17 @@ Item width: (100 - Reserve width) / items_per_row. */
   flex-direction: column;
 }
 
+.slide-right {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+}
+
+.slide-left {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+}
+
 .slide-right:hover .search-metadata {
   margin-left: 98%;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
 }
 
 .slide-left .search-metadata {
@@ -139,7 +147,7 @@ Item width: (100 - Reserve width) / items_per_row. */
 
 .slide-left:hover .search-metadata {
   margin-right: 98%;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
 }
 
 .metadata {
