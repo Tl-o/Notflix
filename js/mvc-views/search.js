@@ -6,6 +6,7 @@ import { mark } from 'regenerator-runtime';
 class Search extends View {
   _parentEl = document.querySelector('.search-container');
   _renderLimitPerSearch = 200; // Items rendered max limit before rendering footer
+  _itemsPerRow = 5;
 
   _generateMarkup() {
     return this._generateResults(this._data['results']);
@@ -15,7 +16,9 @@ class Search extends View {
     let markup = ``;
     for (let i = 0; i < results.length; i++) {
       markup += `
-      <div class="search-item slide-right">
+      <div class="search-item ${
+        (i + 1) % this._itemsPerRow === 0 ? 'slide-left' : 'slide-right'
+      }">
         <div class="search-image-container">
           ${this._generatePlaceholder(results[i])}
         </div>
