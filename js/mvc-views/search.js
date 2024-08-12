@@ -1,13 +1,66 @@
 'use strict';
 import { View } from './view';
 import 'core-js/stable';
-import { IMG_PATH } from '../config';
+import { IMG_PATH, MILLISECONDS_IN_SECOND } from '../config';
 import { mark } from 'regenerator-runtime';
 
 class Search extends View {
   _parentEl = document.querySelector('.search-container');
   _renderLimitPerSearch = 200; // Items rendered max limit before rendering footer
   _itemsPerRow = 5;
+
+  // All about hovers
+  _zIndex = 2005;
+  _timeout;
+  _activateDuration = 0.75 * MILLISECONDS_IN_SECOND;
+  _savedData = []; // Array that holds data of all requested shows
+
+  addHoverHandler(handler) {
+    this._parentEl.addEventListener('mouseover', (e) => {
+      const target = e.target.closest('.search-item');
+      if (!target) return;
+
+      this._timeout = setTimeout(() => {
+        const result = target.dataset.order % this._itemsPerRow === 0;
+        const slideDirection = result ? 'slide-left' : 'slide-right';
+        const metadata = target.querySelector('.search-metadata');
+
+        // Add style to metadata
+        metadata.style = result ? 'right: 0;' : '';
+        metadata.innerHTML = this._generateMetadataSkeleton();
+
+        target.classList.add(slideDirection, 'search-hover');
+      }, this._activateDuration);
+    });
+
+    this._parentEl.addEventListener('mouseout', (e) => {
+      const target = e.target.closest('.search-item');
+      if (!target) return;
+
+      target.classList.remove('slide-left', 'slide-right', 'search-hover');
+
+      if (this._timeout) clearTimeout(this._timeout);
+    });
+  }
+
+  // Will bind Z-index transitions
+  _bindTransitions() {
+    this._parentEl.addEventListener('transitionstart', (e) => {
+      if (!e.target.classList.contains('search-item')) return;
+
+      e.target.style.zIndex = `${this._zIndex}`;
+    });
+
+    this._parentEl.addEventListener('transitionend', (e) => {
+      if (!e.target.classList.contains('search-item')) return;
+      // If it contains, means user is still hovering so do not adjust Z-index
+      if (e.target.classList.contains('search-hover')) return;
+
+      e.target.style = '';
+      // Must clear metadata's inline style to ensure no right: 0 remains in case of screen size change to ensure proper responsiveness.
+      e.target.querySelector('.search-metadata').style = '';
+    });
+  }
 
   updateMarkup() {
     return `
@@ -108,6 +161,8 @@ class Search extends View {
 
   _generateMarkup() {
     this.clear();
+    this.addHoverHandler('');
+    this._bindTransitions();
     return this._generateResults(this._data['results']);
   }
 
@@ -115,9 +170,9 @@ class Search extends View {
     let markup = ``;
     for (let i = 0; i < results.length; i++) {
       markup += `
-      <div class="search-item ${
-        (i + 1) % this._itemsPerRow === 0 ? 'slide-left' : 'slide-right'
-      }">
+      <div class="search-item" data-id="${results[i]['id']}" data-type="${
+        results[i]['media_type']
+      }" data-order="${i + 1}">
         <div class="search-image-container">
           ${this._generatePlaceholder(results[i])}
         </div>
