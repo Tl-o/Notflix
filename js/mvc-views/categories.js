@@ -261,7 +261,7 @@ class Categories extends View {
     if (!target.querySelector('.category-hover-data')) return;
 
     target.querySelector('.category-hover-data').innerHTML = `
-    <div class="category-icons">
+      <div class="category-icons">
         <div class="category-icon-left">
           <div class="category-icon category-icon-white">
             <svg
