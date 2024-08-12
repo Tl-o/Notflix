@@ -124,8 +124,13 @@ const controlNavigation = async function (query, type) {
   title.updateNavigationMarkup();
 };
 
-// renderModal(236235, 'tv');
+const controlSearch = async function (query) {
+  const data = await model.getSearch(query);
+  console.log(data);
+};
 
+// renderModal(236235, 'tv');
+controlSearch('Breaking Bad');
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID

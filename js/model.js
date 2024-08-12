@@ -140,6 +140,14 @@ export const getCurrUserData = function (userID) {
     billboardShows[Math.floor(Math.random() * (billboardShows.length - 1))];
 };
 
+export const getSearch = async function (query) {
+  const data = await AJAX(
+    `https://api.themoviedb.org/3/search/multi?query=${query}&include_adult=false&language=en-US&page=1`
+  );
+
+  return data;
+};
+
 export const getShowDetails = async function (id) {
   const data = await AJAX(
     `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings&language=en-US`
