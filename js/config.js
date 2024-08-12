@@ -20,3 +20,4 @@ export const MATURITY_RATING_MAPPING = {
   'NC-17': '+18',
 };
 export const MILLISECONDS_IN_SECOND = 1000;
+export const IMG_PATH = `https://image.tmdb.org/t/p/original`;

@@ -98,6 +98,22 @@ Item width: (100 - Reserve width) / items_per_row. */
   z-index: 2000;
 }
 
+.search-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--main-bg-color);
+  border: 2px dashed rgb(64, 64, 64);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  font-weight: 500;
+  padding: 1vw;
+  position: relative;
+  z-index: 2000;
+}
+
 .search-metadata {
   background-color: rgba(47, 47, 47, 255);
   position: absolute;
@@ -114,6 +130,7 @@ Item width: (100 - Reserve width) / items_per_row. */
 
 .slide-right:hover .search-metadata {
   margin-left: 98%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .slide-left .search-metadata {
@@ -122,6 +139,7 @@ Item width: (100 - Reserve width) / items_per_row. */
 
 .slide-left:hover .search-metadata {
   margin-right: 98%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .metadata {

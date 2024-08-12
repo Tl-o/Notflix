@@ -6,6 +6,7 @@ import billboard from './mvc-views/billboard.js';
 import profile from './mvc-views/profile.js';
 import footer from './mvc-views/footer.js';
 import title from './mvc-views/title.js';
+import search from './mvc-views/search.js';
 import * as config from './config.js';
 
 /* Initalize */
@@ -127,10 +128,11 @@ const controlNavigation = async function (query, type) {
 const controlSearch = async function (query) {
   const data = await model.getSearch(query);
   console.log(data);
+  search.render(data);
 };
 
 // renderModal(236235, 'tv');
-controlSearch('Breaking Bad');
+controlSearch('Breaking');
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID
