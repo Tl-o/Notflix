@@ -16,7 +16,7 @@ class Billboard extends View {
   _isPlaying = false;
   // In seconds
   _playFor = 30;
-  _playAfter = 5 * MILLISECONDS_IN_SECOND;
+  _playAfter = 2 * MILLISECONDS_IN_SECOND;
   _stopTimeout;
 
   // Intersection Observer
@@ -74,7 +74,12 @@ class Billboard extends View {
   }
 
   resume() {
-    if (!this._trailer || !this._hasActivated) return;
+    if (
+      !this._trailer ||
+      !this._hasActivated ||
+      this._parentEl.classList.contains('hidden')
+    )
+      return;
 
     const rect = this._trailer.getBoundingClientRect();
     // A third of the trailer's size
