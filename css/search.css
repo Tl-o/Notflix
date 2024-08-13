@@ -168,7 +168,7 @@ Item width: (100 - Reserve width) / items_per_row. */
   position: relative;
 }
 
-.media-duration {
+.align-right {
   margin-left: auto;
 }
 

@@ -286,7 +286,7 @@ class Search extends View {
           <span class="media-year-small vw-dependent">${year || 'N/A'}</span>
           <span class="media-badge age vw-dependent">${maturity || 'N/A'}</span>
           <span class="media-badge special vw-dependent">HD</span>
-          <span class="media-duration vw-dependent">${duration}</span>
+          <span class="media-duration align-right vw-dependent">${duration}</span>
         </div>
       </div>`;
   }

@@ -744,9 +744,11 @@ class Title extends View {
     // If no data, don't generate
     if (!data) return '';
 
+    console.log(data);
     // All images
     const imgData = data['images?include_image_language=en'];
-    const backdrop = imgData['backdrops'][0]?.[`file_path`];
+    const backdrop =
+      imgData['backdrops'][0]?.[`file_path`] || data['backdrop_path'];
     const logo = imgData['logos'][0]?.[`file_path`];
     const type = data['number_of_episodes'] ? 'Episode' : 'Movie';
 
@@ -769,7 +771,9 @@ class Title extends View {
               logo
                 ? `<img
             class="modal-metadata-logo" src="${this._imgPath + logo}"/>`
-                : `<div class="title-name">${this._data['name']}</div>`
+                : `<div class="title-name">${
+                    this._data['name'] || this._data['original_title']
+                  }</div>`
             }
             
             <div class="modal-backdrop-icons">
@@ -1049,11 +1053,11 @@ class Title extends View {
             <div class="episode-img">
                 <img
                 class="episode-thumbnail"
-                src="${
+                ${
                   data[i]['still_path']
-                    ? this._imgPath + data[i]['still_path']
-                    : 'https://media.lordicon.com/icons/wired/gradient/980-not-applicable.svg'
-                }"
+                    ? `src="${this._imgPath + data[i]['still_path']}"`
+                    : 'style="border: 1px dashed rgb(128, 128, 128);"'
+                }
                 />
                 <div class="play-icon">
                 <svg
