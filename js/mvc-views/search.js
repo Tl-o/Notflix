@@ -14,6 +14,14 @@ class Search extends View {
   _renderLimitPerSearch = 200; // Items rendered max limit before rendering footer
   _itemsPerRow = 5;
 
+  // Queries
+  _defaultQuery = window.matchMedia('(min-width: 1100px)');
+  _mediumQuery = window.matchMedia(
+    '(max-width: 1100px) and (min-width: 800px)'
+  );
+  _smallQuery = window.matchMedia('(max-width: 800px) and (min-width: 500px)');
+  _tinyQuery = window.matchMedia('(max-width: 500px)');
+
   // All about hovers
   _zIndex = 2999;
   _timeout;
@@ -143,6 +151,24 @@ class Search extends View {
       },
       true
     );
+  }
+
+  _bindResponsiveness() {
+    this._defaultQuery.addEventListener('change', (e) => {
+      if (e.matches) this._itemsPerRow = 5;
+    });
+
+    this._mediumQuery.addEventListener('change', (e) => {
+      if (e.matches) this._itemsPerRow = 4;
+    });
+
+    this._smallQuery.addEventListener('change', (e) => {
+      if (e.matches) this._itemsPerRow = 3;
+    });
+
+    this._tinyQuery.addEventListener('change', (e) => {
+      if (e.matches) this._itemsPerRow = 2;
+    });
   }
 
   updateDataHistory(data) {
@@ -275,7 +301,7 @@ class Search extends View {
           </div>
         </div>
       </div>
-      <div class="description">
+      <div class="search-description">
         ${description || 'No description was found.'}
       </div>
       <div class="search-metadata-wrapper">
@@ -295,6 +321,7 @@ class Search extends View {
     this.clear();
     this._bindTransitions();
     this._bindTooltip();
+    this._bindResponsiveness();
     return this._generateResults(this._data['results']);
   }
 

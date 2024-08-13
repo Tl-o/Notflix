@@ -28,7 +28,7 @@ class Header extends View {
 
   addSearchHandler(searchHandler, cancelHandler) {
     this._parentEl.addEventListener('click', (e) => {
-      const target = e.target.closest('.search-icon');
+      const target = e.target.closest('.search-btn');
       if (!target || this._isVisible) return;
 
       this._isVisible = true;
@@ -56,7 +56,7 @@ class Header extends View {
 
         const searchIcon = target
           .closest('.secondary-navigation')
-          .querySelector('.search-icon');
+          .querySelector('.search-btn');
 
         target.closest('.search').classList.remove('active');
         searchIcon.classList.add('fade-in');
@@ -155,7 +155,7 @@ class Header extends View {
         </div>
         <div class="header-block-end">
             <ul class="secondary-navigation">
-                <li class="secondary-navigation-item search-icon">
+                <li class="secondary-navigation-item search-btn">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"

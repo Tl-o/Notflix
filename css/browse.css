@@ -88,6 +88,7 @@ header {
 }
 
 .secondary-navigation-item {
+  min-width: 32px;
   padding-inline: 8px;
   margin-inline-end: 16px;
   cursor: pointer;
@@ -317,5 +318,22 @@ header {
   .show {
     visibility: visible;
     opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-logo {
+    width: 16px;
+  }
+
+  .main-logo::before {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0c/Netflix_2015_N_logo.svg');
+  }
+}
+
+@media (max-width: 400px) {
+  .main-logo {
+    width: 0;
+    margin: 0;
   }
 }

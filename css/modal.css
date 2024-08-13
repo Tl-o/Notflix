@@ -619,7 +619,7 @@
 .recommendation {
   flex: 0 0 225px;
   height: auto;
-  aspect-ratio: 2 / 4.5;
+  aspect-ratio: 2 / 5;
   background-color: rgba(47, 47, 47, 255);
   cursor: pointer;
   border-radius: 5px;
