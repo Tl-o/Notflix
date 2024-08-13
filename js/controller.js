@@ -33,7 +33,7 @@ const clear = function () {
 const renderBrowse = function () {
   search.clear();
   categories.render(model.state.media);
-  billboard.render(model.state.billboard);
+  billboard.changeVisibility(true);
 };
 
 const controlShowMetadata = async function (id, type) {
@@ -136,7 +136,7 @@ const controlNavigation = async function (query, type) {
 const controlSearch = async function (query) {
   const data = await model.getSearch(query);
   categories.clear();
-  billboard.clear();
+  billboard.changeVisibility();
   profile.clear();
   footer.clear();
   search.render(data);

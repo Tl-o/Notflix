@@ -56,6 +56,16 @@ class Billboard extends View {
     this._parentEl.innerHTML = '';
   }
 
+  changeVisibility(show = false) {
+    if (!show) {
+      this._parentEl.classList.add('hidden');
+
+      if (this._trailer) {
+        this._trailer.pause();
+      }
+    } else this._parentEl.classList.remove('hidden');
+  }
+
   // Only used when rendering modal
   pause() {
     if (!this._trailer) return;

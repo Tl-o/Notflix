@@ -12,6 +12,7 @@ class Header extends View {
   _clearTimeoutTime = 0.5 * MILLISECONDS_IN_SECOND;
   // For search
   _isVisible = false;
+  _showClear = false; // Show clear X button only when user typed
   _searchTimeout;
   _searchAfter = 0.5 * MILLISECONDS_IN_SECOND;
 
@@ -67,8 +68,11 @@ class Header extends View {
     this._parentEl.addEventListener('input', (e) => {
       if (e.target.value === '') {
         cancelHandler();
-        if (this._searchTimeout) clearTimeout(this._searchTimeout);
+        this._cancelSearch();
         return;
+      } else if (!this._showClear) {
+        this._showClear = true;
+        this._parentEl.querySelector('.clear-btn').classList.remove('hidden');
       }
 
       if (this._searchTimeout) clearTimeout(this._searchTimeout);
@@ -76,6 +80,16 @@ class Header extends View {
         () => searchHandler(e.target.value),
         this._searchAfter
       );
+    });
+
+    this._parentEl.addEventListener('click', (e) => {
+      if (!e.target.closest('.clear-btn')) return;
+
+      const input = this._parentEl.querySelector('input');
+      input.focus();
+      input.value = '';
+      cancelHandler();
+      this._cancelSearch();
     });
   }
 
@@ -134,9 +148,9 @@ class Header extends View {
                 </svg>
                 </li>
                 <li>
-                  <div class="search" tabindex="-1">
+                  <div class="search">
                     <input class="search-box" type="text" id="fname" name="fname" />
-                    <span class="clear-btn">
+                    <span class="clear-btn hidden">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -310,6 +324,13 @@ class Header extends View {
         this._browseDropdown.classList.remove('show');
       }, this._clearTimeoutTime);
     });
+  }
+
+  _cancelSearch() {
+    this._showClear = false;
+    this._parentEl.querySelector('.clear-btn').classList.add('hidden');
+
+    if (this._searchTimeout) clearTimeout(this._searchTimeout);
   }
 }
 
