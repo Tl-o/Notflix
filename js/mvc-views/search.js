@@ -42,6 +42,7 @@ class Search extends View {
         const result = target.dataset.order % this._itemsPerRow === 0;
         const slideDirection = result ? 'slide-left' : 'slide-right';
         const metadata = target.querySelector('.search-metadata');
+        metadata.classList.remove('search-hidden');
 
         // Add style to metadata
         metadata.style = result ? 'right: 0;' : '';
@@ -99,7 +100,9 @@ class Search extends View {
 
       e.target.style = '';
       // Must clear metadata's inline style to ensure no right: 0 remains in case of screen size change to ensure proper responsiveness.
-      e.target.querySelector('.search-metadata').style = '';
+      const metadata = e.target.querySelector('.search-metadata');
+      metadata.style = '';
+      metadata.classList.add('search-hidden');
     });
   }
 
@@ -297,15 +300,18 @@ class Search extends View {
 
   _generateResults(results) {
     let markup = ``;
+    let order = 1;
     for (let i = 0; i < results.length; i++) {
+      if (!results[i]['poster_path']) continue;
+
       markup += `
       <div class="search-item" data-id="${results[i]['id']}" data-type="${
         results[i]['media_type']
-      }" data-order="${i + 1}">
+      }" data-order="${order++}">
         <div class="search-image-container">
           ${this._generatePlaceholder(results[i])}
         </div>
-        <div class="search-metadata">
+        <div class="search-metadata search-hidden">
         </div>
       </div>`;
     }

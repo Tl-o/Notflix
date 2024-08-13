@@ -207,3 +207,7 @@ Item width: (100 - Reserve width) / items_per_row. */
   position: absolute;
   z-index: 2100;
 }
+
+.search-hidden {
+  visibility: hidden;
+}
