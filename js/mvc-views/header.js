@@ -93,6 +93,27 @@ class Header extends View {
     });
   }
 
+  addNavigationHandler(homeHandler) {
+    this._parentEl.addEventListener('click', (e) => {
+      const target = e.target.closest('.navigation-item');
+      if (!target) return;
+
+      const text = target.querySelector('a').textContent;
+      if (text === 'Home') {
+        const input = this._parentEl.querySelector('input');
+
+        // To activate hiding animation
+        input.focus();
+        input.value = '';
+        input.blur();
+
+        // Render browse & cancel search timeout
+        homeHandler();
+        this._cancelSearch();
+      }
+    });
+  }
+
   _generateMarkup() {
     this.clear();
     this._generateHeader();

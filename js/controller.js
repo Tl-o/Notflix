@@ -17,6 +17,7 @@ const init = function () {
   categories.addModalHandler(renderModal);
   search.addHoverHandler(controlSearchMetadata);
   header.addSearchHandler(controlSearch, renderBrowse);
+  header.addNavigationHandler(renderBrowse);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
 };
