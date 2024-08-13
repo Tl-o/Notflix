@@ -3,7 +3,7 @@
 }
 
 .media-modal-overlay {
-  z-index: 1002;
+  z-index: 9999;
   background-color: rgba(0, 0, 0, 0.8);
   height: 100%;
   width: 100%;

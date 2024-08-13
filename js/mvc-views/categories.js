@@ -140,7 +140,10 @@ class Categories extends View {
       const target = e.target.closest('.category-icon-info');
       if (!target) return;
 
-      const show = target.closest('.category-item-hover');
+      const show =
+        target.closest('.category-item-hover') ||
+        target.closest('.search-item');
+      if (!show) return;
       const showID = show.dataset.id;
       const showType = show.dataset.type;
       handler(showID, showType);

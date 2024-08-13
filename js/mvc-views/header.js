@@ -13,7 +13,7 @@ class Header extends View {
   // For search
   _isVisible = false;
   _searchTimeout;
-  _searchAfter = 0.5 * MILLISECONDS_IN_SECOND;
+  _searchAfter = 1 * MILLISECONDS_IN_SECOND;
 
   addHandler(handler) {
     this._parentEl.addEventListener('click', function (e) {
@@ -25,6 +25,54 @@ class Header extends View {
     });
   }
 
+  addSearchHandler(handler) {
+    this._parentEl.addEventListener('click', (e) => {
+      const target = e.target.closest('.search-icon');
+      if (!target || this._isVisible) return;
+
+      this._isVisible = true;
+
+      const search = target
+        .closest('.secondary-navigation')
+        .querySelector('.search');
+
+      if (!search) return;
+      target.classList.add('fade-out');
+      target.classList.remove('fade-in');
+      search.classList.add('active');
+      search.querySelector('input').focus();
+    });
+
+    this._parentEl.addEventListener(
+      'blur',
+      (e) => {
+        if (!e.target.classList.contains('search-box')) return;
+
+        const target = e.target;
+        if (target.value !== '') return;
+
+        this._isVisible = false;
+
+        const searchIcon = target
+          .closest('.secondary-navigation')
+          .querySelector('.search-icon');
+
+        target.closest('.search').classList.remove('active');
+        searchIcon.classList.add('fade-in');
+        searchIcon.classList.remove('fade-out');
+      },
+      true
+    );
+
+    this._parentEl.addEventListener('input', (e) => {
+      if (this._searchTimeout) clearTimeout(this._searchTimeout);
+      this._searchTimeout = setTimeout(
+        () => handler(e.target.value),
+        this._searchAfter
+      );
+    });
+  }
+
   _generateMarkup() {
     this.clear();
     this._generateHeader();
@@ -32,7 +80,6 @@ class Header extends View {
     this._browseDropdown = this._parentEl.querySelector('.browse-dropdown');
     this._bindScroll();
     this._bindHover();
-    this._bindSearch();
     return ``;
   }
 
@@ -256,56 +303,6 @@ class Header extends View {
       hideBrowseDropdown = setTimeout(() => {
         this._browseDropdown.classList.remove('show');
       }, this._clearTimeoutTime);
-    });
-  }
-
-  _bindSearch() {
-    // Search event
-    const search = () => {
-      console.log('Typed!');
-    };
-
-    this._parentEl.addEventListener('click', (e) => {
-      const target = e.target.closest('.search-icon');
-      if (!target || this._isVisible) return;
-
-      this._isVisible = true;
-
-      const search = target
-        .closest('.secondary-navigation')
-        .querySelector('.search');
-
-      if (!search) return;
-      target.classList.add('fade-out');
-      target.classList.remove('fade-in');
-      search.classList.add('active');
-      search.querySelector('input').focus();
-    });
-
-    this._parentEl.addEventListener(
-      'blur',
-      (e) => {
-        if (!e.target.classList.contains('search-box')) return;
-
-        const target = e.target;
-        if (target.value !== '') return;
-
-        this._isVisible = false;
-
-        const searchIcon = target
-          .closest('.secondary-navigation')
-          .querySelector('.search-icon');
-
-        target.closest('.search').classList.remove('active');
-        searchIcon.classList.add('fade-in');
-        searchIcon.classList.remove('fade-out');
-      },
-      true
-    );
-
-    this._parentEl.addEventListener('input', (e) => {
-      if (this._searchTimeout) clearTimeout(this._searchTimeout);
-      this._searchTimeout = setTimeout(search, this._searchAfter);
     });
   }
 }

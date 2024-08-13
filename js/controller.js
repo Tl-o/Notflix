@@ -15,6 +15,8 @@ const init = function () {
   categories.bindHover(controlShowMetadata);
   categories.addObserverHandler(controlInfiniteScrolling);
   categories.addModalHandler(renderModal);
+  search.addHoverHandler(controlSearchMetadata);
+  header.addSearchHandler(controlSearch);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
 };
@@ -139,9 +141,7 @@ const controlSearchMetadata = async function (id, type) {
   search.updateMetadataMarkup(data);
 };
 
-// renderModal(236235, 'tv');
-controlSearch('Breaking');
-search.addHoverHandler(controlSearchMetadata);
+// renderModal(84209, 'tv');
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID

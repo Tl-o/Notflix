@@ -15,7 +15,7 @@ class Search extends View {
   _itemsPerRow = 5;
 
   // All about hovers
-  _zIndex = 2005;
+  _zIndex = 2999;
   _timeout;
   _activateDuration = 0.75 * MILLISECONDS_IN_SECOND;
   _savedData = []; // Array that holds data of all requested shows
@@ -23,6 +23,15 @@ class Search extends View {
 
   addHoverHandler(handler) {
     this._parentEl.addEventListener('mouseover', (e) => {
+      // In case JS is finnicky, and does not detect mouseout event and removes wrapper
+      if (e.target.classList.contains('search-wrapper')) {
+        e.target.parentElement.classList.remove(
+          'search-hover',
+          'slide-left',
+          'slide-right'
+        );
+        e.target.remove();
+      }
       if (!e.target.closest('.search-image-container')) return;
 
       const target = e.target.closest('.search-item');
@@ -80,7 +89,7 @@ class Search extends View {
     this._parentEl.addEventListener('transitionstart', (e) => {
       if (!e.target.classList.contains('search-item')) return;
 
-      e.target.style.zIndex = `${this._zIndex}`;
+      e.target.style.zIndex = `${this._zIndex++}`;
     });
 
     this._parentEl.addEventListener('transitionend', (e) => {

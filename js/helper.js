@@ -52,14 +52,18 @@ export function autoResolvePromise() {
 }
 
 export async function AJAX(url, data = undefined) {
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
-    },
-  });
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
+      },
+    });
 
-  const tmdbData = await res.json();
-  return tmdbData;
+    const tmdbData = await res.json();
+    return tmdbData;
+  } catch (error) {
+    console.log(error);
+  }
 }
