@@ -16,7 +16,7 @@ const init = function () {
   categories.addObserverHandler(controlInfiniteScrolling);
   categories.addModalHandler(renderModal);
   search.addHoverHandler(controlSearchMetadata);
-  header.addSearchHandler(controlSearch);
+  header.addSearchHandler(controlSearch, renderBrowse);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
 };
@@ -28,6 +28,12 @@ const clear = function () {
   billboard.clear();
   profile.clear();
   footer.clear();
+};
+
+const renderBrowse = function () {
+  search.clear();
+  categories.render(model.state.media);
+  billboard.render(model.state.billboard);
 };
 
 const controlShowMetadata = async function (id, type) {
@@ -129,7 +135,10 @@ const controlNavigation = async function (query, type) {
 
 const controlSearch = async function (query) {
   const data = await model.getSearch(query);
-  console.log(data);
+  categories.clear();
+  billboard.clear();
+  profile.clear();
+  footer.clear();
   search.render(data);
 };
 

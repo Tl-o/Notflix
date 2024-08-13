@@ -13,7 +13,7 @@ class Header extends View {
   // For search
   _isVisible = false;
   _searchTimeout;
-  _searchAfter = 1 * MILLISECONDS_IN_SECOND;
+  _searchAfter = 0.5 * MILLISECONDS_IN_SECOND;
 
   addHandler(handler) {
     this._parentEl.addEventListener('click', function (e) {
@@ -25,7 +25,7 @@ class Header extends View {
     });
   }
 
-  addSearchHandler(handler) {
+  addSearchHandler(searchHandler, cancelHandler) {
     this._parentEl.addEventListener('click', (e) => {
       const target = e.target.closest('.search-icon');
       if (!target || this._isVisible) return;
@@ -65,9 +65,15 @@ class Header extends View {
     );
 
     this._parentEl.addEventListener('input', (e) => {
+      if (e.target.value === '') {
+        cancelHandler();
+        if (this._searchTimeout) clearTimeout(this._searchTimeout);
+        return;
+      }
+
       if (this._searchTimeout) clearTimeout(this._searchTimeout);
       this._searchTimeout = setTimeout(
-        () => handler(e.target.value),
+        () => searchHandler(e.target.value),
         this._searchAfter
       );
     });
