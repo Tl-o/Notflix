@@ -363,6 +363,7 @@ class Search extends View {
   _generateMarkup() {
     this.clear();
     this._currPage = 1;
+    this._zIndex = 2999;
     this._bindTransitions();
     this._bindTooltip();
     this._bindResponsiveness();
@@ -371,9 +372,10 @@ class Search extends View {
   }
 
   _generateResults(results) {
+    console.log(results);
     let markup = ``;
     for (let i = 0; i < results.length; i++) {
-      if (!results[i]['poster_path']) continue;
+      if (results[i]['media_type'] === 'person') continue;
 
       markup += `
       <div class="search-item" data-id="${results[i]['id']}" data-type="${
