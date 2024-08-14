@@ -224,6 +224,14 @@ Item width: (100 - Reserve width) / items_per_row. */
   font-size: var(--metadata-font-xl);
 }
 
+.search-observer {
+  inset: 95% 0 0 0;
+  max-height: 50px;
+  background-color: rebeccapurple;
+  opacity: 1;
+  position: absolute;
+}
+
 /* Utility */
 .uppermost {
   position: absolute;

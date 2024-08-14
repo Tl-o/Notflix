@@ -33,6 +33,7 @@ const clear = function () {
 
 const renderBrowse = function () {
   search.clear();
+  footer.clear();
   categories.render(model.state.media);
   billboard.changeVisibility(true);
 };

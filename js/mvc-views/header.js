@@ -76,10 +76,10 @@ class Header extends View {
       }
 
       if (this._searchTimeout) clearTimeout(this._searchTimeout);
-      this._searchTimeout = setTimeout(
-        () => searchHandler(e.target.value),
-        this._searchAfter
-      );
+      this._searchTimeout = setTimeout(() => {
+        searchHandler(e.target.value);
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+      }, this._searchAfter);
     });
 
     this._parentEl.addEventListener('click', (e) => {

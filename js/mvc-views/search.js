@@ -12,7 +12,9 @@ import { mark } from 'regenerator-runtime';
 class Search extends View {
   _parentEl = document.querySelector('.search-container');
   _renderLimitPerSearch = 200; // Items rendered max limit before rendering footer
+  _currPage = 1;
   _itemsPerRow = 5;
+  _observer;
 
   // Queries
   _defaultQuery = window.matchMedia('(min-width: 1100px)');
@@ -92,6 +94,8 @@ class Search extends View {
       target.classList.remove('slide-left', 'slide-right', 'search-hover');
     });
   }
+
+  addObserverHandler(handler) {}
 
   // Will bind Z-index transitions
   _bindTransitions() {
@@ -322,6 +326,7 @@ class Search extends View {
     this._bindTransitions();
     this._bindTooltip();
     this._bindResponsiveness();
+    this._generateIntersection();
     return this._generateResults(this._data['results']);
   }
 
@@ -412,6 +417,19 @@ class Search extends View {
         <div class="metadata-loading-skeleton"></div>
       </div>
     </div>`;
+  }
+
+  _generateIntersection() {
+    if (
+      this._parentEl.querySelector('.search-observer') ||
+      this._data['total_results'] <= 20
+    )
+      return;
+
+    const div = document.createElement('div');
+    div.classList.add('search-observer');
+
+    this._parentEl.insertAdjacentElement('beforeend', div);
   }
 }
 
