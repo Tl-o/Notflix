@@ -7,6 +7,7 @@ class Footer extends View {
   _parentEl = document.querySelector('footer');
 
   _generateMarkup() {
+    this.clear();
     return `
     <div class="footer">
       <div class="footer-socials">
