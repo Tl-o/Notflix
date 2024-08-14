@@ -137,11 +137,35 @@ const controlNavigation = async function (query, type) {
 
 const controlSearch = async function (query) {
   const data = await model.getSearch(query);
+  data['query'] = query;
+
   categories.clear();
   billboard.changeVisibility();
   profile.clear();
-  footer.clear();
   search.render(data);
+  search.addObserverHandler(controlSearchPages);
+
+  if (data['total_pages'] === 1 && data['total_results'] > 0) footer.render();
+  else footer.clear();
+};
+
+const controlSearchPages = async function searchInfiniteScrolling(
+  prevData,
+  page,
+  childElementCount
+) {
+  // Return if max search limit has been reached.
+  if (
+    childElementCount >= search.renderLimitPerSearch ||
+    prevData['total_pages'] < page
+  ) {
+    footer.render();
+    return;
+  }
+
+  const data = await model.getSearch(prevData['query'], page);
+  console.log(data);
+  search.updateResults(data);
 };
 
 const controlSearchMetadata = async function (id, type) {

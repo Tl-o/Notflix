@@ -348,6 +348,7 @@ class Header extends View {
   }
 
   _cancelSearch() {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     this._showClear = false;
     this._parentEl.querySelector('.clear-btn').classList.add('hidden');
 

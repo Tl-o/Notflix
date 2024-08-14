@@ -10,11 +10,13 @@ import { parseMovieDuration } from '../helper';
 import { mark } from 'regenerator-runtime';
 
 class Search extends View {
+  renderLimitPerSearch = 300; // Items rendered max limit before rendering footer
+
   _parentEl = document.querySelector('.search-container');
-  _renderLimitPerSearch = 200; // Items rendered max limit before rendering footer
   _currPage = 1;
   _itemsPerRow = 5;
   _observer;
+  _order = 1;
 
   // Queries
   _defaultQuery = window.matchMedia('(min-width: 1100px)');
@@ -95,7 +97,28 @@ class Search extends View {
     });
   }
 
-  addObserverHandler(handler) {}
+  addObserverHandler(handler) {
+    if (this._data['total_results'] <= 20) return;
+
+    this._observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !this._isFetching) {
+            handler(
+              this._data,
+              ++this._currPage,
+              this._parentEl.childElementCount
+            );
+          }
+        });
+      },
+      {
+        root: null,
+        threshold: 0.2,
+      }
+    );
+    this._observer.observe(document.querySelector('.search-observer'));
+  }
 
   // Will bind Z-index transitions
   _bindTransitions() {
@@ -321,8 +344,25 @@ class Search extends View {
       </div>`;
   }
 
+  updateResults(data) {
+    const lastItem = [...this._parentEl.children].at(-1);
+    console.log(lastItem);
+
+    this._parentEl.insertAdjacentHTML(
+      'beforeend',
+      this._generateResults(data['results'])
+    );
+
+    lastItem.scrollIntoView({
+      behavior: 'instant',
+      block: 'end',
+      inline: 'nearest',
+    });
+  }
+
   _generateMarkup() {
     this.clear();
+    this._currPage = 1;
     this._bindTransitions();
     this._bindTooltip();
     this._bindResponsiveness();
@@ -332,14 +372,13 @@ class Search extends View {
 
   _generateResults(results) {
     let markup = ``;
-    let order = 1;
     for (let i = 0; i < results.length; i++) {
       if (!results[i]['poster_path']) continue;
 
       markup += `
       <div class="search-item" data-id="${results[i]['id']}" data-type="${
         results[i]['media_type']
-      }" data-order="${order++}">
+      }" data-order="${this._order++}">
         <div class="search-image-container">
           ${this._generatePlaceholder(results[i])}
         </div>
