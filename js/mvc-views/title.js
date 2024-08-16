@@ -1098,7 +1098,7 @@ class Title extends View {
   }
 
   _generateRecommendations(data) {
-    if (!data) return '';
+    if (!data || data.length === 0) return '';
 
     let markup = `
     <div class="header-title">More Like This</div>
