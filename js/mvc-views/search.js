@@ -480,6 +480,26 @@ class Search extends View {
 
     this._parentEl.insertAdjacentElement('beforeend', div);
   }
+
+  _setInitialSize() {
+    const windowWidthOnLoad = window.innerWidth;
+
+    if (windowWidthOnLoad > 1400) {
+      this._itemsPerRow = 6;
+    }
+    if (windowWidthOnLoad <= 1400 && windowWidthOnLoad > 1100) {
+      this._itemsPerRow = 5;
+    }
+    if (windowWidthOnLoad <= 1100 && windowWidthOnLoad > 800) {
+      this._itemsPerRow = 4;
+    }
+    if (windowWidthOnLoad <= 800 && windowWidthOnLoad > 500) {
+      this._itemsPerRow = 3;
+    }
+    if (windowWidthOnLoad <= 500) {
+      this._itemsPerRow = 2;
+    }
+  }
 }
 
 export default new Search();
