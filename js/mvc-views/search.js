@@ -14,12 +14,15 @@ class Search extends View {
 
   _parentEl = document.querySelector('.search-container');
   _currPage = 1;
-  _itemsPerRow = 5;
+  _itemsPerRow = 6;
   _observer;
   _order = 1;
 
   // Queries
-  _defaultQuery = window.matchMedia('(min-width: 1100px)');
+  _defaultQuery = window.matchMedia('(min-width: 1400px)');
+  _largeQuery = window.matchMedia(
+    '(max-width: 1400px) and (min-width: 1100px)'
+  );
   _mediumQuery = window.matchMedia(
     '(max-width: 1100px) and (min-width: 800px)'
   );
@@ -182,6 +185,10 @@ class Search extends View {
 
   _bindResponsiveness() {
     this._defaultQuery.addEventListener('change', (e) => {
+      if (e.matches) this._itemsPerRow = 6;
+    });
+
+    this._largeQuery.addEventListener('change', (e) => {
       if (e.matches) this._itemsPerRow = 5;
     });
 
@@ -363,6 +370,7 @@ class Search extends View {
   _generateMarkup() {
     this.clear();
     this._currPage = 1;
+    this._order = 1;
     this._zIndex = 2999;
     this._bindTransitions();
     this._bindTooltip();

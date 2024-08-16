@@ -1,4 +1,5 @@
 :root {
+  --search-item: 14.5vw;
   --search-item-xl: 17.6vw;
   --search-item-lg: 22.25vw;
   --search-item-m: 30vw;
@@ -9,11 +10,13 @@
   --search-box-sm: 80px;
 
   /* Metadata */
+  --search-icon: 1.75vw;
   --search-icon-xl: 2.25vw;
   --search-icon-lg: 3vw;
   --search-icon-m: 4vw;
   --search-icon-sm: 6vw;
 
+  --metadata-font: 0.75vw;
   --metadata-font-xl: 1vw;
   --metadata-font-lg: 1.25vw;
   --metadata-font-m: 1.75vw;
@@ -58,7 +61,7 @@
 }
 
 .search.active {
-  width: var(--search-box-xl);
+  width: var(--search-box);
   opacity: 1;
   pointer-events: all;
   margin-inline-end: 24px;
@@ -95,7 +98,7 @@ Reserve width: Padding left + padding right + (items_per_row * gap - 1).
 Item width: (100 - Reserve width) / items_per_row. */
 
 .search-item {
-  width: var(--search-item-xl);
+  width: var(--search-item);
   height: auto;
   aspect-ratio: 2 / 3;
   border-radius: 5px;
@@ -182,7 +185,7 @@ Item width: (100 - Reserve width) / items_per_row. */
 
 .search-icon {
   border-radius: 50%;
-  min-width: var(--search-icon-xl);
+  min-width: var(--search-icon);
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
@@ -197,7 +200,7 @@ Item width: (100 - Reserve width) / items_per_row. */
 .search-description {
   height: 60%;
   margin-block: 1vw;
-  font-size: var(--metadata-font-xl);
+  font-size: var(--metadata-font);
 }
 
 .search-metadata-wrapper {
@@ -217,11 +220,11 @@ Item width: (100 - Reserve width) / items_per_row. */
 
 /* Class for all badges / metadata's font-size where it is viewport dependent. */
 .vw-dependent {
-  font-size: var(--metadata-font-xl);
+  font-size: var(--metadata-font);
 }
 
 .search-genres span {
-  font-size: var(--metadata-font-xl);
+  font-size: var(--metadata-font);
 }
 
 .search-observer {
@@ -243,6 +246,22 @@ Item width: (100 - Reserve width) / items_per_row. */
 }
 
 /* Responsiveness */
+@media (min-width: 1100px) and (max-width: 1400px) {
+  .search-item {
+    width: var(--search-item-xl);
+  }
+
+  .search-icon {
+    width: var(--search-icon-xl);
+  }
+
+  .search-description,
+  .search-genres span,
+  span.vw-dependent {
+    font-size: var(--metadata-font-xl);
+  }
+}
+
 @media (min-width: 800px) and (max-width: 1100px) {
   .search-item {
     width: var(--search-item-lg);
