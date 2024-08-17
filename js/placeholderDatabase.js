@@ -898,6 +898,7 @@ export const showsDatabase = [
 export const billboardShows = [
   {
     name: 'Cobra Kai',
+    id: 77169,
     type: 'TV Show',
     description: `
       A legendary rivalry is rekindled after washed-up fighter Johnny
@@ -914,6 +915,7 @@ export const billboardShows = [
   },
   {
     name: 'What Jennifer Did',
+    id: 1261924,
     type: 'Movie',
     description: `
     Jennifer Pan's mother has been murdered. Her father's in a coma. 
@@ -929,6 +931,7 @@ export const billboardShows = [
   },
   {
     name: 'Vikings Valhalla',
+    id: 116135,
     type: 'TV Show',
     description:
       'In this violent action series, a new generation of Vikings set off on conquests for power and glory.',
@@ -943,6 +946,7 @@ export const billboardShows = [
   },
   {
     name: 'DoroheDoro',
+    id: 94404,
     type: 'TV Show',
     description: `
     Amnesiac Caiman seeks to undo his lizard head curse by killing the sorcerer responsible, with his friend Nikaido's help. In the Hole, that's a threat.`,
@@ -956,6 +960,7 @@ export const billboardShows = [
   },
   {
     name: 'The Blacklist',
+    id: 46952,
     type: 'TV Show',
     description: `
     After turning himself in, a brilliant fugitive offers to help the FBI bag other baddies, but only if rookie profiler Elizabeth Keen is his partner.`,
@@ -969,6 +974,7 @@ export const billboardShows = [
   },
   {
     name: 'Princess Mononoke',
+    id: 128,
     type: 'Movie',
     description: `
     A prince infected with a lethal curse sets off to find a cure and lands in the middle of a battle between a mining town and the animals of the forest.`,
@@ -982,6 +988,7 @@ export const billboardShows = [
   },
   {
     name: 'Scent of a Woman',
+    id: 9475,
     type: 'Movie',
     description: `
     Hoping to earn some cash over a holiday weekend, a prep-school student agrees to take care of a cantankerous retired Army
@@ -996,6 +1003,7 @@ export const billboardShows = [
   },
   {
     name: 'Barbarian',
+    id: 913290,
     type: 'Movie',
     description: `
     A young woman arrives at her Detroit rental house to find it already occupied by an interloper — and by something far worse below the floorboards.`,
@@ -1009,6 +1017,7 @@ export const billboardShows = [
   },
   {
     name: 'Killing Eve',
+    id: 72750,
     type: 'TV Show',
     description: `
     Intrigue blossoms into obsession when a British spy pursues a playful, stylish and utterly ruthless assassin working for a

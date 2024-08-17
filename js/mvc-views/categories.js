@@ -137,12 +137,16 @@ class Categories extends View {
 
     this._boundModal = true;
     document.addEventListener('click', (e) => {
-      const target = e.target.closest('.category-icon-info');
+      // Either search, category hover, or billboard button.
+      const target =
+        e.target.closest('.category-icon-info') ||
+        e.target.closest('.billboard-info');
       if (!target) return;
 
       const show =
         target.closest('.category-item-hover') ||
-        target.closest('.search-item');
+        target.closest('.search-item') ||
+        target.closest('.billboard-container');
       if (!show) return;
       const showID = show.dataset.id;
       const showType = show.dataset.type;

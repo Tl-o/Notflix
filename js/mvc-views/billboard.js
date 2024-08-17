@@ -111,7 +111,9 @@ class Billboard extends View {
 
   _generateBillboard() {
     const markup = `
-    <div class="billboard-container">
+    <div class="billboard-container" data-id="${this._data.id}" data-type="${
+      this._data.type === 'TV Show' ? 'tv' : 'movie'
+    }">
     <div class="billboard-metadata">
         <img
         class="billboard-logo"
@@ -142,7 +144,9 @@ class Billboard extends View {
             points="8.4639503 12.8342327 6.65837455 13.2666206 6.65837455 7.77862061 4.65323515 7.77862061 4.65323515 6.22012364 10.4690897 6.22012364 10.4690897 7.77862061 8.4639503 7.77862061"
             ></polygon>
         </svg>
-        <span class="billboard-promotion-text">#${this._data.rank} in ${this._data.type}s Today</span>
+        <span class="billboard-promotion-text">#${this._data.rank} in ${
+      this._data.type
+    }s Today</span>
         </div>
         <p class="billboard-description">
         ${this._data.description}
@@ -193,7 +197,9 @@ class Billboard extends View {
         </div>
     </div>
     <div class="billboard-backdrop">
-        <img class="billboard-img" src="${this._data.poster}" alt="${this._data.posterAlt}">
+        <img class="billboard-img" src="${this._data.poster}" alt="${
+      this._data.posterAlt
+    }">
         <div class="billboard-fadeout"></div>
     </div>
     </div>
