@@ -95,7 +95,9 @@ class Header extends View {
 
   addNavigationHandler(homeHandler) {
     this._parentEl.addEventListener('click', (e) => {
-      const target = e.target.closest('.navigation-item');
+      const target =
+        e.target.closest('.navigation-item') ||
+        e.target.closest('.browse-list-item');
       if (!target) return;
 
       const text = target.querySelector('a').textContent;
@@ -143,7 +145,7 @@ class Header extends View {
                 <div class="browse-dropdown">
                     <span class="dropdown-browse-arrow"></span>
                     <ul>
-                        <li class="browse-list-item">Home</li>
+                        <li class="browse-list-item"><a href="#">Home</a></li>
                         <li class="browse-list-item">TV Shows</li>
                         <li class="browse-list-item">Movies</li>
                         <li class="browse-list-item">New & Popular</li>
