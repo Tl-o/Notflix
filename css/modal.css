@@ -753,7 +753,6 @@
 /* Character limit 140 characters */
 .recommendation-body {
   padding: 16px;
-  max-height: 200px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -952,7 +951,14 @@
     --trailer-title-font-size: var(--trailer-title-font-size-sm);
   }
 
+  /* Smaller gap to allow information to show */
   .media-details {
     gap: 16px;
+  }
+
+  /* To prevent it going off-screen */
+  .full-size {
+    min-width: var(--size);
+    max-width: var(--size);
   }
 }
