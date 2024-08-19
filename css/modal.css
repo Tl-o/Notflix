@@ -1,5 +1,87 @@
 :root {
+  /* Modal Window Size */
   --size: 900px;
+  --size-lg: 800px;
+  --size-m: 650px;
+  --size-sm: 500px;
+
+  --modal-body-padding: 48px;
+  --modal-body-padding-m: 36px;
+  --modal-body-padding-sm: 24px;
+
+  --header-title-font-size: 24px;
+  --header-title-font-size-m: 20px;
+
+  /* Backdrop */
+  --modal-play-font-size: 20px;
+  --modal-play-font-size-m: 17px;
+  --modal-play-font-size-sm: 14px;
+
+  /* Details */
+  --metadata-font-size: 18px;
+  --metadata-font-size-m: 16px;
+  --metadata-font-size-sm: 12px;
+
+  --age-rating-font-size: 14px;
+  --age-rating-font-size-m: 12px;
+  --age-rating-font-size-sm: 10px;
+
+  --special-badge-font-size: 12px;
+  --special-badge-font-size-m: 10px;
+  --special-badge-font-size-sm: 8px;
+
+  --description-font-size: 16px;
+  --description-font-size-m: 14px;
+  --description-font-size-sm: 12px;
+
+  --production-font-size: 14px;
+  --production-font-size-m: 12px;
+  --production-font-size-sm: 10px;
+
+  /* Episodes */
+  --episode-header-2-font-size: 24px;
+  --episode-header-2-font-size-m: 20px;
+
+  --episode-header-3-font-size: 18.5px;
+  --episode-header-3-font-size-m: 15.5px;
+
+  --episode-padding-block: 32px;
+
+  --episode-padding-inline: 32px;
+  --episode-padding-inline-lg: 28px;
+  --episode-padding-inline-m: 12px;
+
+  --episode-data-font-size: 16px;
+  --episode-data-font-size-m: 14px;
+
+  --episode-description-font-size: 14px;
+  --episode-description-font-size-lg: 13px;
+  --episode-description-font-size-m: 12px;
+
+  /* Recommendations */
+  --recommendation-size: 225px;
+  --recommendation-size-lg: 200px;
+  --recommendation-size-m: 160px;
+  --recommendation-size-sm: 180px;
+
+  --recommendation-year-font-size: 16px;
+  --recommendation-year-font-size-lg: 14px;
+  --recommendation-year-font-size-m: 12px;
+
+  --recommendation-description-font-size: 15px;
+  --recommendation-description-font-size-lg: 13px;
+  --recommendation-description-font-size-m: 11px;
+
+  /* Trailers */
+  --trailer-size: 250px;
+  --trailer-size-lg: 215px;
+  --trailer-size-m: 176px;
+  --trailer-size-sm: 130px;
+
+  --trailer-title-font-size: 16px;
+  --trailer-title-font-size-lg: 15px;
+  --trailer-title-font-size-m: 14px;
+  --trailer-title-font-size-sm: 12px;
 }
 
 .media-modal-overlay {
@@ -112,7 +194,7 @@
 }
 
 .modal-body {
-  padding-inline: 48px;
+  padding-inline: var(--modal-body-padding);
 }
 
 /* All classes relating to modal backdrop */
@@ -192,7 +274,7 @@
   padding-inline: 1vw;
   min-height: 5vh;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: var(--modal-play-font-size);
   font-weight: bold;
   display: flex;
   gap: 4px;
@@ -218,7 +300,8 @@
 }
 
 .small {
-  min-height: 3vh;
+  min-height: 2vh;
+  max-height: 4vh;
   margin-inline-start: auto;
 }
 
@@ -288,9 +371,13 @@
 .metadata {
   display: flex;
   gap: 8px;
-  font-size: 18px;
+  font-size: var(--metadata-font-size);
   align-items: center;
   color: rgba(255, 255, 255, 0.7);
+}
+
+.description {
+  font-size: var(--description-font-size);
 }
 
 .media-badge {
@@ -305,7 +392,11 @@
 }
 
 .age {
-  font-size: 14px;
+  font-size: var(--age-rating-font-size);
+}
+
+.special {
+  font-size: var(--special-badge-font-size);
 }
 
 .accessibility-icon {
@@ -315,7 +406,7 @@
 
 .media-production {
   flex: 1;
-  font-size: 14px;
+  font-size: var(--production-font-size);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -347,10 +438,12 @@
 }
 
 .episodes-header h2 {
+  font-size: var(--episode-header-2-font-size);
   font-weight: 500;
 }
 
 .episodes-header h3 {
+  font-size: var(--episode-header-3-font-size);
   font-weight: 400;
 }
 
@@ -452,9 +545,10 @@
   border-bottom-color: rgb(64, 64, 64);
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  padding-inline: 32px;
-  padding-block: 32px;
+  padding-block: var(--episode-padding-block);
+  padding-inline: var(--episode-padding-inline);
   cursor: pointer;
+  overflow-y: hidden;
 }
 
 .media-episode:hover .play-icon,
@@ -508,6 +602,7 @@
 }
 
 .episode-title-wrapper {
+  font-size: var(--episode-data-font-size);
   display: flex;
   justify-content: space-between;
   font-weight: 500;
@@ -515,7 +610,7 @@
 }
 
 .episode-description {
-  font-size: 14px;
+  font-size: var(--episode-description-font-size);
   color: rgb(210, 210, 210);
 }
 
@@ -525,7 +620,7 @@
 }
 
 .header-title {
-  font-size: 24px;
+  font-size: var(--header-title-font-size);
   font-weight: 500;
   margin-block-end: 16px;
 }
@@ -617,7 +712,7 @@
 }
 
 .recommendation {
-  flex: 0 0 225px;
+  flex: 0 0 var(--recommendation-size);
   height: auto;
   aspect-ratio: 2 / 5;
   background-color: rgba(47, 47, 47, 255);
@@ -662,11 +757,14 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  overflow-y: hidden;
+}
+
+.media-year-small {
+  font-size: var(--recommendation-year-font-size);
 }
 
 .recommendation-description {
-  font-size: 14px;
+  font-size: var(--recommendation-description-font-size);
   color: rgb(210, 210, 210);
 }
 
@@ -697,7 +795,7 @@
 
 .trailer-link {
   display: block;
-  flex: 0 0 250px;
+  flex: 0 0 var(--trailer-size);
 }
 
 .trailer {
@@ -716,7 +814,7 @@
 
 .trailer-title {
   display: block;
-  font-size: 16px;
+  font-size: var(--trailer-title-font-size);
   font-weight: 500;
 }
 
@@ -762,4 +860,99 @@
 
 .maskless {
   mask-image: none;
+}
+
+/* Responsiveness */
+@media (max-width: 1100px) {
+  :root {
+    /* All Large */
+
+    /* Modal */
+    --size: var(--size-lg);
+
+    /* Episodes */
+    --episode-padding-inline: var(--episode-padding-inline-lg);
+    --episode-description-font-size: var(--episode-description-font-size-lg);
+
+    /* Recommendations */
+    --recommendation-size: var(--recommendation-size-lg);
+    --recommendation-year-font-size: var(--recommendation-year-font-size-lg);
+    --recommendation-description-font-size: var(
+      --recommendation-description-font-size-lg
+    );
+
+    /* Trailers */
+    --trailer-size: var(--trailer-size-lg);
+    --trailer-title-font-size: var(--trailer-title-font-size-lg);
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    /* All Medium */
+
+    /* Modal */
+    --size: var(--size-m);
+
+    /* Backdrop */
+    --modal-body-padding: var(--modal-body-padding-m);
+    --modal-play-font-size: var(--modal-play-font-size-m);
+
+    /* Title details */
+    --header-title-font-size: var(--header-title-font-size-m);
+    --metadata-font-size: var(--metadata-font-size-m);
+    --description-font-size: var(--description-font-size-m);
+    --production-font-size: var(--production-font-size-m);
+    --age-rating-font-size: var(--age-rating-font-size-m);
+    --special-badge-font-size: var(--special-badge-font-size-m);
+
+    /* Episodes */
+    --episode-header-2-font-size: var(--episode-header-2-font-size-m);
+    --episode-header-3-font-size: var(--episode-header-3-font-size-m);
+    --episode-padding-inline: var(--episode-padding-inline-m);
+    --episode-data-font-size: var(--episode-data-font-size-m);
+    --episode-description-font-size: var(--episode-description-font-size-m);
+
+    /* Recommendations */
+    --recommendation-size: var(--recommendation-size-m);
+    --recommendation-year-font-size: var(--recommendation-year-font-size-m);
+    --recommendation-description-font-size: var(
+      --recommendation-description-font-size-m
+    );
+
+    /* Trailers */
+    --trailer-size: var(--trailer-size-m);
+    --trailer-title-font-size: var(--trailer-title-font-size-m);
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    /* All Small */
+
+    /* Modal */
+    --size: var(--size-sm);
+
+    /* Backdrop */
+    --modal-body-padding: var(--modal-body-padding-sm);
+    --modal-play-font-size: var(--modal-play-font-size-sm);
+
+    /* Title details */
+    --metadata-font-size: var(--metadata-font-size-sm);
+    --description-font-size: var(--description-font-size-sm);
+    --production-font-size: var(--production-font-size-sm);
+    --age-rating-font-size: var(--age-rating-font-size-sm);
+    --special-badge-font-size: var(--special-badge-font-size-sm);
+
+    /* Recommendations */
+    --recommendation-size: var(--recommendation-size-sm);
+
+    /* Trailers */
+    --trailer-size: var(--trailer-size-sm);
+    --trailer-title-font-size: var(--trailer-title-font-size-sm);
+  }
+
+  .media-details {
+    gap: 16px;
+  }
 }

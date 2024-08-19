@@ -235,7 +235,7 @@ export const showsDatabase = [
     id: 569547,
     thumbnail:
       'https://occ-0-55-56.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABai46LyFIqcsD4ZoNPTzo8YWMSmlTfOF_blaHWcj7KWwnr696efh-2icWi1g-Ps5PrSGzuWy8wqRp-5e3xZ1V1SGK6CsIzUMoj3ehDkbrOYgvnhWVKLJy1VDdqh7sdaJ3pOM-sOAf66TO8xWm14z0c-gYZMCfqptLL4pt0UYHpIGnmv4yQfZ3XamCTs28QG8H1ozjt_ZBGROVT5DvSdDXaT0mGJGses6MCmgnEPCAlS1wI-amnzmYw3-gGQnPNMc5tU2J5c3NgIYdGKHN7Oru4XqG4UdpwaD6zR1bLt35h3CiIAIoxA3Ih3X.jpg?r=84e',
-    genres: ['Sci-Fi', 'Mystery', 'Dystopian'],
+    genres: ['Sci-Fi', 'Mystery', 'Dystopian', 'Movies'],
   },
   {
     name: 'The Witcher',
