@@ -141,234 +141,278 @@ export const getCurrUserData = function (userID) {
 };
 
 export const getSearch = async function (query, page = 1) {
-  const data = await AJAX(
-    `https://api.themoviedb.org/3/search/multi?query=${query}&include_adult=false&language=en-US&page=${page}`
-  );
+  try {
+    const data = await AJAX(
+      `https://api.themoviedb.org/3/search/multi?query=${query}&include_adult=false&language=en-US&page=${page}`
+    );
 
-  return data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getShowDetails = async function (id) {
-  const data = await AJAX(
-    `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings&language=en-US`
-  );
+  try {
+    const data = await AJAX(
+      `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings&language=en-US`
+    );
 
-  const maturity = data['content_ratings']?.['results'].find(
-    (result) => result['iso_3166_1'] === 'US'
-  )?.['rating'];
+    const maturity = data['content_ratings']?.['results'].find(
+      (result) => result['iso_3166_1'] === 'US'
+    )?.['rating'];
 
-  const showMetadata = {
-    genres: data['genres'],
-    episodes: data['number_of_episodes'],
-    seasons: data['number_of_seasons'],
-    maturity: config.MATURITY_RATING_MAPPING[maturity] || '+13',
-    id: data['id'],
-  };
-  return showMetadata;
+    const showMetadata = {
+      genres: data['genres'],
+      episodes: data['number_of_episodes'],
+      seasons: data['number_of_seasons'],
+      maturity: config.MATURITY_RATING_MAPPING[maturity] || '+13',
+      id: data['id'],
+    };
+    return showMetadata;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getMovieDetails = async function (id) {
-  const data = await AJAX(
-    `https://api.themoviedb.org/3/movie/${id}?append_to_response=release_dates&language=en-US`
-  );
+  try {
+    const data = await AJAX(
+      `https://api.themoviedb.org/3/movie/${id}?append_to_response=release_dates&language=en-US`
+    );
 
-  const maturity = data['release_dates']?.['results']
-    ?.find((result) => result['iso_3166_1'] === 'US')
-    ?.['release_dates']?.find((cert) => cert['certification'])?.[
-    'certification'
-  ];
+    const maturity = data['release_dates']?.['results']
+      ?.find((result) => result['iso_3166_1'] === 'US')
+      ?.['release_dates']?.find((cert) => cert['certification'])?.[
+      'certification'
+    ];
 
-  const time = parseMovieDuration(data);
+    const time = parseMovieDuration(data);
 
-  const movieMetadata = {
-    genres: data['genres'],
-    runtime: time,
-    maturity: config.MATURITY_RATING_MAPPING[maturity] || '+13',
-    id: data['id'],
-  };
+    const movieMetadata = {
+      genres: data['genres'],
+      runtime: time,
+      maturity: config.MATURITY_RATING_MAPPING[maturity] || '+13',
+      id: data['id'],
+    };
 
-  return movieMetadata;
+    return movieMetadata;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getShowModal = async function (id) {
-  const data = await AJAX(
-    `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings,keywords,credits,recommendations,videos,images?include_image_language=en&language=en-US`
-  );
+  try {
+    const data = await AJAX(
+      `https://api.themoviedb.org/3/tv/${id}?append_to_response=content_ratings,keywords,credits,recommendations,videos,images?include_image_language=en&language=en-US`
+    );
 
-  data[`season_1`] = await getShowSeason(id, 1);
+    data[`season_1`] = await getShowSeason(id, 1);
 
-  return data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getMovieModal = async function (id) {
-  const data = await AJAX(
-    `https://api.themoviedb.org/3/movie/${id}?append_to_response=credits%2Crelease_dates%2Crecommendations%2Cvideos%2Ckeywords%2Cimages%3Finclude_image_language%3Den&language=en-US`
-  );
+  try {
+    const data = await AJAX(
+      `https://api.themoviedb.org/3/movie/${id}?append_to_response=credits%2Crelease_dates%2Crecommendations%2Cvideos%2Ckeywords%2Cimages%3Finclude_image_language%3Den&language=en-US`
+    );
 
-  return data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getShowSeason = async function (id, seasonNum) {
-  const season = await AJAX(
-    `https://api.themoviedb.org/3/tv/${id}/season/${seasonNum}?language=en-US`
-  );
+  try {
+    const season = await AJAX(
+      `https://api.themoviedb.org/3/tv/${id}/season/${seasonNum}?language=en-US`
+    );
 
-  return season;
+    return season;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getMediaWithCast = async function (cast) {
-  const castMember = await AJAX(
-    `https://api.themoviedb.org/3/search/person?query=${cast}&include_adult=false&language=en-US&page=1`
-  );
+  try {
+    const castMember = await AJAX(
+      `https://api.themoviedb.org/3/search/person?query=${cast}&include_adult=false&language=en-US&page=1`
+    );
 
-  const moviesWithCast = await AJAX(
-    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_cast=${castMember['results'][0]['id']}`
-  );
+    const moviesWithCast = await AJAX(
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_cast=${castMember['results'][0]['id']}`
+    );
 
-  moviesWithCast['results'].forEach((movie) => {
-    movie['media_type'] = 'movie';
-  });
+    moviesWithCast['results'].forEach((movie) => {
+      movie['media_type'] = 'movie';
+    });
 
-  // Have to only filter TV Shows from known_for, since API does not yet support TV Show search through cast member
-  const data = {
-    name: `Shows Featuring ${castMember['results']?.[0]['name']}`,
-    results: [
-      ...castMember['results']?.[0]['known_for'].filter(
-        (show) => show['media_type'] === 'tv'
-      ),
-      ...moviesWithCast['results'],
-    ],
-  };
-  return data;
+    // Have to only filter TV Shows from known_for, since API does not yet support TV Show search through cast member
+    const data = {
+      name: `Shows Featuring ${castMember['results']?.[0]['name']}`,
+      results: [
+        ...castMember['results']?.[0]['known_for'].filter(
+          (show) => show['media_type'] === 'tv'
+        ),
+        ...moviesWithCast['results'],
+      ],
+    };
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getMediaWithGenre = async function (genre) {
-  const genreShowID = mapGenre(genre, 'tv');
-  const genreMovieID = mapGenre(genre, 'movie');
+  try {
+    const genreShowID = mapGenre(genre, 'tv');
+    const genreMovieID = mapGenre(genre, 'movie');
 
-  const tvShows = await AJAX(
-    `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreShowID}`
-  );
+    const tvShows = await AJAX(
+      `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreShowID}`
+    );
 
-  // Since these API calls do NOT add media type
-  tvShows['results'].forEach((tvShow) => {
-    tvShow['media_type'] = 'tv';
-  });
+    // Since these API calls do NOT add media type
+    tvShows['results'].forEach((tvShow) => {
+      tvShow['media_type'] = 'tv';
+    });
 
-  const movies = await AJAX(
-    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreMovieID}`
-  );
+    const movies = await AJAX(
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreMovieID}`
+    );
 
-  // Since these API calls do NOT add media type
-  movies['results'].forEach((movie) => {
-    movie['media_type'] = 'movie';
-  });
+    // Since these API calls do NOT add media type
+    movies['results'].forEach((movie) => {
+      movie['media_type'] = 'movie';
+    });
 
-  const data = {
-    name: `Navigating ${genre}`,
-    results: shuffleArray([...tvShows['results'], ...movies['results']]),
-  };
+    const data = {
+      name: `Navigating ${genre}`,
+      results: shuffleArray([...tvShows['results'], ...movies['results']]),
+    };
 
-  return data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getMediaWithKeyword = async function (keyword) {
-  const tvShows = await AJAX(
-    `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_keywords=${keyword[0]}`
-  );
+  try {
+    const tvShows = await AJAX(
+      `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_keywords=${keyword[0]}`
+    );
 
-  // Since these API calls do NOT add media type
-  tvShows['results'].forEach((tvShow) => {
-    tvShow['media_type'] = 'tv';
-  });
+    // Since these API calls do NOT add media type
+    tvShows['results'].forEach((tvShow) => {
+      tvShow['media_type'] = 'tv';
+    });
 
-  const movies = await AJAX(
-    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=16&with_keywords=${keyword[0]}`
-  );
+    const movies = await AJAX(
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=16&with_keywords=${keyword[0]}`
+    );
 
-  // Since these API calls do NOT add media type
-  movies['results'].forEach((movie) => {
-    movie['media_type'] = 'movie';
-  });
+    // Since these API calls do NOT add media type
+    movies['results'].forEach((movie) => {
+      movie['media_type'] = 'movie';
+    });
 
-  const data = {
-    name: `Navigating ${keyword[1]}`,
-    results: shuffleArray([...tvShows['results'], ...movies['results']]),
-  };
+    const data = {
+      name: `Navigating ${keyword[1]}`,
+      results: shuffleArray([...tvShows['results'], ...movies['results']]),
+    };
 
-  return data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getMediaWithCompany = async function (company) {
-  const tvShows = await AJAX(
-    `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_companies=${company[0]}`
-  );
+  try {
+    const tvShows = await AJAX(
+      `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_companies=${company[0]}`
+    );
 
-  // Since these API calls do NOT add media type
-  tvShows['results'].forEach((tvShow) => {
-    tvShow['media_type'] = 'tv';
-  });
+    // Since these API calls do NOT add media type
+    tvShows['results'].forEach((tvShow) => {
+      tvShow['media_type'] = 'tv';
+    });
 
-  const movies = await AJAX(
-    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_companies=${company[0]}}`
-  );
+    const movies = await AJAX(
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_companies=${company[0]}}`
+    );
 
-  // Since these API calls do NOT add media type
-  movies['results'].forEach((movie) => {
-    movie['media_type'] = 'movie';
-  });
+    // Since these API calls do NOT add media type
+    movies['results'].forEach((movie) => {
+      movie['media_type'] = 'movie';
+    });
 
-  const data = {
-    name: `Produced By ${company[1]}`,
-    results: shuffleArray([...tvShows['results'], ...movies['results']]),
-  };
+    const data = {
+      name: `Produced By ${company[1]}`,
+      results: shuffleArray([...tvShows['results'], ...movies['results']]),
+    };
 
-  return data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getCategory = async function (type, genre = null, random = false) {
-  // Get random
-  if (random && type == 'tv') {
-    genre =
-      state.genres.showGenres[
-        Math.floor(Math.random() * state.genres.showGenres.length)
-      ].name;
-  } else if (random && type == 'movie') {
-    genre =
-      state.genres.movieGenres[
-        Math.floor(Math.random() * state.genres.showGenres.length)
-      ].name;
+  try {
+    // Get random
+    if (random && type == 'tv') {
+      genre =
+        state.genres.showGenres[
+          Math.floor(Math.random() * state.genres.showGenres.length)
+        ].name;
+    } else if (random && type == 'movie') {
+      genre =
+        state.genres.movieGenres[
+          Math.floor(Math.random() * state.genres.showGenres.length)
+        ].name;
+    }
+
+    const data = genre
+      ? await AJAX(
+          `https://api.themoviedb.org/3/discover/${type}?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${mapGenre(
+            genre,
+            type
+          )}`
+        )
+      : await AJAX(
+          'https://api.themoviedb.org/3/tv/popular?language=en-US&page=1'
+        );
+
+    const shows = data.results.map((show) => {
+      return {
+        name: show['original_name'],
+        id: show['id'],
+        genres: [type],
+        thumbnail: show['backdrop_path']
+          ? `https://image.tmdb.org/t/p/original${show['backdrop_path']}`
+          : 'https://picsum.photos/1600/900',
+        logo: show.logo
+          ? `https://image.tmdb.org/t/p/original${show.logo}`
+          : null,
+      };
+    });
+
+    state.media.categories.push({
+      name: genre ? genre : 'Popular',
+      shows,
+    });
+  } catch (error) {
+    throw error;
   }
-
-  const data = genre
-    ? await AJAX(
-        `https://api.themoviedb.org/3/discover/${type}?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${mapGenre(
-          genre,
-          type
-        )}`
-      )
-    : await AJAX(
-        'https://api.themoviedb.org/3/tv/popular?language=en-US&page=1'
-      );
-
-  const shows = data.results.map((show) => {
-    return {
-      name: show['original_name'],
-      id: show['id'],
-      genres: [type],
-      thumbnail: show['backdrop_path']
-        ? `https://image.tmdb.org/t/p/original${show['backdrop_path']}`
-        : 'https://picsum.photos/1600/900',
-      logo: show.logo
-        ? `https://image.tmdb.org/t/p/original${show.logo}`
-        : null,
-    };
-  });
-
-  state.media.categories.push({
-    name: genre ? genre : 'Popular',
-    shows,
-  });
 };
 
 export const getBuiltIn = function () {
@@ -377,15 +421,19 @@ export const getBuiltIn = function () {
 };
 
 const getGenres = async function () {
-  const movies = await AJAX(
-    `https://api.themoviedb.org/3/genre/movie/list?language=en`
-  );
-  state.genres.movieGenres = movies.genres;
+  try {
+    const movies = await AJAX(
+      `https://api.themoviedb.org/3/genre/movie/list?language=en`
+    );
+    state.genres.movieGenres = movies.genres;
 
-  const tvShows = await AJAX(
-    `https://api.themoviedb.org/3/genre/tv/list?language=en`
-  );
-  state.genres.showGenres = tvShows.genres;
+    const tvShows = await AJAX(
+      `https://api.themoviedb.org/3/genre/tv/list?language=en`
+    );
+    state.genres.showGenres = tvShows.genres;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const mapGenre = function (category, type) {

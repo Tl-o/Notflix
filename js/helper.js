@@ -62,8 +62,11 @@ export async function AJAX(url, data = undefined) {
     });
 
     const tmdbData = await res.json();
+
+    if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
+
     return tmdbData;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
