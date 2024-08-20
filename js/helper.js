@@ -67,6 +67,6 @@ export async function AJAX(url, data = undefined) {
 
     return tmdbData;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 }

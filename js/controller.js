@@ -46,53 +46,71 @@ const controlShowMetadata = async function (id, type) {
 };
 
 const controlUsers = async function (userID) {
-  clear();
-  model.getCurrUserData(userID);
-  profile.renderSpinner(true);
-  await model.getCategory('tv');
-  profile.clear();
-  init();
+  try {
+    clear();
+    model.getCurrUserData(userID);
+    profile.renderSpinner(true);
+    await model.getCategory('tv');
+    profile.clear();
+    init();
+  } catch (error) {
+    profile.clear();
+    profile.renderError();
+  }
 };
 
 const controlInfiniteScrolling = async function () {
-  if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
-    return;
+  try {
+    if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
+      return;
 
-  console.log('Infinite activated...');
-  categories.renderSkeleton();
-  // Get four different categories to render
-  model.getBuiltIn();
-  await model.getCategory('tv', null, true);
-  model.getBuiltIn();
-  await model.getCategory('movie', null, true);
+    console.log('Infinite activated...');
+    categories.renderSkeleton();
+    // Get four different categories to render
+    model.getBuiltIn();
+    await model.getCategory('tv', null, true);
+    model.getBuiltIn();
+    await model.getCategory('movie', null, true);
 
-  categories.clearSkeleton();
-  categories.renderNewCategories();
-  // If all categories rendered, render footer
-  if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
-    footer.render();
+    categories.clearSkeleton();
+    categories.renderNewCategories();
+    // If all categories rendered, render footer
+    if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
+      footer.render();
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const controlSeasons = async function (id, seasonNum, render = true) {
-  const seasonData = await model.getShowSeason(id, seasonNum);
-  title.updateSeason(seasonData, seasonNum, render);
+  try {
+    const seasonData = await model.getShowSeason(id, seasonNum);
+    title.updateSeason(seasonData, seasonNum, render);
+  } catch (error) {
+    console.log(error);
+    title.renderError();
+  }
 };
 
 const controlAllEpisodes = async function (data) {
-  const numSeasons = data['number_of_seasons'];
-  const id = data['id'];
-  const allSeasons = [];
-  for (let i = 1; i <= numSeasons; i++) {
-    if (data[`season_${i}`]) continue;
+  try {
+    const numSeasons = data['number_of_seasons'];
+    const id = data['id'];
+    const allSeasons = [];
+    for (let i = 1; i <= numSeasons; i++) {
+      if (data[`season_${i}`]) continue;
 
-    allSeasons.push([id, i]);
+      allSeasons.push([id, i]);
+    }
+
+    // Get all missing seasons in parellal
+    await Promise.all(
+      allSeasons.map((season) => controlSeasons(...season, false))
+    );
+    title.updateAllEpisodesMarkup();
+  } catch (error) {
+    console.log(error);
   }
-
-  // Get all missing seasons in parellal
-  await Promise.all(
-    allSeasons.map((season) => controlSeasons(...season, false))
-  );
-  title.updateAllEpisodesMarkup();
 };
 
 profile.render(model.state.users);
@@ -114,39 +132,51 @@ const renderModal = async function (id, type) {
 };
 
 const controlTitle = async function (id, type) {
-  let data;
-  if (type === 'tv') data = await model.getShowModal(id);
-  else if (type === 'movie') data = await model.getMovieModal(id);
-  data['type'] = 'title';
-  title.updateData(data);
-  title.updateTitleMarkup();
+  try {
+    let data;
+    if (type === 'tv') data = await model.getShowModal(id);
+    else if (type === 'movie') data = await model.getMovieModal(id);
+    data['type'] = 'title';
+    title.updateData(data);
+    title.updateTitleMarkup();
+  } catch (error) {
+    title.renderError();
+  }
 };
 
 const controlNavigation = async function (query, type) {
-  let data;
+  try {
+    let data;
 
-  if (type === 'cast') data = await model.getMediaWithCast(query);
-  if (type === 'genre') data = await model.getMediaWithGenre(query);
-  if (type === 'keyword') data = await model.getMediaWithKeyword(query);
-  if (type === 'company') data = await model.getMediaWithCompany(query);
+    if (type === 'cast') data = await model.getMediaWithCast(query);
+    if (type === 'genre') data = await model.getMediaWithGenre(query);
+    if (type === 'keyword') data = await model.getMediaWithKeyword(query);
+    if (type === 'company') data = await model.getMediaWithCompany(query);
 
-  data['type'] = 'nav';
-  title.updateData(data);
-  title.updateNavigationMarkup();
+    data['type'] = 'nav';
+    title.updateData(data);
+    title.updateNavigationMarkup();
+  } catch (error) {
+    title.renderError();
+  }
 };
 
 const controlSearch = async function (query) {
-  const data = await model.getSearch(query);
-  data['query'] = query;
+  try {
+    categories.clear();
+    billboard.changeVisibility();
+    profile.clear();
 
-  categories.clear();
-  billboard.changeVisibility();
-  profile.clear();
-  search.render(data);
-  search.addObserverHandler(controlSearchPages);
+    const data = await model.getSearch(query);
+    data['query'] = query;
+    search.render(data);
+    search.addObserverHandler(controlSearchPages);
 
-  if (data['total_pages'] === 1 && data['total_results'] > 0) footer.render();
-  else footer.clear();
+    if (data['total_pages'] === 1 && data['total_results'] > 0) footer.render();
+    else footer.clear();
+  } catch (error) {
+    search.renderError();
+  }
 };
 
 const controlSearchPages = async function searchInfiniteScrolling(

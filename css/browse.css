@@ -252,6 +252,29 @@ header {
     transform: rotate(360deg);
   }
 }
+.error-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}
+
+.error {
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.error-icon {
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.error-message {
+  margin-right: 25%;
+}
 
 @media (min-width: 900px) and (max-width: 1200px) {
   .main-navigation-sm {
