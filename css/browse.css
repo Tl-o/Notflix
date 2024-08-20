@@ -272,10 +272,6 @@ header {
   min-height: 32px;
 }
 
-.error-message {
-  margin-right: 25%;
-}
-
 @media (min-width: 900px) and (max-width: 1200px) {
   .main-navigation-sm {
     font-size: 12px;

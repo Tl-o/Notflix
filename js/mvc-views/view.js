@@ -32,7 +32,7 @@ export class View {
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   }
 
-  renderError(message = this._errorMessage) {
+  renderError(message = this._errorMessage, target = this._parentEl) {
     const markup = `
     <div class="error-container">
       <div class="error">
@@ -57,7 +57,7 @@ export class View {
       </div>
     </div>`;
 
-    this._parentEl.insertAdjacentHTML('beforeend', markup);
+    target.insertAdjacentHTML('afterbegin', markup);
   }
 
   clear() {

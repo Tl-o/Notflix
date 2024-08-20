@@ -20,6 +20,7 @@ const init = function () {
   header.addNavigationHandler(renderBrowse);
   header.render(model.state.users);
   billboard.render(model.state.billboard);
+  footer.render();
 };
 
 const clear = function () {
@@ -33,7 +34,6 @@ const clear = function () {
 
 const renderBrowse = function () {
   search.clear();
-  footer.clear();
   categories.render(model.state.media);
   billboard.changeVisibility(true);
 };
@@ -74,9 +74,10 @@ const controlInfiniteScrolling = async function () {
 
     categories.clearSkeleton();
     categories.renderNewCategories();
-    // If all categories rendered, render footer
-    if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
-      footer.render();
+
+    // // If all categories rendered, render footer
+    // if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
+    //   footer.render();
   } catch (error) {
     console.log(error);
   }
@@ -172,9 +173,10 @@ const controlSearch = async function (query) {
     search.render(data);
     search.addObserverHandler(controlSearchPages);
 
-    if (data['total_pages'] === 1 && data['total_results'] > 0) footer.render();
-    else footer.clear();
+    // if (data['total_pages'] === 1 && data['total_results'] > 0) footer.render();
+    // else footer.clear();
   } catch (error) {
+    search.clear();
     search.renderError();
   }
 };
@@ -184,14 +186,14 @@ const controlSearchPages = async function searchInfiniteScrolling(
   page,
   childElementCount
 ) {
-  // Return if max search limit has been reached.
-  if (
-    childElementCount >= search.renderLimitPerSearch ||
-    prevData['total_pages'] < page
-  ) {
-    footer.render();
-    return;
-  }
+  // // Return if max search limit has been reached.
+  // if (
+  //   childElementCount >= search.renderLimitPerSearch ||
+  //   prevData['total_pages'] < page
+  // ) {
+  //   footer.render();
+  //   return;
+  // }
 
   const data = await model.getSearch(prevData['query'], page);
   console.log(data);
