@@ -295,14 +295,37 @@ header {
   padding-inline: 6px;
   margin-left: auto;
   margin-right: auto;
+
+  transition: transform 0.33s ease-out;
+}
+
+.notification-wrapper:hover {
+  transform: scale(1.1);
 }
 
 .notif-error {
   background-color: rgba(229, 9, 20, 0.8);
 }
+
 .notification-icon {
   min-width: 16px;
   min-height: 16px;
+}
+
+.notif-remove {
+  animation: slideUp 1s ease-out forwards;
+}
+
+@keyframes slideUp {
+  33% {
+    transform: translate(0, 20%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(0, -100%);
+    opacity: 0;
+  }
 }
 
 @media (min-width: 900px) and (max-width: 1200px) {

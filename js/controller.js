@@ -7,6 +7,7 @@ import profile from './mvc-views/profile.js';
 import footer from './mvc-views/footer.js';
 import title from './mvc-views/title.js';
 import search from './mvc-views/search.js';
+import error from './mvc-views/error.js';
 import * as config from './config.js';
 
 /* Initalize */
@@ -21,6 +22,7 @@ const init = function () {
   header.render(model.state.users);
   billboard.render(model.state.billboard);
   footer.render();
+  error.renderError('Test error, please ignore.');
 };
 
 const clear = function () {

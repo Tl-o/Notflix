@@ -4,14 +4,21 @@ import 'core-js/stable';
 import { MILLISECONDS_IN_SECOND } from '../config';
 
 class ErrorView extends View {
-  _parentEl = document.querySelector('.error-container');
+  _parentEl = document.querySelector('.errors');
 
   _errTimeout;
-  _errTimeoutDuration = 15 * MILLISECONDS_IN_SECOND;
+  _errTimeoutDuration = 5 * MILLISECONDS_IN_SECOND;
   _isBound = false;
 
   renderError(message) {
-    this._generateMarkup(message);
+    if (this._errTimeout) clearTimeout(this._errTimeout);
+    this._errTimeout = setTimeout(
+      this._removeNotification.bind(this),
+      this._errTimeoutDuration
+    );
+
+    this.clear();
+    this._generateError(message);
     this._bindClick();
   }
 
@@ -34,7 +41,7 @@ class ErrorView extends View {
             d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"
             />
         </svg>
-        <p class="error-message">404, not found!</p>
+        <p class="error-message">${message}</p>
         </div>
     </div>`;
   }
@@ -44,11 +51,20 @@ class ErrorView extends View {
 
     this._isBound = true;
     this._parentEl.addEventListener('click', (e) => {
-      const target = e.target.closest('.notification');
-      if (!target) return;
-
-      target.remove();
+      if (this._errTimeout) clearTimeout(this._errTimeout);
+      this._removeNotification();
     });
+  }
+
+  _removeNotification() {
+    const target = this._parentEl.querySelector('.notification-wrapper');
+    if (!target) return;
+
+    target.addEventListener('animationend', function () {
+      this.parentElement.remove();
+    });
+
+    target.classList.add('notif-remove');
   }
 }
 
