@@ -33,6 +33,8 @@ export class View {
   }
 
   renderError(message = this._errorMessage, target = this._parentEl) {
+    this.clear();
+
     const markup = `
     <div class="error-container">
       <div class="error">

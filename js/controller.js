@@ -22,7 +22,6 @@ const init = function () {
   header.render(model.state.users);
   billboard.render(model.state.billboard);
   footer.render();
-  error.renderError('Test error, please ignore.');
 };
 
 const clear = function () {
@@ -41,10 +40,15 @@ const renderBrowse = function () {
 };
 
 const controlShowMetadata = async function (id, type) {
-  let data;
-  if (type === 'tv') data = await model.getShowDetails(id);
-  if (type === 'movie') data = await model.getMovieDetails(id);
-  categories.updateHoverMetadata(data);
+  try {
+    let data;
+    if (type === 'tv') data = await model.getShowDetails(id);
+    if (type === 'movie') data = await model.getMovieDetails(id);
+    categories.updateHoverMetadata(data);
+  } catch (err) {
+    console.log(err);
+    error.renderError(`Could not fetch title data. Please try again later.`);
+  }
 };
 
 const controlUsers = async function (userID) {
@@ -55,8 +59,8 @@ const controlUsers = async function (userID) {
     await model.getCategory('tv');
     profile.clear();
     init();
-  } catch (error) {
-    profile.clear();
+  } catch (err) {
+    console.log(err);
     profile.renderError();
   }
 };
@@ -80,8 +84,10 @@ const controlInfiniteScrolling = async function () {
     // // If all categories rendered, render footer
     // if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
     //   footer.render();
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    categories.clearSkeleton();
+    console.log(err);
+    error.renderError(`Could not get next categories. Please try again later.`);
   }
 };
 
@@ -89,9 +95,11 @@ const controlSeasons = async function (id, seasonNum, render = true) {
   try {
     const seasonData = await model.getShowSeason(id, seasonNum);
     title.updateSeason(seasonData, seasonNum, render);
-  } catch (error) {
-    console.log(error);
-    title.renderError();
+  } catch (err) {
+    console.log(err);
+    error.renderError(
+      'Could not retrieve season information. Please try again later.'
+    );
   }
 };
 
@@ -111,8 +119,11 @@ const controlAllEpisodes = async function (data) {
       allSeasons.map((season) => controlSeasons(...season, false))
     );
     title.updateAllEpisodesMarkup();
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
+    error.renderError(
+      `Could not retrieve all episodes. Please try again later.`
+    );
   }
 };
 
@@ -142,8 +153,9 @@ const controlTitle = async function (id, type) {
     data['type'] = 'title';
     title.updateData(data);
     title.updateTitleMarkup();
-  } catch (error) {
-    title.renderError();
+  } catch (err) {
+    console.log(err);
+    error.renderError('Could not retrieve title. Please try again later.');
   }
 };
 
@@ -159,8 +171,11 @@ const controlNavigation = async function (query, type) {
     data['type'] = 'nav';
     title.updateData(data);
     title.updateNavigationMarkup();
-  } catch (error) {
-    title.renderError();
+  } catch (err) {
+    console.log(err);
+    renderError(
+      `Could not retrieve ${type} information. Please try again later.`
+    );
   }
 };
 
@@ -177,8 +192,7 @@ const controlSearch = async function (query) {
 
     // if (data['total_pages'] === 1 && data['total_results'] > 0) footer.render();
     // else footer.clear();
-  } catch (error) {
-    search.clear();
+  } catch (err) {
     search.renderError();
   }
 };
@@ -197,17 +211,29 @@ const controlSearchPages = async function searchInfiniteScrolling(
   //   return;
   // }
 
-  const data = await model.getSearch(prevData['query'], page);
-  console.log(data);
-  search.updateResults(data);
+  try {
+    const data = await model.getSearch(prevData['query'], page);
+    console.log(data);
+    search.updateResults(data);
+  } catch (err) {
+    console.log(err);
+    error.renderError(
+      `Could not retrieve next page of search. Please try again later.`
+    );
+  }
 };
 
 const controlSearchMetadata = async function (id, type) {
-  let data;
-  if (type === 'tv') data = await model.getShowModal(id);
-  else if (type === 'movie') data = await model.getMovieModal(id);
-  search.updateDataHistory(data);
-  search.updateMetadataMarkup(data);
+  try {
+    let data;
+    if (type === 'tv') data = await model.getShowModal(id);
+    else if (type === 'movie') data = await model.getMovieModal(id);
+    search.updateDataHistory(data);
+    search.updateMetadataMarkup(data);
+  } catch (err) {
+    console.log(err);
+    error.renderError(`Could not fetch title data. Please try again later.`);
+  }
 };
 
 // renderModal(84209, 'tv');
