@@ -129,7 +129,7 @@ const controlAllEpisodes = async function (data) {
 };
 
 profile.render(model.state.users);
-dialogue.render();
+dialogue.renderMessage();
 // init();
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);

@@ -6,16 +6,30 @@ import 'core-js/stable';
 class Dialogue extends View {
   _parentEl = document.body;
   _overlay;
+  _message = [
+    `This website is not affiliated with or endorsed by Netflix, Inc. All
+  images and content belong to Netflix, TMDB (The Movie Database) API,
+  Bootstrap Icons for icons, or their respective owners. The website
+  is solely for educational and portfolio purposes.`,
+    `By accessing and using this website, you acknowledge and agree to
+  this disclaimer. If you are the owner of any content and wish for
+  its removal, please contact me for prompt action.`,
+  ];
 
-  _generateMarkup() {
-    this._generateDialogue();
+  renderMessage(...message) {
+    this._generateDialogue(message.length > 0 ? message : this._message);
     this._overlay = this._parentEl.querySelector('.dialogue-modal-overlay');
 
     this._bindClose();
     return '';
   }
 
-  _generateDialogue() {
+  _generateDialogue(message) {
+    console.log(message);
+    let text = ``;
+
+    message.forEach((msg) => (text += `<p>${msg}</p>`));
+
     const markup = `
     <div class="dialogue-modal-overlay">
     <div class="dialogue-modal">
@@ -49,17 +63,7 @@ class Dialogue extends View {
       </div>
       <div class="dialogue-title">Disclaimer</div>
       <div class="dialogue-info">
-        <p>
-          This website is not affiliated with or endorsed by Netflix, Inc. All
-          images and content belong to Netflix, TMDB (The Movie Database) API,
-          Bootstrap Icons for icons, or their respective owners. The website
-          is solely for educational and portfolio purposes.
-        </p>
-        <p>
-          By accessing and using this website, you acknowledge and agree to
-          this disclaimer. If you are the owner of any content and wish for
-          its removal, please contact me for prompt action.
-        </p>
+        ${text}
       </div>
       <button class="dialogue-button">Got It</button>
     </div>
@@ -73,7 +77,8 @@ class Dialogue extends View {
       const target =
         e.target.closest('.modal-close') ||
         e.target.closest('.dialogue-button');
-      if (!target) return;
+      if (!target && !e.target.classList.contains('dialogue-modal-overlay'))
+        return;
 
       this._hide();
     });

@@ -149,7 +149,8 @@ class Title extends View {
 
     this._overlay.addEventListener('click', (e) => {
       const target = e.target.closest('.modal-close');
-      if (!target) return;
+      if (!target && !e.target.classList.contains('media-modal-overlay'))
+        return;
 
       this._hide(handler);
     });
