@@ -99,16 +99,6 @@
   animation: 0.33s ease-out forwards fadeIn;
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
 .media-modal {
   position: absolute;
   top: 5vh;
@@ -127,42 +117,8 @@
   animation: 0.33s ease-out forwards slideRight;
 }
 
-@keyframes modalScaleUp {
-  0% {
-    transform: scale(0.95);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes slideRight {
-  0% {
-    opacity: 0;
-    transform: translate(200px, 0);
-  }
-
-  75% {
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
 .fade-out-modal {
   animation: 0.33s ease-out forwards fadeOut;
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
 }
 
 .nav-icon {
@@ -832,18 +788,6 @@
   opacity: 0;
   transform: scale(0.5);
   animation: 0.33s ease-out forwards showUp;
-}
-
-@keyframes showUp {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 /* Utility */

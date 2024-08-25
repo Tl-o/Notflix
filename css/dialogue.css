@@ -21,7 +21,7 @@
   justify-content: center;
   align-items: center;
 
-  animation-delay: 2s;
+  animation-delay: 1s;
   animation: 0.33s ease-out forwards fadeIn;
 }
 
@@ -92,4 +92,8 @@
   background-position: right center; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
+}
+
+.fade-out-dialogue {
+  animation: 0.33s ease-out forwards fadeOut;
 }

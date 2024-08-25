@@ -129,6 +129,7 @@ const controlAllEpisodes = async function (data) {
 };
 
 profile.render(model.state.users);
+dialogue.render();
 // init();
 profile.addHandler(controlUsers);
 header.addHandler(controlUsers);
@@ -241,5 +242,3 @@ const controlSearchMetadata = async function (id, type) {
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID
-
-dialogue.render();

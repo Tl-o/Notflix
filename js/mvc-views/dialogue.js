@@ -12,6 +12,7 @@ class Dialogue extends View {
     this._overlay = this._parentEl.querySelector('.dialogue-modal-overlay');
 
     this._bindClose();
+    return '';
   }
 
   _generateDialogue() {
@@ -69,7 +70,9 @@ class Dialogue extends View {
 
   _bindClose() {
     this._overlay.addEventListener('click', (e) => {
-      const target = e.target.closest('.modal-close');
+      const target =
+        e.target.closest('.modal-close') ||
+        e.target.closest('.dialogue-button');
       if (!target) return;
 
       this._hide();
@@ -77,12 +80,11 @@ class Dialogue extends View {
   }
 
   _hide() {
-    this._overlay.classList.add('fade-out-modal');
+    this._overlay.classList.add('fade-out-dialogue');
 
     this._overlay.addEventListener('animationend', (e) => {
       if (e.target !== this._overlay) return;
 
-      handler();
       e.target.remove();
     });
   }
