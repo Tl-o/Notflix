@@ -8,6 +8,7 @@ import footer from './mvc-views/footer.js';
 import title from './mvc-views/title.js';
 import search from './mvc-views/search.js';
 import error from './mvc-views/error.js';
+import dialogue from './mvc-views/dialogue.js';
 import * as config from './config.js';
 
 /* Initalize */
@@ -240,3 +241,5 @@ const controlSearchMetadata = async function (id, type) {
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID
+
+dialogue.render();

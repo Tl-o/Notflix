@@ -138,6 +138,8 @@ class Title extends View {
   }
 
   // For billboard
+
+  // REFACTOR: take document event listener to another function and call it separately, not every time the modal is rendered
   addCloseHandler(handler) {
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
@@ -147,8 +149,7 @@ class Title extends View {
 
     this._overlay.addEventListener('click', (e) => {
       const target = e.target.closest('.modal-close');
-      if (!target && !e.target.classList.contains('media-modal-overlay'))
-        return;
+      if (!target) return;
 
       this._hide(handler);
     });
@@ -477,7 +478,7 @@ class Title extends View {
 
   _generateStructure() {
     const markup = `
-    <div class="media-modal-overlay">
+    <div class="media-modal-overlay" tabindex="0">
       <div class="media-modal">
         <div class="nav-icon modal-close">
           <svg
