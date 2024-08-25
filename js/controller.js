@@ -128,12 +128,6 @@ const controlAllEpisodes = async function (data) {
   }
 };
 
-profile.render(model.state.users);
-dialogue.renderMessage();
-// init();
-profile.addHandler(controlUsers);
-header.addHandler(controlUsers);
-
 const controlBillboard = function () {
   billboard.resume();
 };
@@ -238,6 +232,20 @@ const controlSearchMetadata = async function (id, type) {
   }
 };
 
+const controlDisclaimer = function () {
+  const seenDisclaimer = window.localStorage.getItem('disclaimer');
+  if (seenDisclaimer) return;
+
+  window.localStorage.setItem('disclaimer', true);
+  // window.localStorage.removeItem('disclaimer');
+  dialogue.renderMessage();
+};
+
+profile.render(model.state.users);
+controlDisclaimer();
+// init();
+profile.addHandler(controlUsers);
+header.addHandler(controlUsers);
 // renderModal(84209, 'tv');
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
