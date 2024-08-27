@@ -97,12 +97,13 @@ class Header extends View {
 
   addNavigationHandler(homeHandler) {
     this._parentEl.addEventListener('click', (e) => {
+      e.preventDefault();
       const target =
         e.target.closest('.navigation-item') ||
         e.target.closest('.browse-list-item');
       if (!target) return;
 
-      const text = target.querySelector('a').textContent;
+      const text = target.querySelector('a')?.textContent;
       if (text === 'Home') {
         const input = this._parentEl.querySelector('input');
 
