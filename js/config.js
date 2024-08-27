@@ -21,3 +21,4 @@ export const MATURITY_RATING_MAPPING = {
 };
 export const MILLISECONDS_IN_SECOND = 1000;
 export const IMG_PATH = `https://image.tmdb.org/t/p/original`;
+export const URL = window.location.pathname;

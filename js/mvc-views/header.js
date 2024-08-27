@@ -356,6 +356,14 @@ class Header extends View {
 
     if (this._searchTimeout) clearTimeout(this._searchTimeout);
   }
+
+  _route() {
+    const newState = {
+      url: 'https://new.url.com',
+      title: 'New Page Title',
+      search: '?param=value',
+    };
+  }
 }
 
 export default new Header();

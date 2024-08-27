@@ -11,6 +11,36 @@ import error from './mvc-views/error.js';
 import dialogue from './mvc-views/dialogue.js';
 import * as config from './config.js';
 
+const routes = {
+  '/': () => {
+    console.log('/');
+  },
+  '/browse': () => {
+    console.log('On Browse');
+  },
+  '/title/tv': () => {
+    console.log('Checking out TV show');
+  },
+  '/title/movie': () => {
+    console.log('Checking out movie');
+  },
+  '/search': () => {
+    console.log('On search');
+  },
+};
+
+const load = function onPageLoad() {
+  const url = window.location.pathname;
+
+  /* Check if it contains title/tv or title/movie */
+  const regex = /\/(title\/(tv|movie)|search)(?=\/\d*)/;
+  const match = url.match(regex);
+
+  const handler = routes[url] || (match && routes[match[0]]);
+  if (handler) handler();
+  else console.log('Error 404.'); // Here, handle 404 error.
+};
+
 /* Initalize */
 const init = function () {
   categories.render(model.state.media);
@@ -23,6 +53,13 @@ const init = function () {
   header.render(model.state.users);
   billboard.render(model.state.billboard);
   footer.render();
+
+  const newState = {
+    url: '/browse',
+    title: 'Go To Browse',
+  };
+
+  window.history.replaceState(newState, newState.title, newState.url);
 };
 
 const clear = function () {
@@ -115,7 +152,7 @@ const controlAllEpisodes = async function (data) {
       allSeasons.push([id, i]);
     }
 
-    // Get all missing seasons in parellal
+    // Get all missing seasons in parallel
     await Promise.all(
       allSeasons.map((season) => controlSeasons(...season, false))
     );
@@ -250,3 +287,7 @@ header.addHandler(controlUsers);
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID
+
+window.addEventListener('load', () => {
+  load();
+});
