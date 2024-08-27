@@ -5,7 +5,7 @@ import { mark } from 'regenerator-runtime';
 export class View {
   _parentEl;
   _data;
-  _errorMessage;
+  _errorMessage = 'Some error has occurred. Please try again later.';
 
   render(data) {
     this._data = data;
@@ -54,7 +54,7 @@ export class View {
           />
         </svg>
         <p class="error-message">
-          An error has occurred. Please try again later.
+          ${message}
         </p>
       </div>
     </div>`;
