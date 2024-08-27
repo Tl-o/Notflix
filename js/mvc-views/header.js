@@ -2,6 +2,7 @@ import 'core-js/stable';
 import { View } from './view';
 import { mark } from 'regenerator-runtime';
 import { MILLISECONDS_IN_SECOND } from '../config.js';
+import { updateURL } from '../helper';
 
 class Header extends View {
   _parentEl = document.querySelector('header');
@@ -76,6 +77,7 @@ class Header extends View {
       }
 
       if (this._searchTimeout) clearTimeout(this._searchTimeout);
+      updateURL(`search?q=${e.target.value}`);
       this._searchTimeout = setTimeout(() => {
         searchHandler(e.target.value);
         document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -350,19 +352,12 @@ class Header extends View {
   }
 
   _cancelSearch() {
+    updateURL('/browse');
     document.body.scrollTop = document.documentElement.scrollTop = 0;
     this._showClear = false;
     this._parentEl.querySelector('.clear-btn').classList.add('hidden');
 
     if (this._searchTimeout) clearTimeout(this._searchTimeout);
-  }
-
-  _route() {
-    const newState = {
-      url: 'https://new.url.com',
-      title: 'New Page Title',
-      search: '?param=value',
-    };
   }
 }
 

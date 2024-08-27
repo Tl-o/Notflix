@@ -70,3 +70,10 @@ export async function AJAX(url, data = undefined) {
     throw error;
   }
 }
+
+export function updateURL(url, title = '', state = {}) {
+  state['url'] = url;
+  state['title'] = title;
+
+  window.history.replaceState(state, state.title, state.url);
+}

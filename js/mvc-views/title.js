@@ -2,7 +2,7 @@
 import { View } from './view';
 import 'core-js/stable';
 import MATURITY_RATING_MAPPING from '../config.js';
-import { capitalizeEveryWord, parseMovieDuration } from '../helper';
+import { capitalizeEveryWord, parseMovieDuration, updateURL } from '../helper';
 import { mark } from 'regenerator-runtime';
 
 class Title extends View {
@@ -427,6 +427,7 @@ class Title extends View {
   }
 
   _hide(handler) {
+    updateURL('/browse');
     this._overlay.classList.add('fade-out-modal');
 
     this._overlay.addEventListener('animationend', (e) => {

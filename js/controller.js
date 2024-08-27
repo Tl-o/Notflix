@@ -10,7 +10,9 @@ import search from './mvc-views/search.js';
 import error from './mvc-views/error.js';
 import dialogue from './mvc-views/dialogue.js';
 import * as config from './config.js';
+import { updateURL } from './helper.js';
 
+/* Routes are used on page load only. */
 const routes = {
   '/': () => {
     console.log('/');
@@ -47,19 +49,18 @@ const init = function () {
   categories.bindHover(controlShowMetadata);
   categories.addObserverHandler(controlInfiniteScrolling);
   categories.addModalHandler(renderModal);
+
   search.addHoverHandler(controlSearchMetadata);
+
   header.addSearchHandler(controlSearch, renderBrowse);
   header.addNavigationHandler(renderBrowse);
   header.render(model.state.users);
+
   billboard.render(model.state.billboard);
+
   footer.render();
 
-  const newState = {
-    url: '/browse',
-    title: 'Go To Browse',
-  };
-
-  window.history.replaceState(newState, newState.title, newState.url);
+  updateURL('/browse', 'Notflix');
 };
 
 const clear = function () {
@@ -82,6 +83,7 @@ const controlShowMetadata = async function (id, type) {
     let data;
     if (type === 'tv') data = await model.getShowDetails(id);
     if (type === 'movie') data = await model.getMovieDetails(id);
+
     categories.updateHoverMetadata(data);
   } catch (err) {
     console.log(err);
@@ -170,6 +172,7 @@ const controlBillboard = function () {
 };
 
 const renderModal = async function (id, type) {
+  updateURL(`/title/${type}/${id}`);
   billboard.pause();
   title.render();
   title.addCloseHandler(controlBillboard);
@@ -181,9 +184,12 @@ const renderModal = async function (id, type) {
 const controlTitle = async function (id, type) {
   try {
     let data;
+
     if (type === 'tv') data = await model.getShowModal(id);
     else if (type === 'movie') data = await model.getMovieModal(id);
+
     data['type'] = 'title';
+
     title.updateData(data);
     title.updateTitleMarkup();
   } catch (err) {
@@ -202,6 +208,7 @@ const controlNavigation = async function (query, type) {
     if (type === 'company') data = await model.getMediaWithCompany(query);
 
     data['type'] = 'nav';
+
     title.updateData(data);
     title.updateNavigationMarkup();
   } catch (err) {
