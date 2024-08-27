@@ -56,8 +56,6 @@ const load = function onPageLoad() {
 const init = function () {
   profile.addHandler(controlUsers);
 
-  categories.bindHover(controlShowMetadata);
-
   search.addHoverHandler(controlSearchMetadata);
 
   header.addSearchHandler(controlSearch, renderBrowse);
@@ -69,6 +67,7 @@ const init = function () {
 
 const renderHomepage = function () {
   categories.render(model.state.media);
+  categories.bindHover(controlShowMetadata);
   categories.addObserverHandler(controlInfiniteScrolling);
   categories.addModalHandler(renderModal);
 
