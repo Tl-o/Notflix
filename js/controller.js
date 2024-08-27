@@ -87,6 +87,7 @@ const clear = function () {
   billboard.clear();
   profile.clear();
   footer.clear();
+  search.clear();
 };
 
 const renderBrowse = function () {
@@ -110,7 +111,6 @@ const controlShowMetadata = async function (id, type) {
 
 const controlUsers = async function (userID) {
   try {
-    debugger;
     clear();
     model.getCurrUserData(userID);
     profile.setData(model.state.users);
