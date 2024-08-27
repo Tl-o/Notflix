@@ -96,7 +96,7 @@ export class Category extends View {
     <div id='${this._ID}' class="category-container">
       <div class="category-metadata">
         <div class="category-title">
-          <h2 class="title">${this._data.name}</h2>
+          <h2 class="title">${this._data?.name || 'N/A'}</h2>
         </div>
         <div class="category-pagination">
           <ul class="category-pages">

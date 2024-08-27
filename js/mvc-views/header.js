@@ -134,12 +134,12 @@ class Header extends View {
         <div class="header-block-start">
             <a class="main-logo"> </a>
             <ul class="main-navigation main-navigation-sm">
-                <li class="navigation-item"><a href="#">Home</a></li>
-                <li class="navigation-item"><a href="#">TV Shows</a></li>
-                <li class="navigation-item"><a href="#">Movies</a></li>
-                <li class="navigation-item"><a href="#">New & Popular</a></li>
-                <li class="navigation-item"><a href="#">My List</a></li>
-                <li class="navigation-item"><a href="#">Browse By Languages</a></li>
+                <li class="navigation-item"><a href="">Home</a></li>
+                <li class="navigation-item"><a href="">TV Shows</a></li>
+                <li class="navigation-item"><a href="">Movies</a></li>
+                <li class="navigation-item"><a href="">New & Popular</a></li>
+                <li class="navigation-item"><a href="">My List</a></li>
+                <li class="navigation-item"><a href="">Browse By Languages</a></li>
             </ul>
             <div class="browse">
                 <span class="browse-dropdown-title">Browse</span>
@@ -147,7 +147,7 @@ class Header extends View {
                 <div class="browse-dropdown">
                     <span class="dropdown-browse-arrow"></span>
                     <ul>
-                        <li class="browse-list-item"><a href="#">Home</a></li>
+                        <li class="browse-list-item"><a href="">Home</a></li>
                         <li class="browse-list-item">TV Shows</li>
                         <li class="browse-list-item">Movies</li>
                         <li class="browse-list-item">New & Popular</li>

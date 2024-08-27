@@ -32,7 +32,7 @@ const routes = {
   },
   '/search': (query) => {
     renderHomepage();
-    controlSearch('Hunter x Hunter');
+    controlSearch(query);
   },
 };
 
@@ -43,10 +43,12 @@ const load = function onPageLoad() {
   const route = /\/(title\/(tv|movie)|search)(?=\/\d*)/;
   const match = url.match(route);
   // Retrieve string after last slash, which could be title ID or the search query
-  const id = match && url.match(/[^/]+$/)[0];
+  const id = match && url.split('/').pop();
+  // If search, retrieve search query
+  const query = window.location.href.split('?q=').pop();
 
   const handler = routes[url] || (match && routes[match[0]]);
-  if (handler) handler(id);
+  if (handler) handler(id || query);
   else console.log('Error 404.'); // Here, handle 404 error.
 };
 
@@ -237,6 +239,7 @@ const controlNavigation = async function (query, type) {
 
 const controlSearch = async function (query) {
   try {
+    updateURL(`search?q=${query}`);
     categories.clear();
     billboard.changeVisibility();
     profile.clear();
