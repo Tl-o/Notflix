@@ -110,8 +110,10 @@ const controlShowMetadata = async function (id, type) {
 
 const controlUsers = async function (userID) {
   try {
+    debugger;
     clear();
     model.getCurrUserData(userID);
+    profile.setData(model.state.users);
     profile.renderSpinner(true);
     await model.getCategory('tv');
     profile.clear();

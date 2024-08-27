@@ -16,6 +16,12 @@ class Profile extends View {
     });
   }
 
+  /* Used when you link to any other page other than '/', as then it would not render the profile selection 
+  and therefore would not set the data. */
+  setData(data) {
+    this._data = data;
+  }
+
   _generateMarkup() {
     return `
     <div class="centered-div">

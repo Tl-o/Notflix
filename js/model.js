@@ -136,6 +136,8 @@ export const getCurrUserData = function (userID) {
     (user) => user.username === userID
   );
 
+  localStorage.setItem('user', JSON.stringify(state.users.currUser));
+
   state.billboard =
     billboardShows[Math.floor(Math.random() * (billboardShows.length - 1))];
 };
@@ -482,7 +484,7 @@ const init = async function initalizeModel() {
   );
 
   state.users.allUsers = [tara, louis, bojack, rosa, cheap];
-  state.users.currUser = bojack;
+  state.users.currUser = JSON.parse(localStorage.getItem('user')) || bojack;
 
   getGenres();
 };
