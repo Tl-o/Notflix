@@ -12,40 +12,48 @@ import dialogue from './mvc-views/dialogue.js';
 import * as config from './config.js';
 import { updateURL } from './helper.js';
 
+history.scrollRestoration = 'manual';
+
 /* Routes are used on page load only. */
 const routes = {
   '/': () => {
-    console.log('/');
+    initProfiles();
   },
   '/browse': () => {
-    console.log('On Browse');
+    renderHomepage();
   },
-  '/title/tv': () => {
-    console.log('Checking out TV show');
+  '/title/tv': (id) => {
+    renderHomepage();
+    renderModal(id, 'tv');
   },
-  '/title/movie': () => {
-    console.log('Checking out movie');
+  '/title/movie': (id) => {
+    renderHomepage();
+    renderModal(id, 'movie');
   },
-  '/search': () => {
-    console.log('On search');
+  '/search': (query) => {
+    renderHomepage();
+    controlSearch('Hunter x Hunter');
   },
 };
 
 const load = function onPageLoad() {
   const url = window.location.pathname;
 
-  /* Check if it contains title/tv or title/movie */
-  const regex = /\/(title\/(tv|movie)|search)(?=\/\d*)/;
-  const match = url.match(regex);
+  // Check if it contains title/tv or title/movie
+  const route = /\/(title\/(tv|movie)|search)(?=\/\d*)/;
+  const match = url.match(route);
+  // Retrieve string after last slash, which could be title ID or the search query
+  const id = match && url.match(/[^/]+$/)[0];
 
   const handler = routes[url] || (match && routes[match[0]]);
-  if (handler) handler();
+  if (handler) handler(id);
   else console.log('Error 404.'); // Here, handle 404 error.
 };
 
 /* Initalize */
 const init = function () {
-  categories.render(model.state.media);
+  profile.addHandler(controlUsers);
+
   categories.bindHover(controlShowMetadata);
   categories.addObserverHandler(controlInfiniteScrolling);
   categories.addModalHandler(renderModal);
@@ -54,6 +62,14 @@ const init = function () {
 
   header.addSearchHandler(controlSearch, renderBrowse);
   header.addNavigationHandler(renderBrowse);
+  header.addHandler(controlUsers);
+
+  controlDisclaimer();
+};
+
+const renderHomepage = function () {
+  categories.render(model.state.media);
+
   header.render(model.state.users);
 
   billboard.render(model.state.billboard);
@@ -98,7 +114,7 @@ const controlUsers = async function (userID) {
     profile.renderSpinner(true);
     await model.getCategory('tv');
     profile.clear();
-    init();
+    renderHomepage();
   } catch (err) {
     console.log(err);
     profile.renderError();
@@ -285,16 +301,16 @@ const controlDisclaimer = function () {
   dialogue.renderMessage();
 };
 
-profile.render(model.state.users);
-controlDisclaimer();
-// init();
-profile.addHandler(controlUsers);
-header.addHandler(controlUsers);
+const initProfiles = function () {
+  profile.render(model.state.users);
+};
+
+// renderHomepage();
+// initProfiles();
 // renderModal(84209, 'tv');
 // controlNavigation('Bob Odenkirk', '');
 // controlTitle(419430);
 // 236235 The Gentlemen ID
 
-window.addEventListener('load', () => {
-  load();
-});
+init();
+window.addEventListener('load', load);
