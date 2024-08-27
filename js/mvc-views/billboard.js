@@ -44,6 +44,7 @@ class Billboard extends View {
     // Reset video position because videos are not being brought in by APIs.
     if (this._trailer) {
       this._isPlaying = false;
+      this._hasActivated = false;
       this._observer.unobserve(this._trailer);
       clearTimeout(this._stopTimeout);
       this._trailer.pause();
