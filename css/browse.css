@@ -228,7 +228,6 @@ header {
   width: 8vw;
   height: auto;
   aspect-ratio: 1/1;
-  border-radius: 4px;
   position: absolute;
 }
 
@@ -292,6 +291,10 @@ header {
 
 .notif-error {
   background-color: rgba(229, 9, 20, 0.8);
+}
+
+.notif-info {
+  background-color: rgba(230, 180, 10, 0.8);
 }
 
 .notification-icon {

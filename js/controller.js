@@ -7,7 +7,7 @@ import profile from './mvc-views/profile.js';
 import footer from './mvc-views/footer.js';
 import title from './mvc-views/title.js';
 import search from './mvc-views/search.js';
-import error from './mvc-views/error.js';
+import notifications from './mvc-views/notifications.js';
 import dialogue from './mvc-views/dialogue.js';
 import * as config from './config.js';
 import { updateURL } from './helper.js';
@@ -135,7 +135,9 @@ const controlShowMetadata = async (id, type) => {
     categories.updateHoverMetadata(data);
   } catch (err) {
     console.log(err);
-    error.renderError('Could not fetch title data. Please try again later.');
+    notifications.renderError(
+      'Could not fetch title data. Please try again later.'
+    );
   }
 };
 
@@ -170,7 +172,9 @@ const controlInfiniteScrolling = async () => {
   } catch (err) {
     categories.clearSkeleton();
     console.log(err);
-    error.renderError('Could not get next categories. Please try again later.');
+    notifications.renderError(
+      'Could not get next categories. Please try again later.'
+    );
   }
 };
 
@@ -180,7 +184,7 @@ const controlSeasons = async (id, seasonNum, render = true) => {
     title.updateSeason(seasonData, seasonNum, render);
   } catch (err) {
     console.log(err);
-    error.renderError(
+    notifications.renderError(
       'Could not retrieve season information. Please try again later.'
     );
   }
@@ -202,7 +206,7 @@ const controlAllEpisodes = async (data) => {
     title.updateAllEpisodesMarkup();
   } catch (err) {
     console.log(err);
-    error.renderError(
+    notifications.renderError(
       'Could not retrieve all episodes. Please try again later.'
     );
   }
@@ -223,7 +227,9 @@ const controlTitle = async (id, type) => {
     title.updateTitleMarkup();
   } catch (err) {
     console.log(err);
-    error.renderError('Could not retrieve title. Please try again later.');
+    notifications.renderError(
+      'Could not retrieve title. Please try again later.'
+    );
   }
 };
 
@@ -241,7 +247,7 @@ const controlNavigation = async (query, type) => {
     title.updateNavigationMarkup();
   } catch (err) {
     console.log(err);
-    error.renderError(
+    notifications.renderError(
       `Could not retrieve ${type} information. Please try again later.`
     );
   }
@@ -271,7 +277,7 @@ const controlSearchPages = async (prevData, page) => {
     search.updateResults(data);
   } catch (err) {
     console.log(err);
-    error.renderError(
+    notifications.renderError(
       'Could not retrieve next page of search. Please try again later.'
     );
   }
@@ -287,7 +293,9 @@ const controlSearchMetadata = async (id, type) => {
     search.updateMetadataMarkup(data);
   } catch (err) {
     console.log(err);
-    error.renderError('Could not fetch title data. Please try again later.');
+    notifications.renderError(
+      'Could not fetch title data. Please try again later.'
+    );
   }
 };
 
@@ -299,3 +307,5 @@ const controlSearchMetadata = async (id, type) => {
 
 init();
 window.addEventListener('load', loadPage);
+
+notifications.renderNotification('Test!');
