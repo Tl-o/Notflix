@@ -207,7 +207,6 @@ class Search extends View {
 
   updateDataHistory(data) {
     this._savedData.push(data);
-    console.log(this._savedData);
   }
 
   updateMetadataMarkup(data) {
@@ -353,7 +352,6 @@ class Search extends View {
 
   updateResults(data) {
     const lastItem = [...this._parentEl.children].at(-1);
-    console.log(lastItem);
 
     this._parentEl.insertAdjacentHTML(
       'beforeend',
@@ -380,7 +378,6 @@ class Search extends View {
   }
 
   _generateResults(results) {
-    console.log(results);
     let markup = ``;
     for (let i = 0; i < results.length; i++) {
       if (results[i]['media_type'] === 'person') continue;

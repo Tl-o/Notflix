@@ -26,18 +26,9 @@ export class Category extends View {
     this._resetPos();
     this._updatePagination();
     this._generateSliders();
-    this._categoryEl
-      .querySelector('.category-shows')
-      .addEventListener('transitionend', () => {
-        console.log('Ended');
-      });
   }
 
   setResultsPerPage(num, newItemSize) {
-    if (this._data?.name === 'My List')
-      console.log(
-        `Before update pages: ${this._firstVisibleElementIndex}, ${this._currIndex}`
-      );
     this._updatePages(num);
     this._resultsPerPage = num;
     this._itemSize = newItemSize;
@@ -317,13 +308,6 @@ export class Category extends View {
   _slideRight() {
     if (this._showContainerEl.classList.contains('animatable')) return;
 
-    console.log(`
-      Before: 
-      This current page equals ${this._currPage}
-      This firstVisibleElement equals ${this._firstVisibleElementIndex}
-      This current index equals ${this._currIndex}
-    `);
-
     this._currIndex += this._resultsPerPage;
     this._currPage++;
 
@@ -371,24 +355,11 @@ export class Category extends View {
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     const slideBy = this._itemSize * nextShows;
     this._slide(-slideBy + defaultPos);
-
-    console.log(`
-      After: 
-      This current page equals ${this._currPage}
-      This firstVisibleElement equals ${this._firstVisibleElementIndex}
-      This current index equals ${this._currIndex}
-    `);
   }
 
   _slideLeft() {
     if (this._showContainerEl.classList.contains('animatable')) return;
 
-    console.log(`
-      Before: 
-      This current page equals ${this._currPage}
-      This firstVisibleElement equals ${this._firstVisibleElementIndex}
-      This current index equals ${this._currIndex}
-    `);
     this._showContainerEl.classList.add('animatable');
     let numOfPrevShows;
 
@@ -424,13 +395,6 @@ export class Category extends View {
     const defaultPos = this._itemSize * (this._resultsPerPage + 1) * -1;
     const slideBy = this._itemSize * numOfPrevShows;
     this._slide(slideBy + defaultPos);
-
-    console.log(`
-      After: 
-      This current page equals ${this._currPage}
-      This firstVisibleElement equals ${this._firstVisibleElementIndex}
-      This current index equals ${this._currIndex}
-    `);
   }
 
   _resetPos() {

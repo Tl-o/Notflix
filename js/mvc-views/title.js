@@ -353,7 +353,6 @@ class Title extends View {
 
   updateSeason(seasonData, seasonNum, render = true) {
     this._data[`season_${seasonNum}`] = seasonData;
-    console.log(this._data);
 
     if (!render) return;
 
@@ -747,7 +746,6 @@ class Title extends View {
     // If no data, don't generate
     if (!data) return '';
 
-    console.log(data);
     // All images
     const imgData = data['images?include_image_language=en'];
     const backdrop =

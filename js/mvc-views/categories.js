@@ -111,7 +111,6 @@ class Categories extends View {
     const allInstances = [
       ...document.querySelectorAll(`[data-name="${name}"]`),
     ];
-    console.log(allInstances);
   }
 
   addObserverHandler(handler) {

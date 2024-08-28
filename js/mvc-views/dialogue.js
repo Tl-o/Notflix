@@ -25,7 +25,6 @@ class Dialogue extends View {
   }
 
   _generateDialogue(message) {
-    console.log(message);
     let text = ``;
 
     message.forEach((msg) => (text += `<p>${msg}</p>`));
