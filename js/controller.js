@@ -25,10 +25,20 @@ const routes = {
   '/title/tv': (id) => {
     renderHomepage();
     renderModal(id, 'tv');
+
+    // Need a bit of buffering window to correctly pause.
+    setTimeout(() => {
+      billboard.pause();
+    }, 0.25 * config.MILLISECONDS_IN_SECOND);
   },
   '/title/movie': (id) => {
     renderHomepage();
     renderModal(id, 'movie');
+
+    // Need a bit of buffering window to correctly pause.
+    setTimeout(() => {
+      billboard.pause();
+    }, 0.25 * config.MILLISECONDS_IN_SECOND);
   },
   '/search': (query) => {
     renderHomepage();
