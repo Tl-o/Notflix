@@ -7,8 +7,10 @@ export class Category extends View {
   // Should start with the categories parent to insert elements there.
   _parentEl = document.querySelector('.categories');
   _ID = 'ID' + Math.floor(Math.random() * 999999);
+
   // Category element is the category's rendered DOM, to control pagination and sliding.
   _categoryEl;
+
   // The actual shows container, to add / update shows and enable endless scrolling
   _showContainerEl;
   _resultsPerPage;
@@ -19,6 +21,11 @@ export class Category extends View {
   _endlessScrollEnabled = false;
   _numPages = 0;
 
+  /*
+  ==================================================
+                       INIT
+  ==================================================
+  */
   init(data) {
     this.render(data);
     this._categoryEl = this._parentEl.querySelector(`#${this._ID}`);
@@ -28,6 +35,11 @@ export class Category extends View {
     this._generateSliders();
   }
 
+  /*
+  ==================================================
+                RESULTS PER PAGE & DOM UPDATES
+  ==================================================
+  */
   setResultsPerPage(num, newItemSize) {
     this._updatePages(num);
     this._resultsPerPage = num;
@@ -43,6 +55,11 @@ export class Category extends View {
     this._resetPos();
   }
 
+  /*
+  ==================================================
+                PAGINATION AND SLIDING
+  ==================================================
+  */
   _updatePages(num) {
     // If resized and now it's showing all results
     if (num >= this._data?.shows.length) {
@@ -82,6 +99,11 @@ export class Category extends View {
     }
   }
 
+  /*
+  ==================================================
+                    MARKUP GENERATION
+  ==================================================
+  */
   _generateMarkup() {
     return `
     <div id='${this._ID}' class="category-container">
@@ -283,28 +305,11 @@ export class Category extends View {
       .addEventListener('transitionend', this._updateShows.bind(this));
   }
 
-  _updateShows() {
-    this._enableEndlessScrolling();
-    const reRender = this._generateShows();
-    this._showContainerEl.innerHTML = reRender;
-    this._resetPos();
-    this._showContainerEl.classList.remove('animatable');
-  }
-
-  _updatePagination() {
-    this._categoryEl.querySelectorAll('.pagination').forEach((page, i) => {
-      if (i !== this._currPage) page.classList.remove('active');
-      else page.classList.add('active');
-    });
-  }
-
-  _enableEndlessScrolling() {
-    if (this._endlessScrollEnabled) return;
-
-    this._endlessScrollEnabled = true;
-    this._categoryEl.querySelector('.slide-left').classList.remove('hidden');
-  }
-
+  /*
+  ==================================================
+                    SLIDING ACTIONS
+  ==================================================
+  */
   _slideRight() {
     if (this._showContainerEl.classList.contains('animatable')) return;
 
@@ -332,12 +337,8 @@ export class Category extends View {
       this._currIndex + this._resultsPerPage
     ).length;
 
-    // if (nextShows === 0)
-    //   nextShows = this._data.shows.slice(
-    //     this._firstVisibleElementIndex,
-    //     this._firstVisibleElementIndex + this._resultsPerPage
-    //   );
     if (nextShows !== 0) this._firstVisibleElementIndex += nextShows;
+
     // If between the two indices lies a bigger number of the results per page, fix the error
     while (
       this._currIndex - this._firstVisibleElementIndex >=
@@ -397,6 +398,11 @@ export class Category extends View {
     this._slide(slideBy + defaultPos);
   }
 
+  /*
+  ==================================================
+               SCROLLING AND POSITION RESET
+  ==================================================
+  */
   _resetPos() {
     if (this._data.shows.length <= this._resultsPerPage) {
       this._slide(0);
@@ -411,5 +417,27 @@ export class Category extends View {
     this._categoryEl
       .querySelector('.category-shows')
       .setAttribute('style', `transform: translateX(${by}vw)`);
+  }
+
+  _updateShows() {
+    this._enableEndlessScrolling();
+    const reRender = this._generateShows();
+    this._showContainerEl.innerHTML = reRender;
+    this._resetPos();
+    this._showContainerEl.classList.remove('animatable');
+  }
+
+  _updatePagination() {
+    this._categoryEl.querySelectorAll('.pagination').forEach((page, i) => {
+      if (i !== this._currPage) page.classList.remove('active');
+      else page.classList.add('active');
+    });
+  }
+
+  _enableEndlessScrolling() {
+    if (this._endlessScrollEnabled) return;
+
+    this._endlessScrollEnabled = true;
+    this._categoryEl.querySelector('.slide-left').classList.remove('hidden');
   }
 }

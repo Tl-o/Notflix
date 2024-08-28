@@ -126,6 +126,8 @@ const clear = () => {
 
 const controlShowMetadata = async (id, type) => {
   try {
+    if (!id) return;
+
     const data =
       type === 'tv'
         ? await model.getShowDetails(id)
