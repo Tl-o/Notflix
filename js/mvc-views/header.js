@@ -95,7 +95,7 @@ class Header extends View {
     });
   }
 
-  addNavigationHandler(homeHandler) {
+  addNavigationHandler(homeHandler, otherHandler) {
     this._parentEl.addEventListener('click', (e) => {
       e.preventDefault();
       const target =
@@ -115,7 +115,10 @@ class Header extends View {
         // Render browse & cancel search timeout
         homeHandler();
         this._cancelSearch();
+        return;
       }
+
+      otherHandler();
     });
   }
 

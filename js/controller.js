@@ -53,7 +53,7 @@ const init = () => {
   profile.addHandler(controlUsers);
   search.addHoverHandler(controlSearchMetadata);
   header.addSearchHandler(controlSearch, renderBrowse);
-  header.addNavigationHandler(renderBrowse);
+  header.addNavigationHandler(renderBrowse, controlNonFunctionalButtons);
   header.addHandler(controlUsers);
   controlDisclaimer();
 };
@@ -299,6 +299,12 @@ const controlSearchMetadata = async (id, type) => {
   }
 };
 
+const controlNonFunctionalButtons = () => {
+  notifications.renderNotification(
+    'This button does not currently do anything.'
+  );
+};
+
 /*
 ==================================================
                     EVENT LISTENERS
@@ -307,5 +313,3 @@ const controlSearchMetadata = async (id, type) => {
 
 init();
 window.addEventListener('load', loadPage);
-
-notifications.renderNotification('Test!');
