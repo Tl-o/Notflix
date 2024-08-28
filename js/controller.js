@@ -14,10 +14,16 @@ import { updateURL } from './helper.js';
 
 history.scrollRestoration = 'manual';
 
+/*
+==================================================
+                     ROUTING
+==================================================
+*/
+
 /* Routes are used on page load only. */
 const routes = {
   '/': () => {
-    initProfiles();
+    profile.render(model.state.users);
   },
   '/browse': () => {
     renderHomepage();
@@ -49,10 +55,10 @@ const routes = {
 const load = function onPageLoad() {
   const url = window.location.pathname;
 
-  // Check if it contains title/tv or title/movie
+  // Check if it contains title/tv or title/movie or /search
   const route = /\/(title\/(tv|movie)|search)(?=\/\d*)/;
   const match = url.match(route);
-  // Retrieve string after last slash, which could be title ID or the search query
+  // Retrieve string after last slash, which is the title's ID
   const id = match && url.split('/').pop();
   // If search, retrieve search query
   const query = window.location.href.split('?q=').pop();
@@ -63,7 +69,13 @@ const load = function onPageLoad() {
   else profile.renderError(`404. Seems like this page doesn't exist.`); // Here, handle 404 error.
 };
 
-/* Initalize */
+/*
+==================================================
+                      INIT
+==================================================
+*/
+
+/* Initialize */
 const init = function () {
   profile.addHandler(controlUsers);
 
@@ -76,6 +88,21 @@ const init = function () {
   controlDisclaimer();
 };
 
+const controlDisclaimer = function () {
+  const seenDisclaimer = window.localStorage.getItem('disclaimer');
+  if (seenDisclaimer) return;
+
+  window.localStorage.setItem('disclaimer', true);
+  dialogue.renderMessage();
+};
+
+/*
+==================================================
+                    RENDERING
+==================================================
+*/
+
+/* Called after profile selection or whenever the homepage needs to be rendered */
 const renderHomepage = function () {
   categories.render(model.state.media);
   categories.bindHover(controlShowMetadata);
@@ -91,7 +118,29 @@ const renderHomepage = function () {
   updateURL('/browse', 'Notflix');
 };
 
-const clear = function () {
+/* Called when canceling search or clicking on Home in header */
+const renderBrowse = function () {
+  search.clear();
+  categories.render(model.state.media);
+  billboard.changeVisibility(true);
+};
+
+/* Called when clicking 'more info' on any title */
+const renderModal = async function (id, type) {
+  updateURL(`/title/${type}/${id}`);
+
+  billboard.pause();
+
+  title.render();
+  title.addCloseHandler(controlBillboard);
+
+  controlTitle(id, type);
+
+  title.addSeasonHandler(controlSeasons, controlAllEpisodes);
+  title.addNavigationHandler(controlNavigation, controlTitle);
+};
+
+const clear = function clearAll() {
   model.clearData();
   categories.clear();
   header.clear();
@@ -101,12 +150,13 @@ const clear = function () {
   search.clear();
 };
 
-const renderBrowse = function () {
-  search.clear();
-  categories.render(model.state.media);
-  billboard.changeVisibility(true);
-};
+/*
+==================================================
+                    HANDLERS
+==================================================
+*/
 
+/* Called whenever user hovers on a show in a category */
 const controlShowMetadata = async function (id, type) {
   try {
     let data;
@@ -123,11 +173,16 @@ const controlShowMetadata = async function (id, type) {
 const controlUsers = async function (userID) {
   try {
     clear();
+
     model.getCurrUserData(userID);
+
     profile.setData(model.state.users);
     profile.renderSpinner(true);
+
     await model.getCategory('tv');
+
     profile.clear();
+
     renderHomepage();
   } catch (err) {
     console.log(err);
@@ -140,7 +195,6 @@ const controlInfiniteScrolling = async function () {
     if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
       return;
 
-    console.log('Infinite activated...');
     categories.renderSkeleton();
     // Get four different categories to render
     model.getBuiltIn();
@@ -150,10 +204,6 @@ const controlInfiniteScrolling = async function () {
 
     categories.clearSkeleton();
     categories.renderNewCategories();
-
-    // // If all categories rendered, render footer
-    // if (model.state.media.categories.length >= config.MAX_CATEGORIES_PER_PAGE)
-    //   footer.render();
   } catch (err) {
     categories.clearSkeleton();
     console.log(err);
@@ -177,17 +227,19 @@ const controlAllEpisodes = async function (data) {
   try {
     const numSeasons = data['number_of_seasons'];
     const id = data['id'];
-    const allSeasons = [];
+    const allMissingSeasons = [];
+
     for (let i = 1; i <= numSeasons; i++) {
       if (data[`season_${i}`]) continue;
 
-      allSeasons.push([id, i]);
+      allMissingSeasons.push([id, i]);
     }
 
-    // Get all missing seasons in parallel
+    // Get all missing seasons in parallel, most efficient way
     await Promise.all(
-      allSeasons.map((season) => controlSeasons(...season, false))
+      allMissingSeasons.map((season) => controlSeasons(...season, false))
     );
+
     title.updateAllEpisodesMarkup();
   } catch (err) {
     console.log(err);
@@ -199,16 +251,6 @@ const controlAllEpisodes = async function (data) {
 
 const controlBillboard = function () {
   billboard.resume();
-};
-
-const renderModal = async function (id, type) {
-  updateURL(`/title/${type}/${id}`);
-  billboard.pause();
-  title.render();
-  title.addCloseHandler(controlBillboard);
-  controlTitle(id, type);
-  title.addSeasonHandler(controlSeasons, controlAllEpisodes);
-  title.addNavigationHandler(controlNavigation, controlTitle);
 };
 
 const controlTitle = async function (id, type) {
@@ -252,17 +294,16 @@ const controlNavigation = async function (query, type) {
 const controlSearch = async function (query) {
   try {
     updateURL(`search?q=${query}`);
+
     categories.clear();
     billboard.changeVisibility();
     profile.clear();
 
     const data = await model.getSearch(query);
     data['query'] = query;
+
     search.render(data);
     search.addObserverHandler(controlSearchPages);
-
-    // if (data['total_pages'] === 1 && data['total_results'] > 0) footer.render();
-    // else footer.clear();
   } catch (err) {
     search.renderError();
   }
@@ -270,21 +311,11 @@ const controlSearch = async function (query) {
 
 const controlSearchPages = async function searchInfiniteScrolling(
   prevData,
-  page,
-  childElementCount
+  page
 ) {
-  // // Return if max search limit has been reached.
-  // if (
-  //   childElementCount >= search.renderLimitPerSearch ||
-  //   prevData['total_pages'] < page
-  // ) {
-  //   footer.render();
-  //   return;
-  // }
-
   try {
     const data = await model.getSearch(prevData['query'], page);
-    console.log(data);
+
     search.updateResults(data);
   } catch (err) {
     console.log(err);
@@ -297,8 +328,10 @@ const controlSearchPages = async function searchInfiniteScrolling(
 const controlSearchMetadata = async function (id, type) {
   try {
     let data;
+
     if (type === 'tv') data = await model.getShowModal(id);
     else if (type === 'movie') data = await model.getMovieModal(id);
+
     search.updateDataHistory(data);
     search.updateMetadataMarkup(data);
   } catch (err) {
@@ -306,26 +339,6 @@ const controlSearchMetadata = async function (id, type) {
     error.renderError(`Could not fetch title data. Please try again later.`);
   }
 };
-
-const controlDisclaimer = function () {
-  const seenDisclaimer = window.localStorage.getItem('disclaimer');
-  if (seenDisclaimer) return;
-
-  window.localStorage.setItem('disclaimer', true);
-  // window.localStorage.removeItem('disclaimer');
-  dialogue.renderMessage();
-};
-
-const initProfiles = function () {
-  profile.render(model.state.users);
-};
-
-// renderHomepage();
-// initProfiles();
-// renderModal(84209, 'tv');
-// controlNavigation('Bob Odenkirk', '');
-// controlTitle(419430);
-// 236235 The Gentlemen ID
 
 init();
 window.addEventListener('load', load);
