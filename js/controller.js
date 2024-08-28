@@ -248,7 +248,9 @@ const controlNavigation = async (query, type) => {
 const controlSearch = async (query) => {
   try {
     updateURL(`search?q=${query}`);
-    clear();
+    categories.clear();
+    billboard.changeVisibility();
+    profile.clear();
 
     const data = await model.getSearch(query);
     data['query'] = query;
