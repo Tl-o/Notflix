@@ -18,7 +18,7 @@ class Search extends View {
   _observer;
   _order = 1;
 
-  // Queries
+  // Queries for responsiveness
   _defaultQuery = window.matchMedia('(min-width: 1400px)');
   _largeQuery = window.matchMedia(
     '(max-width: 1400px) and (min-width: 1100px)'
@@ -29,16 +29,20 @@ class Search extends View {
   _smallQuery = window.matchMedia('(max-width: 800px) and (min-width: 500px)');
   _tinyQuery = window.matchMedia('(max-width: 500px)');
 
-  // All about hovers
+  // Hover and Scroll Control
   _zIndex = 2999;
   _timeout;
   _activateDuration = 0.75 * MILLISECONDS_IN_SECOND;
   _savedData = []; // Array that holds data of all requested shows
   _descriptionCharLimit = 255;
 
+  /*
+  ==================================================
+                       HANDLERS
+  ==================================================
+  */
   addHoverHandler(handler) {
     this._parentEl.addEventListener('mouseover', (e) => {
-      // In case JS is finnicky, and does not detect mouseout event and removes wrapper
       if (e.target.classList.contains('search-wrapper')) {
         e.target.parentElement.classList.remove(
           'search-hover',
@@ -50,7 +54,6 @@ class Search extends View {
       if (!e.target.closest('.search-image-container')) return;
 
       const target = e.target.closest('.search-item');
-      // Already hovering
       if (target.classList.contains('search-hover')) return;
 
       this._timeout = setTimeout(() => {
@@ -59,14 +62,12 @@ class Search extends View {
         const metadata = target.querySelector('.search-metadata');
         metadata.classList.remove('search-hidden');
 
-        // Add style to metadata
         metadata.style = result ? 'right: 0;' : '';
         metadata.innerHTML = this._generateMetadataSkeleton();
 
         target.classList.add(slideDirection, 'search-hover');
         this._generateWrapper(target, target.dataset.order);
 
-        // If already gotten show before, only render the data
         const exists = this._savedData.find(
           (title) => title['id'] === +target.dataset.id
         );
@@ -80,7 +81,6 @@ class Search extends View {
     });
 
     this._parentEl.addEventListener('mouseout', (e) => {
-      // Logic for clearing out timeout if you unhovered image before activation
       if (
         (e.target.classList.contains('search-image') ||
           e.target.classList.contains('search-image-placeholder')) &&
@@ -88,12 +88,10 @@ class Search extends View {
       )
         clearTimeout(this._timeout);
 
-      // Logic for removing wrapper if you activated hover
       if (!e.target.classList.contains('search-wrapper')) return;
 
       const target = e.target.parentElement;
       e.target.remove();
-      // First, clear timeout
       if (this._timeout) clearTimeout(this._timeout);
 
       target.classList.remove('slide-left', 'slide-right', 'search-hover');
@@ -123,21 +121,22 @@ class Search extends View {
     this._observer.observe(document.querySelector('.search-observer'));
   }
 
-  // Will bind Z-index transitions
+  /*
+  ==================================================
+                       BINDING
+  ==================================================
+  */
   _bindTransitions() {
     this._parentEl.addEventListener('transitionstart', (e) => {
       if (!e.target.classList.contains('search-item')) return;
-
       e.target.style.zIndex = `${this._zIndex++}`;
     });
 
     this._parentEl.addEventListener('transitionend', (e) => {
       if (!e.target.classList.contains('search-item')) return;
-      // If it contains, means user is still hovering so do not adjust Z-index
       if (e.target.classList.contains('search-hover')) return;
 
       e.target.style = '';
-      // Must clear metadata's inline style to ensure no right: 0 remains in case of screen size change to ensure proper responsiveness.
       const metadata = e.target.querySelector('.search-metadata');
       metadata.style = '';
       metadata.classList.add('search-hidden');
@@ -145,7 +144,6 @@ class Search extends View {
   }
 
   _bindTooltip() {
-    // Add hover tooltip on buttons
     this._parentEl.addEventListener(
       'mouseenter',
       (e) => {
@@ -205,6 +203,11 @@ class Search extends View {
     });
   }
 
+  /*
+  ==================================================
+                 DATA UPDATES AND RESULTS
+  ==================================================
+  */
   updateDataHistory(data) {
     this._savedData.push(data);
   }
@@ -225,7 +228,6 @@ class Search extends View {
       data['first_air_date']?.split('-')[0] ||
       data['release_date']?.split('-')[0];
 
-    // Either TV show or Movie, based on API schema
     const maturity =
       data['content_ratings']?.['results'].find(
         (result) => result['iso_3166_1'] === 'US'
@@ -236,7 +238,6 @@ class Search extends View {
         'certification'
       ];
 
-    // Get duration in seasons, episodes, or runtime if movie
     const duration =
       data['number_of_seasons'] > 1
         ? `${data['number_of_seasons']} Seasons`
@@ -249,7 +250,6 @@ class Search extends View {
     }</span>`;
 
     for (let i = 1; i < data.genres.length; i++) {
-      // Break out of loop to only show 3 genres, max
       if (i === 3) break;
       genres += `<span class="item-genre separator">${
         data.genres[i].name.split(' ')[0]
@@ -365,11 +365,17 @@ class Search extends View {
     });
   }
 
+  /*
+  ==================================================
+               MARKUP AND INTERACTIONS
+  ==================================================
+  */
   _generateMarkup() {
     this.clear();
     this._currPage = 1;
     this._order = 1;
     this._zIndex = 2999;
+    this._setInitialSize();
     this._bindTransitions();
     this._bindTooltip();
     this._bindResponsiveness();
@@ -500,16 +506,3 @@ class Search extends View {
 }
 
 export default new Search();
-
-/* How search is going to work :
-
-Each result is a 9:16 poster, aligned using flex, that are X viewport width size. (Responsiveness this time is tied to CSS only). Behind it is an
-absolutely positioned container with metadata, that on hover, is going to activate a CSS animation and change the Z-index of the whole element to be bigger.
-
-When you search, they are rendered one by one with an animation delay. One function to generate shows, another to generate infinite scrolling
-observer if totalResults is bigger than shows limit.
-
-Only render the homepage when the user has written nothing, or when they click the X. As they're typing, if they stop for x milliseconds, search.
-
-That's it, probably.
-*/
