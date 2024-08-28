@@ -5,13 +5,12 @@ import { mark } from 'regenerator-runtime';
 
 class Categories extends View {
   _parentEl = document.querySelector('.categories');
-  // An array of category view objects.
-  _categories = [];
+  _categories = []; // Array of category view objects.
   _lastRenderedCategory = 0;
   _itemSize;
   _numOfResults;
 
-  // Queries
+  // Media Queries
   _defaultQuery = window.matchMedia('(min-width: 1400px)');
   _largeQuery = window.matchMedia(
     '(max-width: 1400px) and (min-width: 1100px)'
@@ -22,14 +21,19 @@ class Categories extends View {
   _smallQuery = window.matchMedia('(max-width: 800px) and (min-width: 500px)');
   _tinyQuery = window.matchMedia('(max-width: 500px)');
 
+  // Hover and Scroll Control
   _timeout;
-  _waitForHover = 0.4 * 1000; // In millieseconds
-  _bound = false; // Check if hover and responsiveness are binded
+  _waitForHover = 0.4 * 1000; // In milliseconds
+  _bound = false; // Check if hover and responsiveness are bound
   _observer;
   _isFetching = false;
-  // This is used to prevent hover as the user scrolls
-  _isScrolling = false;
+  _isScrolling = false; // Prevent hover while scrolling
 
+  /*
+  ==================================================
+                       RENDERING
+  ==================================================
+  */
   renderSkeleton() {
     this._isFetching = true;
     let numOfShows = '';
@@ -73,6 +77,30 @@ class Categories extends View {
     document.querySelector('.skeleton')?.remove();
   }
 
+  renderNewCategories() {
+    for (
+      let i = this._lastRenderedCategory;
+      i < this._data.categories.length;
+      i++
+    ) {
+      let newCategory = new Category();
+
+      // Set number of results based on this object's data
+      newCategory.setResultsPerPage(this._numOfResults, this._itemSize);
+      newCategory.init(this._data.categories[i]);
+
+      // Add it to the array to keep track of all categories from this object
+      this._categories.push(newCategory);
+    }
+
+    this._lastRenderedCategory = this._data.categories.length;
+  }
+
+  /*
+  ==================================================
+                       HANDLERS
+  ==================================================
+  */
   bindHover(handler) {
     if (this._bound) return;
     this._bound = true;
@@ -84,9 +112,8 @@ class Categories extends View {
         if (!e.target?.classList.contains('category-item')) return;
         if (e.target.classList.contains('opaque')) return;
 
-        // If only a bit of the element is showing, ignore
+        // Ignore if only a bit of the element is showing
         const size = e.target.getBoundingClientRect();
-        // Number is half of header's length
         if (size.top - 35 <= 0) return;
 
         this._timeout = setTimeout(() => {
@@ -107,26 +134,17 @@ class Categories extends View {
     );
   }
 
-  updateMetadata(name) {
-    const allInstances = [
-      ...document.querySelectorAll(`[data-name="${name}"]`),
-    ];
-  }
-
   addObserverHandler(handler) {
     if (this._observer) return;
     this._observer = new IntersectionObserver(
-      (entries, observer) => {
+      (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !this._isFetching) {
             handler();
           }
         });
       },
-      {
-        root: null,
-        threshold: 0.2,
-      }
+      { root: null, threshold: 0.2 }
     );
     this._observer.observe(document.querySelector('.intersection-observer'));
   }
@@ -153,87 +171,16 @@ class Categories extends View {
     });
   }
 
-  renderNewCategories() {
-    for (
-      let i = this._lastRenderedCategory;
-      i < this._data.categories.length;
-      i++
-    ) {
-      let newCategory = new Category();
-
-      // Set number of results based on this object's data
-      newCategory.setResultsPerPage(this._numOfResults, this._itemSize);
-      newCategory.init(this._data.categories[i]);
-
-      // Add it to the array to keep track of all categories from this object
-      this._categories.push(newCategory);
-    }
-
-    this._lastRenderedCategory = this._data.categories.length;
-  }
-
-  _generateMarkup() {
-    this.clear();
-    this._generateViews();
-    this._bindResponsiveness();
-    this._bindScroll();
-    this._lastRenderedCategory = this._data.categories.length;
-    this._isFetching = false;
-    return '';
-  }
-
-  _generateViews() {
-    this._setInitialSize();
-    this._data.categories.forEach((category) => {
-      let newCategory = new Category();
-
-      // Set number of results based on this object's data
-      newCategory.setResultsPerPage(this._numOfResults, this._itemSize);
-      newCategory.init(category);
-
-      // Add it to the array to keep track of all categories from this object
-      this._categories.push(newCategory);
-    });
-  }
-
-  _bindResponsiveness() {
-    if (this._bound) return;
-    this._defaultQuery.addEventListener('change', (e) => {
-      if (e.matches) this._updateCategories(6, 15);
-    });
-
-    this._largeQuery.addEventListener('change', (e) => {
-      if (e.matches) this._updateCategories(5, 18);
-    });
-
-    this._mediumQuery.addEventListener('change', (e) => {
-      if (e.matches) this._updateCategories(4, 22.5);
-    });
-
-    this._smallQuery.addEventListener('change', (e) => {
-      if (e.matches) this._updateCategories(3, 30);
-    });
-
-    this._tinyQuery.addEventListener('change', (e) => {
-      if (e.matches) this._updateCategories(2, 45);
-    });
-  }
-
-  // To disable hovering temporarily
-  _bindScroll() {
-    const scroll = (e) => {
-      this._isScrolling = true;
-      document.removeEventListener('scroll', scroll);
-      document.addEventListener('mousemove', mouseMove);
-    };
-
-    const mouseMove = (e) => {
-      this._isScrolling = false;
-      document.removeEventListener('mousemove', mouseMove);
-      document.addEventListener('scroll', scroll);
-    };
-
-    document.addEventListener('scroll', scroll);
+  /*
+  ==================================================
+                    METADATA UPDATES
+  ==================================================
+  */
+  updateMetadata(name) {
+    const allInstances = [
+      ...document.querySelectorAll(`[data-name="${name}"]`),
+    ];
+    // Add additional logic if needed for handling updates
   }
 
   updateHoverMetadata(data) {
@@ -246,7 +193,7 @@ class Categories extends View {
     }</span>`;
 
     for (let i = 1; i < data.genres.length; i++) {
-      // Break out of loop to only show 3 genres, max
+      // Show up to 3 genres
       if (i === 3) break;
       genres += `<span class="item-genre separator">${
         data.genres[i].name.split(' ')[0]
@@ -345,6 +292,105 @@ class Categories extends View {
     `;
   }
 
+  /*
+  ==================================================
+                   RESPONSIVENESS
+  ==================================================
+  */
+  _bindResponsiveness() {
+    if (this._bound) return;
+    this._defaultQuery.addEventListener('change', (e) => {
+      if (e.matches) this._updateCategories(6, 15);
+    });
+
+    this._largeQuery.addEventListener('change', (e) => {
+      if (e.matches) this._updateCategories(5, 18);
+    });
+
+    this._mediumQuery.addEventListener('change', (e) => {
+      if (e.matches) this._updateCategories(4, 22.5);
+    });
+
+    this._smallQuery.addEventListener('change', (e) => {
+      if (e.matches) this._updateCategories(3, 30);
+    });
+
+    this._tinyQuery.addEventListener('change', (e) => {
+      if (e.matches) this._updateCategories(2, 45);
+    });
+  }
+
+  _bindScroll() {
+    const scroll = () => {
+      this._isScrolling = true;
+      document.removeEventListener('scroll', scroll);
+      document.addEventListener('mousemove', mouseMove);
+    };
+
+    const mouseMove = () => {
+      this._isScrolling = false;
+      document.removeEventListener('mousemove', mouseMove);
+      document.addEventListener('scroll', scroll);
+    };
+
+    document.addEventListener('scroll', scroll);
+  }
+
+  _updateCategories(newItemCount, newItemSize) {
+    this._itemSize = newItemSize;
+    this._categories.forEach((category) => {
+      category.setResultsPerPage(newItemCount, this._itemSize);
+      category.updateDom();
+    });
+  }
+
+  _setInitialSize() {
+    const windowWidthOnLoad = window.innerWidth;
+
+    if (windowWidthOnLoad > 1400) {
+      this._itemSize = 15; // Default, biggest size
+      this._numOfResults = 6;
+    }
+    if (windowWidthOnLoad <= 1400 && windowWidthOnLoad > 1100) {
+      this._itemSize = 18;
+      this._numOfResults = 5;
+    }
+    if (windowWidthOnLoad <= 1100 && windowWidthOnLoad > 800) {
+      this._itemSize = 22.5;
+      this._numOfResults = 4;
+    }
+    if (windowWidthOnLoad <= 800 && windowWidthOnLoad > 500) {
+      this._itemSize = 30;
+      this._numOfResults = 3;
+    }
+    if (windowWidthOnLoad <= 500) {
+      this._itemSize = 45;
+      this._numOfResults = 2;
+    }
+  }
+
+  _generateMarkup() {
+    this.clear();
+    this._generateViews();
+    this._bindResponsiveness();
+    this._bindScroll();
+    this._lastRenderedCategory = this._data.categories.length;
+    this._isFetching = false;
+    return '';
+  }
+
+  _generateViews() {
+    this._setInitialSize();
+    this._data.categories.forEach((category) => {
+      let newCategory = new Category();
+
+      newCategory.setResultsPerPage(this._numOfResults, this._itemSize);
+      newCategory.init(category);
+
+      this._categories.push(newCategory);
+    });
+  }
+
   _hover(e) {
     const size = e.target.getBoundingClientRect();
     const placement = e.target.dataset.placement;
@@ -400,7 +446,6 @@ class Categories extends View {
           right: ${size.right}px;
         `;
 
-    // Add animation
     hoverDiv.addEventListener('mouseleave', function (e) {
       e.target.addEventListener('animationend', (e) => {
         if (e.target.classList.contains(`category-item-unhover-${placement}`))
@@ -448,44 +493,11 @@ class Categories extends View {
       true
     );
 
-    // When scrolling off-screen
+    // Remove hover element when scrolling off-screen
     const observer = new IntersectionObserver(function (entries) {
       if (!entries[0].isIntersecting) entries[0].target.remove();
     });
     observer.observe(hoverDiv);
-  }
-
-  _updateCategories(newItemCount, newItemSize) {
-    this._itemSize = newItemSize;
-    this._categories.forEach((category) => {
-      category.setResultsPerPage(newItemCount, this._itemSize);
-      category.updateDom();
-    });
-  }
-
-  _setInitialSize() {
-    const windowWidthOnLoad = window.innerWidth;
-
-    if (windowWidthOnLoad > 1400) {
-      this._itemSize = 15; // Default, biggest size
-      this._numOfResults = 6;
-    }
-    if (windowWidthOnLoad <= 1400 && windowWidthOnLoad > 1100) {
-      this._itemSize = 18; // Default, biggest size
-      this._numOfResults = 5;
-    }
-    if (windowWidthOnLoad <= 1100 && windowWidthOnLoad > 800) {
-      this._itemSize = 22.5; // Default, biggest size
-      this._numOfResults = 4;
-    }
-    if (windowWidthOnLoad <= 800 && windowWidthOnLoad > 500) {
-      this._itemSize = 30; // Default, biggest size
-      this._numOfResults = 3;
-    }
-    if (windowWidthOnLoad <= 500) {
-      this._itemSize = 45; // Default, biggest size
-      this._numOfResults = 2;
-    }
   }
 }
 
