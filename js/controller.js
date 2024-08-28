@@ -48,6 +48,7 @@ const load = function onPageLoad() {
   const query = window.location.href.split('?q=').pop();
 
   const handler = routes[url] || (match && routes[match[0]]);
+
   if (handler) handler(id || query);
   else profile.renderError(`404. Seems like this page doesn't exist.`); // Here, handle 404 error.
 };

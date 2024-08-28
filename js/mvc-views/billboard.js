@@ -71,16 +71,17 @@ class Billboard extends View {
   pause() {
     if (!this._trailer) return;
 
+    if (!this._hasActivated) {
+      // If the trailer hadn't activated yet, clear it.
+      clearTimeout(this._playTimeout);
+      return;
+    }
+
     this._trailer.pause();
   }
 
   resume() {
-    if (
-      !this._trailer ||
-      !this._hasActivated ||
-      this._parentEl.classList.contains('hidden')
-    )
-      return;
+    if (!this._trailer || this._parentEl.classList.contains('hidden')) return;
 
     const rect = this._trailer.getBoundingClientRect();
     // A third of the trailer's size
@@ -88,8 +89,19 @@ class Billboard extends View {
     const bottomLimit =
       window.innerHeight || document.documentElement.clientHeight;
 
-    if (rect.top >= topLimit && rect.bottom <= bottomLimit)
+    // Check if it is intersecting, i.e. visible enough to play the trailer.
+    if (rect.top >= topLimit && rect.bottom <= bottomLimit) {
+      if (!this._hasActivated) {
+        // If the trailer hadn't activated yet, re-set timeout.
+        this._playTimeout = setTimeout(
+          this._playTrailer.bind(this),
+          this._playAfter
+        );
+        return;
+      }
+
       this._trailer.play();
+    }
   }
 
   _generateMarkup() {
