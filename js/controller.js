@@ -249,11 +249,14 @@ const controlSearch = async (query) => {
   try {
     updateURL(`search?q=${query}`);
     clear();
+
     const data = await model.getSearch(query);
     data['query'] = query;
+
     search.render(data);
     search.addObserverHandler(controlSearchPages);
   } catch (err) {
+    console.log(err);
     search.renderError();
   }
 };
