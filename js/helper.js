@@ -1,5 +1,11 @@
 // Helper Functions //
 
+/*
+==================================================
+                USER AND SHOW CREATION
+==================================================
+*/
+
 export function CreateUser(username, profilePicture, preference, watched) {
   this.username = username;
   this.profilePicture = profilePicture;
@@ -13,11 +19,17 @@ export function CreateShow(name, thumbnail, genres) {
   this.genres = genres;
 }
 
+/*
+==================================================
+                 ARRAY MANIPULATION
+==================================================
+*/
+
 export function shuffleArray(arr) {
   let currIndex = arr.length;
 
-  while (currIndex != 0) {
-    let randomElement = Math.floor(Math.random() * currIndex);
+  while (currIndex !== 0) {
+    const randomElement = Math.floor(Math.random() * currIndex);
     currIndex--;
 
     [arr[currIndex], arr[randomElement]] = [arr[randomElement], arr[currIndex]];
@@ -26,6 +38,12 @@ export function shuffleArray(arr) {
   return arr;
 }
 
+/*
+==================================================
+                 STRING MANIPULATION
+==================================================
+*/
+
 export function capitalizeEveryWord(string) {
   return string
     .split(' ')
@@ -33,20 +51,30 @@ export function capitalizeEveryWord(string) {
     .join(' ');
 }
 
+/*
+==================================================
+                   DATA PARSING
+==================================================
+*/
+
 export function parseMovieDuration(data) {
   const hours = Math.floor(data['runtime'] / 60) || '';
   const minutes = data['runtime'] % 60 || '';
-  let time = `${hours ? `${hours}h ` : ''} ${minutes ? `${minutes}m` : ''}`;
+  let time = `${hours ? `${hours}h ` : ''}${minutes ? `${minutes}m` : ''}`;
 
-  if (hours === '' && minutes === '') time = `1h 30m`;
+  if (!hours && !minutes) time = '1h 30m';
 
   return time;
 }
 
-// Automatic timeout
+/*
+==================================================
+                  ASYNC UTILITIES
+==================================================
+*/
 
 export function autoResolvePromise() {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve) => {
     setTimeout(() => resolve('Done!'), 2000);
   });
 }
@@ -71,9 +99,12 @@ export async function AJAX(url, data = undefined) {
   }
 }
 
-export function updateURL(url, title = '', state = {}) {
-  state['url'] = url;
-  state['title'] = title;
+/*
+==================================================
+                   URL HANDLING
+==================================================
+*/
 
-  window.history.replaceState(state, state.title, state.url);
+export function updateURL(url, title = '', state = {}) {
+  window.history.replaceState({ ...state, url, title }, title, url);
 }
