@@ -404,17 +404,14 @@ class Search extends View {
   }
 
   _generatePlaceholder(result) {
-    if (result['poster_path']) {
-      return `
+    return `
+      <div class="search-image-placeholder">${
+        result['name'] || result['original_title'] || 'N/A'
+      }</div>
       <img
       class="search-image"
       src="${IMG_PATH + result['poster_path']}"
       />`;
-    }
-
-    return `<div class="search-image-placeholder">${
-      result['name'] || result['original_title'] || 'N/A'
-    }</div>`;
   }
 
   _generateWrapper(container, wrapperOrder) {
