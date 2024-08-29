@@ -64,7 +64,7 @@ header {
 .main-logo::before {
   display: inline-block;
   content: '';
-  background-image: url('../imgs/misc/Netflix_2015_logo.png');
+  background-image: url('../imgs/misc/Notflix.png');
   background-size: contain;
   background-repeat: no-repeat;
   width: 100%;
