@@ -66,12 +66,6 @@ A live demo of Notflix can be found [here](your-demo-link).
 
 ## Technologies
 
-- **JavaScript (ES6+)**: Core scripting language used for logic, data manipulation, and API communication.
-- **HTML5/CSS3**: Structure and styling of the web application.
-- **Parcel & Babel**: Module bundler & polyfilling.
-
-## Technologies
-
 - ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge)
   **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)**: The core scripting language used for logic, data manipulation, and API communication.
 
