@@ -70,6 +70,23 @@ A live demo of Notflix can be found [here](your-demo-link).
 - **HTML5/CSS3**: Structure and styling of the web application.
 - **Parcel & Babel**: Module bundler & polyfilling.
 
+## Technologies
+
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge)
+  **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)**: The core scripting language used for logic, data manipulation, and API communication.
+
+- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white&style=for-the-badge)
+  **[HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)**: The latest version of HTML used to structure the web application, providing semantic elements for better accessibility and SEO.
+
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white&style=for-the-badge)
+  **[CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)**: Used for styling the web application, including layout designs, animations, and responsive behaviors.
+
+- ![Parcel](https://img.shields.io/badge/Parcel-BBC1C4?logo=parcel&logoColor=white&style=for-the-badge)
+  **[Parcel](https://developer.mozilla.org/en-US/docs/Glossary/Build_tool)**: Web bundler to compile the project into production.
+
+- ![Babel](https://img.shields.io/badge/Babel-F9DC3E?logo=babel&logoColor=black&style=for-the-badge)
+  **[Babel](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)**: To ensure backwards compatibility.
+
 ## Learning Outcomes
 
 ### 1. **Advanced JavaScript and Front-End Development**
