@@ -373,13 +373,13 @@ const init = async () => {
     ''
   );
   const tara = new CreateUser(
-    'Tara 🤍',
+    'Tara',
     'https://i.imgur.com/Igqdb4Q.png',
     '',
     ''
   );
   const cheap = new CreateUser(
-    'باراسايت',
+    'توم',
     'https://i.imgur.com/DTQqnbN.png',
     '',
     ''
