@@ -49,7 +49,10 @@ I wanted to try building a faithful front-end creation of Netflix's UI within th
   - **Auto-Playing Videos**: Featured billboard with auto-playing videos of trending content.
   - **Video Controls & Dynamic Pausing**: Includes volume control, and pauses/resumes based on user interactions like scrolling and modals.
 
-- **Interactive Modal Views**: Detailed pages for movies and TV shows with controls for seasons and episodes. Built-in browsing through modals with navigation history.
+- **Interactive Modal Views**:
+
+  - **Detailed Title View**: Pages for movies and TV shows where you can check title's details, seasons & episodes (image preview, name, duration, description), recommendations (more like this), trailers & more.
+  - **Built-In Browsing**: Built-in browsing through modals based on cast member, creators, production companies, genre, keywords, etc... with navigation history.
 
 - **Responsive Design**: Optimized for all screen sizes with responsive elements for desktops to mobile devices.
 
