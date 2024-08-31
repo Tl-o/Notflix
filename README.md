@@ -9,6 +9,7 @@
   <a href="#features"><strong>Features</strong></a> • 
   <a href="#demo"><strong>Demo</strong></a> • 
   <a href="#technologies"><strong>Technologies</strong></a> • 
+  <a href="#learning"><strong>Learning Outcomes</strong></a> • 
   <a href="#installation"><strong>Installation</strong></a> • 
   <a href="#license"><strong>License</strong></a>
 </p>
@@ -19,46 +20,44 @@ I wanted to try building a faithful front-end creation of Netflix's UI within th
 
 ### **What I Tried To Focus On**
 
-- **Asynchronous Programming:** Managed asynchronous data fetching with clean error handling and optimized rendering processes.
-
-- **Code Architecture (MVC and Publisher-Subscriber):** Separated code into scalable, self-contained modules using MVC (Model-View-Controller) architecture, and publisher-subscriber pattern.
-
-- **Dynamic Route Handling:** Built a custom routing mechanism to manage various application states and views based on URL changes.
-
-- **Advanced Responsive Design:** Implemented both CSS and JavaScript-based media queries to ensure seamless adaptability across various devices.
-- **State Management:** Maintained application state with a focus on performance and clarity.
-
-- **Event Delegation:** User interactions are delegated,using as little event listeners as possible while maintaining readability.
-- **ES6+ Features:** Implemented as many modern JS features as possible, while maintaining backwards-compatibility with babel.
-
-- **Animation and Transitions:** Applied CSS animations and transitions for smooth, user-friendly visual effects.
+<p align="center">
+  <strong>Asynchronous Programming</strong> • 
+  <strong>Code Architecture (MVC and Publisher-Subscriber)</strong> • 
+  <strong>Dynamic Route Handling</strong> • 
+  <strong>Advanced Responsive Design</strong> • 
+  <strong>State Management</strong> • 
+  <strong>Event Delegation</strong> • 
+  <strong>ES6+ Features</strong> • 
+  <strong>Animation and Transitions</strong>
+</p>
 
 ## Features
 
 - **Dynamic Content Browsing**:
 
-  - **Infinite Scrolling**: Seamless infinite scrolling allows users to explore an extensive library of shows and movies without manual pagination.
-  - **Category-Specific Pagination**: Each content category has its own pagination system, enabling users to navigate through a large number of titles within a category efficiently.
+  - **Infinite Scrolling**: Allows users to explore a vast library of shows and movies without manual pagination.
+  - **Category-Specific Pagination**: Each content category has its own pagination, enabling efficient navigation within categories.
 
 - **Advanced Search Functionality**:
 
-  - **Dynamic Search Results**: Instant search results are displayed as the user types, with dynamic updates based on API responses.
-  - **Search Result Hover Effects**: Rich metadata, including genres, ratings, and descriptions, is shown on hover, enhancing the browsing experience.
-  - **Infinite Scrolling in Search**: Continuously load more search results as the user scrolls down, ensuring an uninterrupted browsing experience.
+  - **Dynamic Search Results**: Instant results with dynamic updates as users type, based on API responses.
+  - **Hover Effects**: Displays rich metadata (genres, ratings, descriptions) on hover for enhanced browsing.
+  - **Search Scrolling**: Infinite scrolling within search results for a seamless experience.
 
 - **Billboard Feature**:
 
-  - **Auto-Playing Videos**: The featured billboard at the top of the page includes an auto-playing video, showcasing the latest or trending content.
-  - **Video Controls**: Users can interact with video controls (volume) directly on the billboard.
-  - **Dynamic Video Pausing**: The video automatically pauses when the user scrolls it out of view, opens a modal, or engages in another interaction, and resumes when appropriate.
+  - **Auto-Playing Videos**: Featured billboard with auto-playing videos of trending content.
+  - **Video Controls & Dynamic Pausing**: Includes volume control, and pauses/resumes based on user interactions like scrolling and modals.
 
-- **Modal and Detail Views**: Detailed information pages for movies and TV shows with additional controls for seasons and episodes.
-- **Built-in Browsing:** Title's modal windows act as a built-in browser, where you can navigate by cast member, genre, etc... With a history that works offline, allowing you to navigate back to previous tabs.
-- **Responsive Design**: Optimized layout and elements for all screen sizes, from desktops to mobile devices.
-- **Performance Optimizations**: Lazy loading, debouncing, and optimized rendering for a fast and efficient user experience.
+- **Interactive Modal Views**: Detailed pages for movies and TV shows with controls for seasons and episodes. Built-in browsing through modals with navigation history.
+
+- **Responsive Design**: Optimized for all screen sizes with responsive elements for desktops to mobile devices.
+
+- **Performance Optimizations**: Uses lazy loading, debouncing, and optimized rendering for a smooth user experience.
+
 - **Routing and Navigation**:
-  - **Client-Side Routing**: The application includes dynamic client-side routing, allowing users to navigate between different pages (e.g., browsing, title details, search) without full page reloads.
-  - **URL Management**: The browser URL dynamically updates to reflect the current state, enabling deep linking and bookmarking of specific views.
+  - **Client-Side Routing**: Dynamic routing allows navigation between pages (browsing, details, search) without reloads.
+  - **URL Management**: Dynamic URL updates reflect the current state, supporting deep linking and bookmarking.
 
 ## Demo
 
@@ -76,49 +75,23 @@ A live demo of Notflix can be found [here](your-demo-link).
   **[CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)**: Used for styling the web application, including layout designs, animations, and responsive behaviors.
 
 - ![Parcel](https://img.shields.io/badge/Parcel-BBC1C4?logo=parcel&logoColor=white&style=for-the-badge)
-  **[Parcel](https://developer.mozilla.org/en-US/docs/Glossary/Build_tool)**: Web bundler to compile the project into production.
+  **[Parcel](https://parceljs.org/)**: For bundling and optimizing assets.
 
 - ![Babel](https://img.shields.io/badge/Babel-F9DC3E?logo=babel&logoColor=black&style=for-the-badge)
-  **[Babel](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)**: To ensure backwards compatibility.
+  **[Babel](https://babeljs.io/)**: To transpile modern JavaScript for compatibility across browsers.
 
-## Learning Outcomes
+## <a id="learning"></a> Learning Outcomes
 
-### 1. **Advanced JavaScript and Front-End Development**
+- **JavaScript Mastery & Architecture**: Built a scalable, modular application using ES6+ features with MVC and Publisher-Subscriber patterns to manage state and UI interactions effectively.
+- **Asynchronous Programming & API Integration**: Utilized `async/await` and Promises for efficient API handling with TMDB, incorporating error handling and optimized data fetching for seamless updates.
 
-- Implemented a modular architecture using ES6 modules, classes, and modern JavaScript syntax.
-- Gained experience with **asynchronous programming** using `async/await` and Promises to handle API requests and dynamic data fetching.
-- Developed various **helper functions** for data parsing, string manipulation, and DOM updates, improving code reusability and readability.
+- **UI/UX & State Management**: Developed a responsive, interactive interface using CSS and JavaScript media queries, advanced state management with a centralized state object, and performance enhancements like lazy loading and infinite scrolling.
 
-### 2. **State Management and Data Flow**
+- **Performance Optimization & Event Management**: Implemented lazy loading, debouncing, and event delegation to minimize overhead and enhance responsiveness, particularly for large data sets.
 
-- Managed the state of the application effectively using a **centralized state object**, ensuring that all components have access to the data they need without redundancy.
-- Created and updated state dynamically based on user interactions, ensuring that the UI remains consistent with the application state.
+- **Routing & Navigation**: Developed a client-side routing system for dynamic URL management and deep linking, enhancing navigation and user experience.
 
-### 3. **Responsive and Interactive UI Development**
-
-- Designed a fully **responsive interface** that adapts to different screen sizes and devices, utilizing media queries and dynamic DOM manipulation.
-- Built dynamic components like **category sliders, infinite scrolling, and hover effects** to enhance user experience.
-
-### 4. **API Integration and Data Handling**
-
-- Integrated with **The Movie Database (TMDB) API** to fetch dynamic data like movie details, genres, and user recommendations.
-- Developed utility functions for handling API errors, parsing data, and formatting movie durations, contributing to a seamless user experience.
-
-### 5. **Performance Optimization Techniques**
-
-- Implemented **event delegation**, using as little event listeners as possible while maintaining readability.
-- Implemented **lazy loading** and **infinite scrolling** to improve performance and load times, especially for large data sets.
-- Used **debouncing** and **throttling** techniques to optimize event handling and avoid excessive API calls or DOM manipulations.
-- Utilized caching strategies to minimize redundant API requests and enhance the speed of content delivery.
-
-### 6. **Error Handling and Debugging**
-
-- Developed robust error-handling mechanisms to manage API errors, unexpected user actions, and network issues.
-- Gained experience with debugging tools and techniques to identify and resolve issues efficiently.
-
-### 7. **Version Control and Collaboration**
-
-- Practiced using **Git and GitHub** for version control, branching, and collaborative development.
+- **Version Control**: Used Git and GitHub for structured version control, employing branching and collaboration best practices.
 
 ## Installation
 
@@ -138,10 +111,6 @@ A live demo of Notflix can be found [here](your-demo-link).
    ```bash
    npm start
    ```
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
 
 ## License
 

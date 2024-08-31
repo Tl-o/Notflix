@@ -2,10 +2,10 @@
   "name": "fake-netflix",
   "version": "1.0.0",
   "type": "module",
-  "description": "Front-end recreation of Netflix for educational &amp; portfolio purposes.",
+  "description": "Front-end recreation of Netflix using Vanilla JS, CSS, & HTML for educational &amp; portfolio purposes.",
   "scripts": {
     "start": "parcel browse.html",
-    "build": "parcel build index.html"
+    "build": "parcel build browse.html"
   },
   "repository": {
     "type": "git",
