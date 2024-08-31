@@ -85,7 +85,7 @@ A live demo of Notflix can be found [here](your-demo-link).
 
 ## <a id="learning"></a> Learning Outcomes
 
-- **JavaScript Mastery & Architecture**: Built a scalable, modular application using ES6+ features with MVC and Publisher-Subscriber patterns to manage state and UI interactions effectively.
+- **Modern JavaScript & Code Architecture**: Built a scalable, modular application using ES6+ features with MVC and Publisher-Subscriber patterns to manage state and UI interactions effectively.
 - **Asynchronous Programming & API Integration**: Utilized `async/await` and Promises for efficient API handling with TMDB, incorporating error handling and optimized data fetching for seamless updates.
 
 - **UI/UX & State Management**: Developed a responsive, interactive interface using CSS and JavaScript media queries, advanced state management with a centralized state object, and performance enhancements like lazy loading and infinite scrolling.
