@@ -263,6 +263,8 @@ const controlSearch = async (query) => {
     const data = await model.getSearch(query);
     data['query'] = query;
 
+    if (!window.location.href.includes('search?q=')) return;
+
     search.render(data);
     search.addObserverHandler(controlSearchPages);
   } catch (err) {
