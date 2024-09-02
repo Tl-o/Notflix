@@ -4,8 +4,8 @@
   "type": "module",
   "description": "Front-end recreation of Netflix using Vanilla JS, CSS, & HTML for educational &amp; portfolio purposes.",
   "scripts": {
-    "start": "parcel browse.html",
-    "build": "parcel build browse.html"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "repository": {
     "type": "git",
