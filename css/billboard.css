@@ -177,7 +177,7 @@
   width: 75%;
   height: 75%;
   min-width: 16px;
-  min-height: 16px;
+  min-height: 21.85px;
   fill: var(--white);
 }
 
@@ -280,6 +280,7 @@
   .billboard-metadata {
     padding-block-start: 4vh;
   }
+
   .billboard-sound {
     min-height: var(--billboard-sound-sm);
     max-height: var(--billboard-sound-sm);

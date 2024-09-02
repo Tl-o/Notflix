@@ -962,4 +962,8 @@
   .media-duration {
     display: none;
   }
+
+  .modal-sound {
+    display: none;
+  }
 }
