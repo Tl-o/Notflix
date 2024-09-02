@@ -966,4 +966,8 @@
   .modal-sound {
     display: none;
   }
+
+  .modal-metadata-logo {
+    max-width: 300px;
+  }
 }
