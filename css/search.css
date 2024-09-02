@@ -149,6 +149,7 @@ Item width: (100 - Reserve width) / items_per_row. */
   justify-content: center;
   align-items: center;
   font-size: var(--search-item-font-size);
+  overflow: hidden;
   font-weight: 500;
   padding: 1vw;
   z-index: 2000;

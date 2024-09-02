@@ -746,6 +746,7 @@ Item width: (100 - Reserve width) / items_per_row. */
   font-weight: 500;
   padding: 1vw;
   z-index: 2000;
+  overflow: hidden;
 }
 
 .search-metadata {
