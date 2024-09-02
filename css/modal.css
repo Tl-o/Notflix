@@ -4,10 +4,12 @@
   --size-lg: 800px;
   --size-m: 650px;
   --size-sm: 500px;
+  --size-xs: 400px;
 
   --modal-body-padding: 48px;
   --modal-body-padding-m: 36px;
   --modal-body-padding-sm: 24px;
+  --modal-body-padding-xs: 16px;
 
   --header-title-font-size: 24px;
   --header-title-font-size-m: 20px;
@@ -16,27 +18,33 @@
   --modal-play-font-size: 20px;
   --modal-play-font-size-m: 17px;
   --modal-play-font-size-sm: 14px;
+  --modal-play-font-size-xs: 16px;
 
   /* Details */
   --metadata-font-size: 18px;
   --metadata-font-size-m: 16px;
   --metadata-font-size-sm: 12px;
+  --metadata-font-size-xs: 14px;
 
   --age-rating-font-size: 14px;
   --age-rating-font-size-m: 12px;
   --age-rating-font-size-sm: 10px;
+  --age-rating-font-size-xs: 12px;
 
   --special-badge-font-size: 12px;
   --special-badge-font-size-m: 10px;
   --special-badge-font-size-sm: 8px;
+  --special-badge-font-size-xs: 10px;
 
   --description-font-size: 16px;
   --description-font-size-m: 14px;
   --description-font-size-sm: 12px;
+  --description-font-size-sm: 14px;
 
   --production-font-size: 14px;
   --production-font-size-m: 12px;
   --production-font-size-sm: 10px;
+  --production-font-size-sm: 12px;
 
   /* Episodes */
   --episode-header-2-font-size: 24px;
@@ -63,6 +71,7 @@
   --recommendation-size-lg: 200px;
   --recommendation-size-m: 160px;
   --recommendation-size-sm: 180px;
+  --recommendation-size-xs: 165px;
 
   --recommendation-year-font-size: 16px;
   --recommendation-year-font-size-lg: 14px;
@@ -71,17 +80,20 @@
   --recommendation-description-font-size: 15px;
   --recommendation-description-font-size-lg: 13px;
   --recommendation-description-font-size-m: 11px;
+  --recommendation-description-font-size-xs: 13px;
 
   /* Trailers */
   --trailer-size: 250px;
   --trailer-size-lg: 215px;
   --trailer-size-m: 176px;
   --trailer-size-sm: 130px;
+  --trailer-size-xs: 160px;
 
   --trailer-title-font-size: 16px;
   --trailer-title-font-size-lg: 15px;
   --trailer-title-font-size-m: 14px;
   --trailer-title-font-size-sm: 12px;
+  --trailer-title-font-size-xs: 14px;
 }
 
 .media-modal-overlay {
@@ -910,5 +922,39 @@
   .full-size {
     min-width: var(--size);
     max-width: var(--size);
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    /* All Small */
+
+    /* Modal */
+    --size: var(--size-xs);
+
+    /* Backdrop */
+    --modal-body-padding: var(--modal-body-padding-xs);
+    --modal-play-font-size: var(--modal-play-font-size-xs);
+
+    /* Title details */
+    --metadata-font-size: var(--metadata-font-size-xs);
+    --description-font-size: var(--description-font-size-xs);
+    --production-font-size: var(--production-font-size-xs);
+    --age-rating-font-size: var(--age-rating-font-size-xs);
+    --special-badge-font-size: var(--special-badge-font-size-xs);
+
+    /* Recommendations */
+    --recommendation-size: var(--recommendation-size-xs);
+    --recommendation-description-font-size: var(
+      --recommendation-description-font-size-xs
+    );
+
+    /* Trailers */
+    --trailer-size: var(--trailer-size-xs);
+    --trailer-title-font-size: var(--trailer-title-font-size-xs);
+  }
+
+  .media-duration {
+    display: none;
   }
 }

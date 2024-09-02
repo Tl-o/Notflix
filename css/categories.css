@@ -133,6 +133,8 @@
 
 .slide-right::before {
   mask: url('../imgs/misc/chevron-compact-right.svg') no-repeat 50% 50%;
+  min-width: 24px;
+  min-height: 24px;
 }
 
 .slide-right {
@@ -143,6 +145,8 @@
 
 .slide-left::before {
   mask: url('../imgs/misc/chevron-compact-left.svg') no-repeat 50% 50%;
+  min-width: 24px;
+  min-height: 24px;
 }
 
 .slide-left {

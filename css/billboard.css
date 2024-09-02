@@ -83,6 +83,8 @@
 .billboard-icon {
   width: 2.5vw;
   height: 2.5vw;
+  min-width: 20px;
+  min-height: 20px;
   aspect-ratio: 1 / 1;
 }
 
@@ -174,6 +176,8 @@
 .billboard-sound .billboard-icon {
   width: 75%;
   height: 75%;
+  min-width: 16px;
+  min-height: 16px;
   fill: var(--white);
 }
 
