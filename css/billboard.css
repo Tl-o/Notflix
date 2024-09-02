@@ -245,6 +245,7 @@
 @media (max-width: 1100px) {
   .billboard-sound {
     min-height: var(--billboard-sound-lg);
+    max-height: var(--billboard-sound-lg);
   }
 }
 
@@ -255,6 +256,7 @@
 
   .billboard-sound {
     min-height: var(--billboard-sound-m);
+    max-height: var(--billboard-sound-m);
   }
 
   .billboard-info,
@@ -280,6 +282,7 @@
   }
   .billboard-sound {
     min-height: var(--billboard-sound-sm);
+    max-height: var(--billboard-sound-sm);
   }
 
   .billboard-info,
