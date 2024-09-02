@@ -83,10 +83,6 @@ body {
   transition: border 0.5s;
 }
 
-.profile:hover .profile-picture-selection {
-  /* border: 3px solid var(--white); */
-}
-
 .profile:hover .profile-picture-selection::after {
   border-color: var(--white);
 }
