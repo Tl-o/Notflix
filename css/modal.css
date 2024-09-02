@@ -970,4 +970,9 @@
   .modal-metadata-logo {
     max-width: 300px;
   }
+
+  .modal-icon.navigation-title svg {
+    min-width: 16px;
+    min-height: 16px;
+  }
 }
