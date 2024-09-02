@@ -29,8 +29,9 @@
   position: absolute;
   top: 17.5vh;
 
-  min-width: var(--dialogue-modal-width);
+  flex: 0 1 var(--dialogue-modal-width);
   max-width: var(--dialogue-modal-width);
+  margin-inline: 16px;
   min-height: max-content;
   background-color: var(--main-bg-color);
   padding: 32px;
