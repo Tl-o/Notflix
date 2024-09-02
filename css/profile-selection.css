@@ -151,4 +151,8 @@ body {
     font-size: 12px;
     margin-block-start: calc(var(--margin-value) * 1.5);
   }
+
+  .profile-name-selection {
+    font-size: 12px;
+  }
 }
