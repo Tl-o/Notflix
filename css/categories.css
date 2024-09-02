@@ -231,7 +231,7 @@
 
 .category-icon {
   border-radius: 50%;
-  min-height: 3vh;
+  max-height: 3vh;
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;

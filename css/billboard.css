@@ -15,6 +15,11 @@
   --billboard-sound-m: 5.5vw;
   --billboard-sound-sm: 7vw;
 
+  --billboard-sound-safari: 40px;
+  --billboard-sound-safari-lg: 50px;
+  --billboard-sound-safari-m: 50px;
+  --billboard-sound-safari-lg: 50px;
+
   --billboard-age: 10vw;
   --billboard-age-m: 12vw;
 
@@ -156,8 +161,9 @@
 .billboard-sound {
   border-radius: 50%;
   min-height: var(--billboard-sound);
+  max-height: var(--billboard-sound);
+  max-width: max-content;
   aspect-ratio: 1 / 1;
-  min-width: max-content;
   background-color: transparent;
   border: 1px solid var(--white);
   display: flex;

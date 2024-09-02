@@ -194,6 +194,7 @@ Item width: (100 - Reserve width) / items_per_row. */
 .search-icon {
   border-radius: 50%;
   min-width: var(--search-icon);
+  max-width: var(--search-icon);
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
@@ -260,7 +261,8 @@ Item width: (100 - Reserve width) / items_per_row. */
   }
 
   .search-icon {
-    width: var(--search-icon-xl);
+    min-width: var(--search-icon-xl);
+    max-width: var(--search-icon-xl);
   }
 
   .search-description,
@@ -280,7 +282,8 @@ Item width: (100 - Reserve width) / items_per_row. */
   }
 
   .search-icon {
-    width: var(--search-icon-lg);
+    min-width: var(--search-icon-lg);
+    max-width: var(--search-icon-lg);
   }
 
   .search-description,
@@ -300,7 +303,8 @@ Item width: (100 - Reserve width) / items_per_row. */
   }
 
   .search-icon {
-    width: var(--search-icon-m);
+    min-width: var(--search-icon-m);
+    max-width: var(--search-icon-m);
   }
 
   .search-description,
@@ -324,7 +328,8 @@ Item width: (100 - Reserve width) / items_per_row. */
   }
 
   .search-icon {
-    width: var(--search-icon-sm);
+    min-width: var(--search-icon-sm);
+    max-width: var(--search-icon-sm);
   }
 
   .search-description,
