@@ -34,6 +34,10 @@ svg {
   max-width: 100%;
 }
 
+video::-webkit-media-controls-start-playback-button {
+  display: none;
+}
+
 input,
 button,
 textarea,
