@@ -113,16 +113,16 @@ class Billboard extends View {
     this._trailer.volume = 0;
     this._trailerControls = this._parentEl.querySelector('.billboard-sound');
     this._bindObserver();
-    this._trailerControls.addEventListener(
-      'click',
-      this._controlSound.bind(this)
-    );
+    ['click', 'touchstart'].forEach((e) => {
+      this._trailerControls.addEventListener(e, this._controlSound.bind(this));
+    });
 
     // Billboard timeout is set using intersection observer.
     return '';
   }
 
   _generateBillboard() {
+    if (!this._data.id) debugger;
     const markup = `
     <div class="billboard-container" data-id="${this._data.id}" data-type="${
       this._data.type === 'TV Show' ? 'tv' : 'movie'
