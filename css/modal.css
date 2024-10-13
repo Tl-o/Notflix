@@ -109,6 +109,7 @@
   justify-content: center;
   align-items: center;
   animation: 0.33s ease-out forwards fadeIn;
+  overflow-x: hidden;
 }
 
 .media-modal {
@@ -121,6 +122,7 @@
   border-radius: 5px;
   animation-delay: 0s;
   animation: 0.33s ease-out forwards modalScaleUp;
+  overflow: hidden;
 }
 
 .full-size {

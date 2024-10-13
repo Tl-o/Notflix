@@ -250,6 +250,14 @@
 }
 
 @media (max-width: 800px) {
+  .billboard-container {
+    align-items: end;
+  }
+
+  .billboard-controls {
+    margin-block-end: 0;
+  }
+
   .billboard-promotion {
     display: none;
   }
