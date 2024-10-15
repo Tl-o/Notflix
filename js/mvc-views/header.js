@@ -84,14 +84,16 @@ class Header extends View {
       }, this._searchAfter);
     });
 
-    this._parentEl.addEventListener('click', (e) => {
-      if (!e.target.closest('.clear-btn')) return;
+    ['click', 'touchstart'].forEach((event) => {
+      this._parentEl.addEventListener(event, (e) => {
+        if (!e.target.closest('.clear-btn')) return;
 
-      const input = this._parentEl.querySelector('input');
-      input.focus();
-      input.value = '';
-      cancelHandler();
-      this._cancelSearch();
+        const input = this._parentEl.querySelector('input');
+        input.focus();
+        input.value = '';
+        cancelHandler();
+        this._cancelSearch();
+      });
     });
   }
 

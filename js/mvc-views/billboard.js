@@ -82,7 +82,12 @@ class Billboard extends View {
   }
 
   resume() {
-    if (!this._trailer || this._parentEl.classList.contains('hidden')) return;
+    if (
+      !this._trailer ||
+      this._parentEl.classList.contains('hidden') ||
+      checkMobile()
+    )
+      return;
 
     const rect = this._trailer.getBoundingClientRect();
     // A third of the trailer's size
