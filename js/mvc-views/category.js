@@ -292,13 +292,15 @@ export class Category extends View {
       `<span class="slide slide-right" data-direction="-1"></span>`
     );
 
-    mainContent
-      .querySelector('.slide-right')
-      .addEventListener('click', this._slideRight.bind(this));
+    ['click', 'touchstart'].forEach((event) => {
+      mainContent
+        .querySelector('.slide-right')
+        .addEventListener(event, this._slideRight.bind(this));
 
-    mainContent
-      .querySelector('.slide-left')
-      .addEventListener('click', this._slideLeft.bind(this));
+      mainContent
+        .querySelector('.slide-left')
+        .addEventListener(event, this._slideLeft.bind(this));
+    });
 
     this._categoryEl
       .querySelector('.category-shows')

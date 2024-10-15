@@ -147,12 +147,14 @@ class Title extends View {
       this._hide(handler);
     });
 
-    this._overlay.addEventListener('click', (e) => {
-      const target = e.target.closest('.modal-close');
-      if (!target && !e.target.classList.contains('media-modal-overlay'))
-        return;
+    ['click', 'touchstart'].forEach((event) => {
+      this._overlay.addEventListener(event, (e) => {
+        const target = e.target.closest('.modal-close');
+        if (!target && !e.target.classList.contains('media-modal-overlay'))
+          return;
 
-      this._hide(handler);
+        this._hide(handler);
+      });
     });
   }
 
@@ -404,24 +406,27 @@ class Title extends View {
   }
 
   _bindBack() {
-    this._modal.addEventListener('click', (e) => {
-      const target = e.target.closest('.modal-back');
-      if (!target) return;
+    ['click', 'touchstart'].forEach((event) => {
+      this._modal.addEventListener(event, (e) => {
+        const target = e.target.closest('.modal-back');
+        if (!target) return;
 
-      this._data = this._dataHistory.pop();
+        this._data = this._dataHistory.pop();
 
-      // Hide button if no more history
-      if (this._dataHistory.length === 0) this._btnBack.classList.add('hidden');
+        // Hide button if no more history
+        if (this._dataHistory.length === 0)
+          this._btnBack.classList.add('hidden');
 
-      if (this._data['type'] === 'title') {
-        this._modal.classList.remove('full-size');
-        this.updateTitleMarkup();
-      } else if (this._data['type'] === 'nav') {
-        this._modal.classList.add('full-size');
-        // Generates skeleton to empty out all other containers
-        this._generateNavigationSkeleton();
-        this.updateNavigationMarkup();
-      }
+        if (this._data['type'] === 'title') {
+          this._modal.classList.remove('full-size');
+          this.updateTitleMarkup();
+        } else if (this._data['type'] === 'nav') {
+          this._modal.classList.add('full-size');
+          // Generates skeleton to empty out all other containers
+          this._generateNavigationSkeleton();
+          this.updateNavigationMarkup();
+        }
+      });
     });
   }
 
