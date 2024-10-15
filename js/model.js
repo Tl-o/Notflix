@@ -64,7 +64,7 @@ export const getCurrUserData = (userID) => {
   );
   localStorage.setItem('user', JSON.stringify(state.users.currUser));
   state.billboard =
-    billboardShows[Math.floor(Math.random() * billboardShows.length)];
+    billboardShows[Math.floor(Math.random() * (billboardShows.length - 1))];
 };
 
 export const getBuiltIn = () => {
