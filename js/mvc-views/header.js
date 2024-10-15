@@ -2,7 +2,7 @@ import 'core-js/stable';
 import { View } from './view';
 import { mark } from 'regenerator-runtime';
 import { MILLISECONDS_IN_SECOND } from '../config.js';
-import { updateURL } from '../helper';
+import { checkMobile, updateURL } from '../helper';
 
 class Header extends View {
   _parentEl = document.querySelector('header');
@@ -343,12 +343,24 @@ class Header extends View {
     });
 
     userProfile?.addEventListener('mouseleave', () => {
+      // If on mobile, immediately hide.
+      if (checkMobile()) {
+        this._userDropdown.classList.remove('show');
+        return;
+      }
+
       hideUserDropdown = setTimeout(() => {
         this._userDropdown.classList.remove('show');
       }, this._clearTimeoutTime);
     });
 
     browse?.addEventListener('mouseleave', () => {
+      // If on mobile, immediately hide.
+      if (checkMobile()) {
+        this._browseDropdown.classList.remove('show');
+        return;
+      }
+
       hideBrowseDropdown = setTimeout(() => {
         this._browseDropdown.classList.remove('show');
       }, this._clearTimeoutTime);

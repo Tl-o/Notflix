@@ -315,7 +315,3 @@ const controlNonFunctionalButtons = () => {
 
 init();
 window.addEventListener('load', loadPage);
-
-const mobile = checkMobile();
-if (mobile) notifications.renderNotification("You're on mobile!");
-else notifications.renderNotification("You're NOT on mobile!");

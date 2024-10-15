@@ -2,6 +2,7 @@
 import 'core-js/stable';
 import { View } from './view';
 import { MILLISECONDS_IN_SECOND } from '../config.js';
+import { checkMobile } from '../helper';
 
 class Billboard extends View {
   // Data
@@ -112,6 +113,13 @@ class Billboard extends View {
     this._trailer = this._parentEl.querySelector('.billboard-video');
     this._trailer.volume = 0;
     this._trailerControls = this._parentEl.querySelector('.billboard-sound');
+
+    // If on mobile, disable billboard video playing & hide button.
+    if (checkMobile()) {
+      this._trailerControls.classList.add('hidden');
+      return;
+    }
+
     this._bindObserver();
     ['click', 'touchstart'].forEach((e) => {
       this._trailerControls.addEventListener(e, this._controlSound.bind(this));
