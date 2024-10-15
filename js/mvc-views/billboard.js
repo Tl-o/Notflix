@@ -46,7 +46,7 @@ class Billboard extends View {
     if (this._trailer) {
       this._isPlaying = false;
       this._hasActivated = false;
-      this._observer.unobserve(this._trailer);
+      if (!checkMobile()) this._observer.unobserve(this._trailer);
       clearTimeout(this._stopTimeout);
       this._trailer.pause();
       this._trailer.currentTime = 0;
