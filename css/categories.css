@@ -235,8 +235,8 @@
 
 .category-icon {
   border-radius: 50%;
-  max-height: 3vh;
-  min-height: 3vh;
+  max-width: 1.75vw;
+  min-width: 1.75vw;
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
@@ -403,8 +403,8 @@
   }
 
   .category-icon {
-    min-height: 2.75vh;
-    max-height: 2.75vh;
+    min-width: 2vw;
+    max-width: 2vw;
   }
 }
 
@@ -431,8 +431,8 @@
   }
 
   .category-icon {
-    min-height: 2.75vh;
-    max-height: 2.75vh;
+    min-width: 2.75vw;
+    max-width: 2.75vw;
   }
 }
 
@@ -459,8 +459,8 @@
   }
 
   .category-icon {
-    min-height: 2.5vh;
-    max-height: 2.5vh;
+    min-width: 3.5vw;
+    max-width: 3.5vw;
   }
 }
 
@@ -492,7 +492,7 @@
   }
 
   .category-icon {
-    min-height: 2.25vh;
-    max-height: 2.25vh;
+    min-width: 5vw;
+    max-width: 5vw;
   }
 }
