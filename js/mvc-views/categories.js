@@ -3,6 +3,7 @@ import { View } from './view';
 import { Category } from './category';
 import { mark } from 'regenerator-runtime';
 import { checkMobile } from '../helper';
+import { MILLISECONDS_IN_SECOND } from '../config';
 
 class Categories extends View {
   _parentEl = document.querySelector('.categories');
@@ -24,7 +25,8 @@ class Categories extends View {
 
   // Hover and Scroll Control
   _timeout;
-  _waitForHover = 0.4 * 1000; // In milliseconds
+  _waitForHover = 0.4 * MILLISECONDS_IN_SECOND; // In milliseconds
+  _waitForHoverMobile = 0.1 * MILLISECONDS_IN_SECOND;
   _bound = false; // Check if hover and responsiveness are bound
   _observer;
   _isFetching = false;
@@ -122,7 +124,7 @@ class Categories extends View {
             this._hover(e);
             handler(e.target.dataset.id, e.target.dataset.type);
           },
-          checkMobile() ? 0 : this._waitForHover
+          checkMobile() ? this._waitForHoverMobile : this._waitForHover
         );
       },
       true
