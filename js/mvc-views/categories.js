@@ -106,43 +106,27 @@ class Categories extends View {
     if (this._bound) return;
     this._bound = true;
 
-    if (checkMobile()) {
-      this._parentEl.addEventListener(
-        'touchstart',
-        (e) => {
-          if (this._isScrolling) return;
-          if (!e.target?.classList.contains('category-item')) return;
-          if (e.target.classList.contains('opaque')) return;
+    this._parentEl.addEventListener(
+      'mouseenter',
+      (e) => {
+        if (this._isScrolling) return;
+        if (!e.target?.classList.contains('category-item')) return;
+        if (e.target.classList.contains('opaque')) return;
 
-          // Ignore if only a bit of the element is showing
-          const size = e.target.getBoundingClientRect();
-          if (size.top - 35 <= 0) return;
+        // Ignore if only a bit of the element is showing
+        const size = e.target.getBoundingClientRect();
+        if (size.top - 35 <= 0) return;
 
-          this._hover(e);
-          handler(e.target.dataset.id, e.target.dataset.type);
-        },
-        true
-      );
-    } else {
-      this._parentEl.addEventListener(
-        'mouseenter',
-        (e) => {
-          if (this._isScrolling) return;
-          if (!e.target?.classList.contains('category-item')) return;
-          if (e.target.classList.contains('opaque')) return;
-
-          // Ignore if only a bit of the element is showing
-          const size = e.target.getBoundingClientRect();
-          if (size.top - 35 <= 0) return;
-
-          this._timeout = setTimeout(() => {
+        this._timeout = setTimeout(
+          () => {
             this._hover(e);
             handler(e.target.dataset.id, e.target.dataset.type);
-          }, this._waitForHover);
-        },
-        true
-      );
-    }
+          },
+          checkMobile() ? 0 : this._waitForHover
+        );
+      },
+      true
+    );
 
     this._parentEl.addEventListener(
       'mouseleave',
