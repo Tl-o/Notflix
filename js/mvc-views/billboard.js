@@ -135,7 +135,6 @@ class Billboard extends View {
   }
 
   _generateBillboard() {
-    if (!this._data.id) debugger;
     const markup = `
     <div class="billboard-container" data-id="${this._data.id}" data-type="${
       this._data.type === 'TV Show' ? 'tv' : 'movie'
