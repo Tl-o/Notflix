@@ -366,9 +366,9 @@ const init = async () => {
     '',
     ''
   );
-  const louis = new CreateUser(
-    'Louis Cypher',
-    'https://i.imgur.com/JpGzLyC.png',
+  const classic = new CreateUser(
+    'ST. CHROMA',
+    'https://occ-0-3945-2567.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYSw2XUJOe-RXGqlMhzAK2kb3m8jiiuICaICOYRemQXvfBcEmoaG0XMebWDsKrQ4fhsAYwzopxK6Cm5l5w2F9iMzCVqZuapW7A.png?r=201',
     '',
     ''
   );
@@ -385,7 +385,7 @@ const init = async () => {
     ''
   );
 
-  state.users.allUsers = [tara, louis, bojack, rosa, cheap];
+  state.users.allUsers = [tara, classic, bojack, rosa, cheap];
   state.users.currUser = JSON.parse(localStorage.getItem('user')) || bojack;
 
   await getGenres();
