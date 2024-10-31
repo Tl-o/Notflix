@@ -356,7 +356,7 @@ const getGenres = async () => {
 const init = async () => {
   const rosa = new CreateUser(
     'Rosa Umineko',
-    'https://gcdnb.pbrd.co/images/Cyeeqtk7SoDO.png?o=1',
+    'https://i.imgur.com/qDheYXr.png',
     '',
     ''
   );
@@ -374,7 +374,7 @@ const init = async () => {
   );
   const tara = new CreateUser(
     'Tara',
-    'https://i.imgur.com/Igqdb4Q.png',
+    'https://i.imgur.com/9uic8GQ.png',
     '',
     ''
   );
