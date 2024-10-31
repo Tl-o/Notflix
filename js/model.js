@@ -356,7 +356,7 @@ const getGenres = async () => {
 const init = async () => {
   const rosa = new CreateUser(
     'Rosa Umineko',
-    'https://i.imgur.com/qDheYXr.png',
+    'https://i.imgur.com/2Cc1vpr.png',
     '',
     ''
   );
