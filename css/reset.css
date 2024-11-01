@@ -64,6 +64,10 @@ h6 {
   width: 0 !important;
 }
 
-html {
+/* html {
   scrollbar-width: none;
-}
+} */
+
+/* html {
+  scrollbar-gutter: stable;
+} */
