@@ -16,8 +16,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  overflow: scroll;
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
   display: flex;
   justify-content: center;
   align-items: center;

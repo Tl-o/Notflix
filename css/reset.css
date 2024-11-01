@@ -63,11 +63,3 @@ h6 {
 .element::-webkit-scrollbar {
   width: 0 !important;
 }
-
-/* html {
-  scrollbar-width: none;
-} */
-
-/* html {
-  scrollbar-gutter: stable;
-} */
