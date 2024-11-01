@@ -105,6 +105,7 @@ class Categories extends View {
   ==================================================
   */
   bindHover(handler) {
+    this._showHandler = handler;
     if (this._bound) return;
     this._bound = true;
 
@@ -333,10 +334,32 @@ class Categories extends View {
       document.addEventListener('mousemove', mouseMove);
     };
 
-    const mouseMove = () => {
+    const mouseMove = (e) => {
       this._isScrolling = false;
+      console.log(e);
       document.removeEventListener('mousemove', mouseMove);
       document.addEventListener('scroll', scroll);
+
+      // If user is on a show, hover it.
+      const item = document.elementFromPoint(e.clientX, e.clientY);
+      if (item.nodeName === 'IMG') {
+        const show = item.closest('.category-item');
+        if (!show) return;
+
+        if (show.classList.contains('opaque')) return;
+
+        // Ignore if only a bit of the element is showing
+        const size = show.getBoundingClientRect();
+        if (size.top - 35 <= 0) return;
+
+        this._timeout = setTimeout(
+          () => {
+            this._hover(e);
+            this._showHandler(show.dataset.id, show.dataset.type);
+          },
+          checkMobile() ? this._waitForHoverMobile : this._waitForHover
+        );
+      }
     };
 
     document.addEventListener('scroll', scroll);
@@ -398,15 +421,19 @@ class Categories extends View {
   }
 
   _hover(e) {
-    const size = e.target.getBoundingClientRect();
-    const placement = e.target.dataset.placement;
+    /* Setting a target here is not redundant, 
+  it's important the unique case of deactivating scrolling barrier & checking immediately if the mouse is over a show or not */
+    const target = e.target.closest('.category-item');
+
+    const size = target.getBoundingClientRect();
+    const placement = target.dataset.placement;
     const hoverDiv = document.createElement('div');
-    const showImg = e.target.querySelector('img').getAttribute('src');
-    const logoImg = e.target.querySelector('.show-logo')?.getAttribute('src');
+    const showImg = target.querySelector('img').getAttribute('src');
+    const logoImg = target.querySelector('.show-logo')?.getAttribute('src');
     hoverDiv.classList.add('category-item-hover');
     hoverDiv.classList.add(`category-${placement}`);
-    hoverDiv.dataset.id = e.target.dataset.id;
-    hoverDiv.dataset.type = e.target.dataset.type;
+    hoverDiv.dataset.id = target.dataset.id;
+    hoverDiv.dataset.type = target.dataset.type;
 
     const markup = `
         <div style="position: relative;" class="show-img-hover">
