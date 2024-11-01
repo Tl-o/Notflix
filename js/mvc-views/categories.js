@@ -336,7 +336,6 @@ class Categories extends View {
 
     const mouseMove = (e) => {
       this._isScrolling = false;
-      console.log(e);
       document.removeEventListener('mousemove', mouseMove);
       document.addEventListener('scroll', scroll);
 
