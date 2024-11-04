@@ -330,6 +330,7 @@ class Categories extends View {
   _bindScroll() {
     const scroll = () => {
       this._isScrolling = true;
+      this._itemCheck = false;
       document.removeEventListener('scroll', scroll);
       document.addEventListener('mousemove', mouseMove);
     };
@@ -340,25 +341,26 @@ class Categories extends View {
       document.addEventListener('scroll', scroll);
 
       // If user is on a show, hover it.
-      // const item = document.elementFromPoint(e.clientX, e.clientY);
-      // if (item.nodeName === 'IMG') {
-      //   const show = item.closest('.category-item');
-      //   if (!show) return;
+      const item = document.elementFromPoint(e.clientX, e.clientY);
+      if (item.nodeName === 'IMG' && !this._itemCheck) {
+        const show = item.closest('.category-item');
+        if (!show) return;
 
-      //   if (show.classList.contains('opaque')) return;
+        if (show.classList.contains('opaque')) return;
 
-      //   // Ignore if only a bit of the element is showing
-      //   const size = show.getBoundingClientRect();
-      //   if (size.top - 35 <= 0) return;
+        // Ignore if only a bit of the element is showing
+        const size = show.getBoundingClientRect();
+        if (size.top - 35 <= 0) return;
 
-      //   this._timeout = setTimeout(
-      //     () => {
-      //       this._hover(e);
-      //       this._showHandler(show.dataset.id, show.dataset.type);
-      //     },
-      //     checkMobile() ? this._waitForHoverMobile : this._waitForHover
-      //   );
-      // }
+        this._itemCheck = true;
+        this._timeout = setTimeout(
+          () => {
+            this._hover(e);
+            this._showHandler(show.dataset.id, show.dataset.type);
+          },
+          checkMobile() ? this._waitForHoverMobile : this._waitForHover
+        );
+      }
     };
 
     document.addEventListener('scroll', scroll);
